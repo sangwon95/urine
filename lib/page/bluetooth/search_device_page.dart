@@ -6,13 +6,14 @@ import 'package:provider/provider.dart';
 
 import '../../main.dart';
 import '../../utils/color.dart';
-import '../../utils/count_provider.dart';
+import '../../providers/count_provider.dart';
 import '../../utils/frame.dart';
 import '../../widgets/button.dart';
 
 /// 기기 찾기
 class SearchDevicePage extends StatefulWidget {
-  const SearchDevicePage({Key? key}) : super(key: key);
+  const SearchDevicePage({Key? key, required this.onBackCallbackConnect}) : super(key: key);
+  final Function(BluetoothDevice) onBackCallbackConnect;
 
   @override
   State<SearchDevicePage> createState() => _SearchDevicePageState();
@@ -27,8 +28,7 @@ class _SearchDevicePageState extends State<SearchDevicePage> {
   late bool isVisibleConnectionButton;
   late String connectionButtonText;
 
-  late BluetoothDevice device;
-  late CountProvider _countProvider;
+  late BluetoothDevice? device = null;
 
   @override
   void initState() {
@@ -42,7 +42,7 @@ class _SearchDevicePageState extends State<SearchDevicePage> {
   _configureInitView() {
     isShowGlows = true; // 디바이스 찾기 파동 애니메이션
     isDeviceFound = false;
-    deviceFoundState = '유린검사기를 찾고있습니다.\n잠시만 기달려주세요.';
+    deviceFoundState = '유린검사기를 찾고있습니다.\n잠시만 기다려 주세요.';
     isVisibleConnectionButton = false;
     connectionButtonText = '';
   }
@@ -50,56 +50,61 @@ class _SearchDevicePageState extends State<SearchDevicePage> {
 
   @override
   Widget build(BuildContext context) {
-    _countProvider = Provider.of<CountProvider>(context);
-
-    mLog.i('검색 화면 재빌드: $isShowGlows');
-
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(15, 30, 15, 15),
-          child: AvatarGlow(
-            glowColor: mainColor,
-            endRadius: 130.0,
-            duration: Duration(milliseconds: 2000),
-            repeat: isShowGlows,
-            showTwoGlows: isShowGlows,
-            animate: isShowGlows,
-            repeatPauseDuration: Duration(milliseconds: 200),
-            child: Material(     // Replace this child with your own
-              elevation: 4.0,
-              shape: CircleBorder(),
-              child: CircleAvatar(
-                backgroundColor: Colors.grey[100],
-                child: isDeviceFound ?
-                Icon(Icons.check, color: Colors.blue, size: 50) :
-                connectionButtonText == '재 시도' ?
-                Icon(Icons.question_mark, color: Colors.blue, size: 50) :
-                Icon(Icons.bluetooth, color: Colors.blue, size: 50),
-                radius: 45.0,
+    return Scaffold(
+      appBar: Frame.myAppbar(
+        '블루투스 찾기'
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            width: double.infinity,
+              padding: const EdgeInsets.fromLTRB(15, 30, 15, 15),
+              child: AvatarGlow(
+                glowColor: mainColor,
+                endRadius: 130.0,
+                duration: Duration(milliseconds: 2000),
+                repeat: isShowGlows,
+                showTwoGlows: isShowGlows,
+                animate: isShowGlows,
+                repeatPauseDuration: Duration(milliseconds: 200),
+                child: Material(     // Replace this child with your own
+                  elevation: 4.0,
+                  shape: CircleBorder(),
+                  child: CircleAvatar(
+                    backgroundColor: Colors.grey[100],
+                    child: isDeviceFound ?
+                    Icon(Icons.check, color: Colors.blue, size: 50) :
+                    connectionButtonText == '재 시도' ?
+                    Icon(Icons.question_mark, color: Colors.blue, size: 50) :
+                    Icon(Icons.bluetooth, color: Colors.blue, size: 50),
+                    radius: 45.0,
+                  ),
+                ),
               ),
-            ),
           ),
-        ),
 
-        Frame.myText(
-            text: deviceFoundState,
-            maxLinesCount: 2,
-            fontSize: 1.2,
-            fontWeight: FontWeight.w600,
-            align: TextAlign.center
-        ),
+          Frame.myText(
+              text: deviceFoundState,
+              maxLinesCount: 3,
+              fontSize: 1.2,
+              fontWeight: FontWeight.w600,
+              align: TextAlign.center
+          ),
 
-        SizedBox(height: 20),
+          SizedBox(height: 50),
 
-        Visibility(
-            visible: !isShowGlows, // 파동을 없애는 동시에 버튼 생성
-            child: SearchToConnectionButton(
-              text: connectionButtonText,
-              againSearchFunction: () => _againSearch(),
-            )
-        )
-      ],
+          Visibility(
+              visible: !isShowGlows, // 파동을 없애는 동시에 버튼 생성
+              child: SearchToConnectionButton(
+                text: connectionButtonText,
+                againSearchFunction: () => _againSearch(),
+                onBackCallbackConnect: (BluetoothDevice) => widget.onBackCallbackConnect(BluetoothDevice),
+                foundDevice: device,
+              )
+          )
+        ],
+      ),
     );
   }
 
@@ -109,16 +114,17 @@ class _SearchDevicePageState extends State<SearchDevicePage> {
     FlutterBluePlus.instance.scanResults.listen((results) {
       // do something with scan results
       for (ScanResult r in results) {
-        if(r.device.name == 'PhotoMT91b22a'){
+        if(r.device.name.contains('PhotoMT')){
           FlutterBluePlus.instance.stopScan();
           Future.delayed(Duration(seconds: 4), (){
             if(mounted){
               setState(() {
                 isDeviceFound = true;
                 isShowGlows = false;
-                connectionButtonText = '연결';
+                connectionButtonText = '연결 하기';
                 deviceFoundState = '유린검사기를 찾았습니다.\n연결 하시겠습니까?';
-                _countProvider.setDevice(r.device);
+                device = r.device;
+                //_countProvider.setDevice(r.device);
               });
             }
           });
@@ -139,7 +145,7 @@ class _SearchDevicePageState extends State<SearchDevicePage> {
         setState(() {
           mLog.i("디바이스를 찾지 못했습니다.");
           isShowGlows = false;
-          deviceFoundState = '유린검사기를 찾지 못했습니다.\n재시도 하시겠습니까?';
+          deviceFoundState = '유린검사기를 찾지 못했습니다.\n검사기가 켜져있는지 확인해보세요.\n재시도 하시겠습니까?';
           connectionButtonText = '재 시도';
 
           FlutterBluePlus.instance.stopScan();

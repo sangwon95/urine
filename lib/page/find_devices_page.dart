@@ -129,6 +129,5 @@ class _FindDevicesPageState extends State<FindDevicesPage> {
   _saveAddress(String address) async{
     MySharedPreferences _saveData = MySharedPreferences();
     _saveData.setStringData('address', Authorization().userID);
-    Authorization().address = address;
   }
 }

@@ -165,10 +165,10 @@ class _PreparationPageState extends State<PreparationPage> {
             ),
           ),
 
-          Visibility(
-              visible: isDevice&&isBluetooth,
-              child: PreparationToSearchButton(context: context, text: '준비 완료')
-          )
+          // Visibility (
+          //     visible: isDevice&&isBluetooth,
+          //     child: PreparationToSearchButton(context: context, text: '준비 완료')
+          // )
         ],
       ),
     );;
@@ -183,8 +183,8 @@ class _PreparationPageState extends State<PreparationPage> {
           isBluetooth = false;
           bluetoothState = '블루투스 OFF';
         });
-
       }
+
       else if(value == BluetoothState.on){
         setState((){
           isBluetooth = true;

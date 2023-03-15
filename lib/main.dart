@@ -11,11 +11,15 @@ import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:urine/model/login_model.dart';
 import 'package:urine/page/bluetooth/bluetooth_page.dart';
+import 'package:urine/page/bluetooth/search_device_page2.dart';
 import 'package:urine/page/home_page.dart';
 import 'package:urine/page/login_page.dart';
+import 'package:urine/providers/bluetooth_state_provider.dart';
 import 'package:urine/utils/color.dart';
-import 'package:urine/utils/count_provider.dart';
+import 'package:urine/providers/count_provider.dart';
+import 'package:urine/utils/dio_client.dart';
 import 'package:urine/utils/logging.dart';
 
 import 'model/authorization.dart';
@@ -30,21 +34,30 @@ Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await _initAuthorization();
 
-  runApp( ChangeNotifierProvider(
-    create: (BuildContext context) => CountProvider(),
-    child: FlutterBlueApp(),
-  ));
+  runApp(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (context) => CountProvider()),
+          ChangeNotifierProvider(create: (context) => BluetoothStateProvider()),
+        ],
+        child: FlutterBlueApp(),
+      )
+  );
 }
 
 /// Authorization 초기화
 _initAuthorization() async {
 
   var pref = await SharedPreferences.getInstance();
-  String? address = pref.getString('address');
+  String? password = pref.getString('password');
+  String? userID = pref.getString('userID');
 
-  if(address != null)
-  {
-    Authorization().address = address;
+  if(userID != null && password != null) {
+    Authorization().userID = userID;
+    Authorization().password = password;
+
+    final login = await client.dioLogin(Authorization().toMap());
+    Authorization().token = login.token;
   }
 }
 
@@ -77,12 +90,14 @@ class FlutterBlueApp extends StatelessWidget {
         Locale('en', ''),
       ],
 
-      initialRoute: 'connection_page',
+      initialRoute:// 'login_page',
+      Authorization().userID == ''? 'login_page' : 'home_page',
       routes:
       {
         'login_page': (context) => LoginPage(),
         'home_page': (context) => HomePage(),
-        'connection_page': (context) => BluetoothPage(),
+        //'test_view': (context) => SearchDevicePage2(onBackCallbackConnect: (BluetoothDevice ) {  },),
+        //'connection_page': (context) => BluetoothPage(),
 
       },
 

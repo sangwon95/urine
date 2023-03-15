@@ -1,3 +1,8 @@
+import 'package:urine/main.dart';
+import 'package:urine/model/authorization.dart';
+import 'package:intl/intl.dart';
+import 'package:urine/model/rest_response.dart';
+
 class UrineModel{
 
   /// 잠혈
@@ -36,10 +41,24 @@ class UrineModel{
   /// 리스트로 초기화
   late List<String> urineList = [];
 
+  /// 검사 날짜 및 시간
+  late String date;
+
+  /// 저장 응답 코드
+  late String? code;
+
+  /// 저장 응답 메시지
+  late String? message;
+
+  /// 결과데이터 Map 리스트
+  List<Map<String, dynamic>> dataMap = <Map<String, dynamic>>[];
+
+  UrineModel({this.code, this.message});
 
   @override
   String toString() {
-    return 'UrineModel{blood: $blood, billrubin: $billrubin, urobillnogen: $urobillnogen, ketones: $ketones, protein: $protein, nitrite: $nitrite, glucose: $glucose, pH: $pH, sG: $sG, leucoytes: $leucoytes, vitamin: $vitamin}';
+    return 'UrineModel{blood: $blood, billrubin: $billrubin, urobillnogen: $urobillnogen,'
+        ' ketones: $ketones, protein: $protein, nitrite: $nitrite, glucose: $glucose, pH: $pH, sG: $sG, leucoytes: $leucoytes, vitamin: $vitamin}';
   }
 
   initialization(String sb) {
@@ -68,18 +87,29 @@ class UrineModel{
     urineList.add(pH);
 
     sG  = parsingResultBuffer('#A09', sb);
-    urineList.add(blood);
+    urineList.add(sG);
 
     leucoytes  = parsingResultBuffer('#A10', sb);
-    urineList.add(blood);
+    urineList.add(leucoytes);
 
     vitamin = parsingResultBuffer('#A11', sb);
     urineList.add(vitamin);
+
+    date = DateFormat('yyyyMMddHHmmss').format(DateTime.now()).toString();
+    mLog.i(date);
   }
 
   String parsingResultBuffer(String baseStr, String sb){
     int idx = sb.replaceAll('\n','').indexOf(baseStr);
     String result = sb.substring(idx + 5, (idx + 6));
+
     return result;
+  }
+
+  factory UrineModel.fromJson(RestResponseOnlyStatus responseBody) {
+    return UrineModel(
+        code    : responseBody.status['code'] ?? '-',
+        message : responseBody.status['message'] ?? '-',
+    );
   }
 }

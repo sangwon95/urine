@@ -58,6 +58,7 @@ class Frame{
     TextAlign align = TextAlign.start,
     TextOverflow overflow = TextOverflow.visible,
     int maxLinesCount = 1,
+    TextDecoration decoration = TextDecoration.none
   }){
    return Text(
      text,
@@ -67,6 +68,8 @@ class Frame{
      style: TextStyle(
          color: color,
          fontWeight: fontWeight,
+       decoration: decoration,
+
      ),
      textAlign: align
      ,

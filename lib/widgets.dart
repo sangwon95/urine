@@ -346,20 +346,23 @@ class GroupListHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
-
     return Container(
-      height: 35,
-      margin: EdgeInsets.only(left: width / 2.8, right: width / 2.8, top: 40, bottom: 10),
-      decoration: BoxDecoration(color: Colors.grey.shade200, borderRadius: BorderRadius.circular(30)),
-      child: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Frame.myText(
-            text: Etc.setGroupDateTime(headerText),
-            color: Colors.black,
-            fontWeight: FontWeight.w600,
-            maxLinesCount: 1,
-            fontSize: 0.8,
-            align: TextAlign.center),
+      height: 28,
+      margin: EdgeInsets.only(left: width / 2.65, right: width / 2.65, top: 20, bottom: 5),
+      decoration: BoxDecoration(color: Colors.grey.shade200, borderRadius: BorderRadius.circular(10)),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.calendar_month_sharp, size: 20, color: mainColor),
+          SizedBox(width: 10),
+          Frame.myText(
+              text: Etc.setGroupDateTime(headerText),
+              color: Colors.black,
+              fontWeight: FontWeight.w600,
+              maxLinesCount: 1,
+              fontSize: 0.8,
+              align: TextAlign.center),
+        ],
       ),
     );
   }

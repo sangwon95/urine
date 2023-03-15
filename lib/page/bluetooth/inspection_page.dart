@@ -10,7 +10,7 @@ import 'package:urine/widgets/button.dart';
 import '../../main.dart';
 import '../../model/bluetooth_ble.dart';
 import '../../model/urine_model.dart';
-import '../../utils/count_provider.dart';
+import '../../providers/count_provider.dart';
 import '../../utils/etc.dart';
 import '../../utils/frame.dart';
 
@@ -31,8 +31,8 @@ class InspectionPage extends StatefulWidget {
 class _InspectionPageState extends State<InspectionPage> with SingleTickerProviderStateMixin{
 
   final writeTimeout = Duration(seconds: 5);
-  final initStartTime = Duration(seconds: 2);
-  final responseTimeout = Duration(seconds: 7);
+  final initStartTime = Duration(seconds: 1);
+  final responseTimeout = Duration(seconds: 10);
   StringBuffer sb = StringBuffer('');
   late CountProvider _countProvider;
 
@@ -47,7 +47,7 @@ class _InspectionPageState extends State<InspectionPage> with SingleTickerProvid
     // writeCharacteristic to notificationCharacteristic 리스너 등록
 
     // writeCharacteristic 가 null 아닐경우 검사 진행
-    Future.delayed(initStartTime, (){
+    Future.delayed(initStartTime, () async {
       if(widget.writeCharacteristic != null){
         _onValueChangedStreamListener();
         _startInspection();
@@ -55,6 +55,8 @@ class _InspectionPageState extends State<InspectionPage> with SingleTickerProvid
         mLog.i('writeCharacteristic :  null');
       }
     });
+
+
 
     controller = AnimationController(
       duration: Duration(seconds: 3),
@@ -66,7 +68,6 @@ class _InspectionPageState extends State<InspectionPage> with SingleTickerProvid
           controller.repeat();
         }
       });
-
 
   }
 
@@ -105,7 +106,7 @@ class _InspectionPageState extends State<InspectionPage> with SingleTickerProvid
         ),
 
         Frame.myText(
-            text: isRecheck ? '검사 도중 문제가 발생했습니다.\n 다시 시도 하시겠습니까?' : '검사 진행중입니다.\n잠시만 기달려주세요.',
+            text: isRecheck ? '검사 도중 문제가 발생했습니다.\n 다시 시도 하시겠습니까?' : '검사 진행중입니다.\n잠시만 기다려주세요.',
             maxLinesCount: 2,
             fontSize: 1.2,
             fontWeight: FontWeight.w600,
@@ -158,6 +159,7 @@ class _InspectionPageState extends State<InspectionPage> with SingleTickerProvid
   /// characteristic 상태 변화
   /// 데이터 리스너 메소드
   _onValueChangedStreamListener() {
+    mLog.i('_onValueChangedStreamListener 등록');
       widget.notificationCharacteristic!.onValueChangedStream.listen((value) {
         // 버퍼에 수신된 데이터를 쌓는다.
         sb.write((String.fromCharCodes(value)).replaceAll('\n', ''));
@@ -168,7 +170,7 @@ class _InspectionPageState extends State<InspectionPage> with SingleTickerProvid
           mLog.i('결과 값 replaceAll: ${sb.toString().replaceAll('\n', '')}');
           UrineModel urineModel = UrineModel();
           urineModel.initialization(sb.toString());
-          urineModel.toString();
+          mLog.i(urineModel.toString());
 
           _countProvider.setUrineModel(urineModel);
           _countProvider.increase();

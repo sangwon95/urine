@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:urine/model/prediction_model.dart';
 import 'package:urine/model/result_list.dart';
+import 'package:urine/utils/etc.dart';
 
 import '../main.dart';
 import '../model/authorization.dart';
@@ -9,6 +10,7 @@ import '../model/login_model.dart';
 import '../model/rest_response.dart';
 import '../model/recent.dart';
 import '../model/status_model.dart';
+import '../model/urine_model.dart';
 import 'constants.dart';
 import 'custom_log_interceptor.dart';
 
@@ -20,56 +22,47 @@ class Client {
     Dio dio = Dio();
 
     dio.interceptors.add(CustomLogInterceptor());
-    dio.options.connectTimeout = 6000;
-    dio.options.receiveTimeout = 6000;
+    dio.options.connectTimeout = 7000;
+    dio.options.receiveTimeout = 7000;
+    mLog.i(Authorization().token);
 
     dio.options.headers = {
+      'Authorization': 'URINE ${Authorization().token}',
       'Content-Type': 'application/json',
+      'Accept': 'application/json'
     };
 
     return dio;
   }
 
-  // /// 챗봇 dio
-  // Future<ChatBotModel> dioChatBot(Map<String, dynamic> data) async {
-  //   try {
-  //     Etc.getValuesFromMap(data);
-  //
-  //     Response response = await _createDio().post(API_CHAT_BOT, data: data);
-  //     if (response.statusCode == 200) {
-  //       if (response.data['status']['code'] == '200') {
-  //         return ChatBotModel.fromJson(RestResponseDataMap.fromJson(response.data));
-  //       }
-  //       else { // 그 외 error code
-  //         print(' >>> [PTSD Error Code & Message] :  '
-  //             '${response.data['status']['code']} /  ${response
-  //             .data['status']['message']}');
-  //       }
-  //     }
-  //     else {
-  //       print(' >>> [Response statusCode] : ' + response.statusCode.toString());
-  //       print(' >>> [Response statusMessage] : ' +
-  //           response.statusMessage.toString());
-  //       if (response.statusCode == 500)
-  //         throw Exception(MESSAGE_SERVER_ERROR_DEFAULT);
-  //       else
-  //         throw Exception(MESSAGE_ERROR_CONNECT_SERVER);
-  //     }
-  //   }
-  //
-  //   /// Timeout, serverConnect Error
-  //   on DioError catch (error) {
-  //     throw Exception(error.type);
-  //   }
-  //   catch (e) {
-  //     print(e.toString());
-  //   }
-  //   return ChatBotModel(excelProcession: '',
-  //       userName: '',
-  //       excelSheetNum: '',
-  //       userID: '',
-  //       excelFileCode: '');
-  // }
+  /// AI분석 dio
+  Future<String> dioAI(Map<String, dynamic> data) async {
+    Etc.getValuesFromMap(data);
+    try {
+      Response response = await _createDio().post(API_AI, data: data);
+      if (response.statusCode == 200) {
+        return response.data['result'];
+      }
+      else {
+        print(' >>> [Response statusCode] : ' + response.statusCode.toString());
+        print(' >>> [Response statusMessage] : ' +
+            response.statusMessage.toString());
+        if (response.statusCode == 500)
+          throw Exception(MESSAGE_SERVER_ERROR_DEFAULT);
+        else
+          throw Exception(MESSAGE_ERROR_CONNECT_SERVER);
+      }
+    }
+
+    /// Timeout, serverConnect Error
+    on DioError catch (error) {
+      throw Exception(error.type);
+    }
+    catch (e) {
+      print(e.toString());
+    }
+    return 'unknown';
+  }
 
 
   /// 회원가입 dio
@@ -110,7 +103,7 @@ class Client {
       response = await _createDio().post(API_URL_LOGIN, data: data);
 
       if (response.statusCode == 200) {
-        loginModel = LoginModel.fromJson(RestResponseOnlyStatus.fromJson(response.data));
+        loginModel = LoginModel.fromJson(RestResponseDataString.fromJson(response.data));
         return loginModel;
       }
       else {
@@ -129,6 +122,66 @@ class Client {
     }
   }
 
+  /// 검새 결과 데이터 저장
+  Future<UrineModel> dioSaveResultData(List<Map<String, dynamic>> data) async
+  {
+    late Response response;
+    late UrineModel urineModel;
+    try {
+      response = await _createDio().post(API_URINE_INSERT, data: data);
+
+      if (response.statusCode == 200) {
+        urineModel = UrineModel.fromJson(RestResponseOnlyStatus.fromJson(response.data));
+        return urineModel;
+      }
+      else {
+        mLog.e('SaveResult  statusCode : ${response.statusCode.toString()}');
+        mLog.e('SaveResult  statusMessage : ${response.statusMessage.toString()}');
+
+        if (response.statusCode == 500)
+          throw Exception(MESSAGE_ERROR_RESPONSE);
+        else
+          throw Exception(MESSAGE_ERROR_CONNECT_SERVER);
+      }
+    } on DioError catch (e) {
+      throw Exception(e);
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  /// 유저 이름 가져오기
+  Future<String> dioUserName() async {
+    try {
+      mLog.i('token: ${Authorization().token}');
+      mLog.i('userID: ${Authorization().userID}');
+      Response response = await _createDio().get(API_GET_INFO, queryParameters: {'userID': Authorization().userID});
+
+      if (response.statusCode == 200) {
+        if (response.data['status']['code'] == '200') {
+          return response.data['data']['name'];
+        }
+        else { // 그 외 error code
+          print(' >>> [List Error Code & Message]: ${response.data['status']['code']} /  ${response.data['status']['message']}');
+          throw Exception(MESSAGE_ERROR_RESPONSE);
+        }
+      }
+      else {
+        print(' >>> [Response statusCode] : ' + response.statusCode.toString());
+        print(' >>> [Response statusMessage] : ' + response.statusMessage.toString());
+
+        if (response.statusCode == 500)
+          throw Exception(MESSAGE_ERROR_RESPONSE);
+        else
+          throw Exception(MESSAGE_ERROR_CONNECT_SERVER);
+      }
+    } on DioError catch (error) {
+      throw Exception(error);
+    }
+    catch (error) {
+      throw Exception(error);
+    }
+  }
 
   /// 최근 검사 결과 dio
   Future<List<Recent>> dioRecent(String datetime) async {

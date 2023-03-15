@@ -60,6 +60,7 @@ class _RecentPageState extends State<RecentPage> {
 
 
           return resultList.isEmpty ? EmptyView(text: '최근에 측정된 데이터가 없습니다.',) : Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildMeasurementTime(),
               Expanded(
@@ -82,16 +83,15 @@ class _RecentPageState extends State<RecentPage> {
   _buildMeasurementTime() {
     return Container(
       height: 40,
-      margin: const EdgeInsets.fromLTRB(30, 20, 30, 0),
+      margin: const EdgeInsets.fromLTRB(20, 20, 30, 0),
       decoration: BoxDecoration(
         color: guideBackGroundColor,
-        borderRadius: BorderRadius.circular(5),
+        borderRadius: BorderRadius.circular(15),
       ),
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Frame.myText(
             text: '측정 시간 : ' + Etc.setResultDateTime(resultList[0].datetime),
-            color: Colors.grey.shade700,
             fontWeight: FontWeight.w600,
             maxLinesCount: 1,
             fontSize: 1.0,
@@ -112,9 +112,9 @@ class RecentListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: (){
-        Frame.doPagePush(context, ChartPage(
-            dataType: recentList[index].dataType,
-            itemName: Etc.dataTypeToItemName(recentList[index].dataType)));
+        // Frame.doPagePush(context, ChartPage(
+        //     dataType: recentList[index].dataType,
+        //     itemName: Etc.dataTypeToItemName(recentList[index].dataType)));
       },
       child: Container(
         height: 60,
@@ -139,7 +139,10 @@ class RecentListItem extends StatelessWidget {
                   Frame.myText(text: recentList[index].result, fontWeight: FontWeight.w400, maxLinesCount: 1),
 
                   /// 결과 Image
-                  Image.asset(_resultStatusToImageStr(recentList[index].status), height: 60, width: 90)
+                  Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: Image.asset(_resultStatusToImageStr(recentList[index].status), height: 60, width: 90),
+                  )
                 ]
       ),
           )
@@ -154,6 +157,7 @@ class RecentListItem extends StatelessWidget {
       case '2' : return 'images/step_2.png';
       case '3' : return 'images/step_3.png';
       case '4' : return 'images/step_4.png';
+      case '5' : return 'images/step_4.png';
       default : return 'images/step_0.png';
     }
   }
@@ -162,23 +166,38 @@ class RecentListItem extends StatelessWidget {
 class FastestResultListItem extends StatelessWidget {
 
   final int index;
+  final String selectedInspectionType;
   final List<String>? fastestResult;
+  final Function(int) changeItem;
 
-  const FastestResultListItem({Key? key, required this.index, required this.fastestResult}) : super(key: key);
+  const FastestResultListItem({Key? key,
+    required this.index,
+    required this.fastestResult,
+    required this.selectedInspectionType,
+    required this.changeItem
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: (){
+        changeItem(index);
         // Frame.doPagePush(context, ChartPage(
         //     dataType: fastestResult[index].dataType,
         //     itemName: Etc.dataTypeToItemName(fastestResult[index].dataType)));
       },
       child: Container(
           height: 60,
+
           child: Card(
-              elevation: 3,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+              color: inspectionItemList[index] == selectedInspectionType ? Colors.grey.shade200 : Colors.white,
+              elevation: inspectionItemList[index] == selectedInspectionType?  3 : 2,
+              shape: RoundedRectangleBorder(
+                  side: inspectionItemList[index] == selectedInspectionType ?
+                  BorderSide(width: 1, color: Colors.grey) :
+                  BorderSide(width: 0, color: Colors.white),
+                  borderRadius: BorderRadius.circular(10.0)
+              ),
               child: Padding(
                 padding: EdgeInsets.only(left: 20, right: 20),
                 child: Row(
@@ -188,16 +207,23 @@ class FastestResultListItem extends StatelessWidget {
                       Container(
                           width: 80,
                           child: Frame.myText(
-                              text: inspectionItemList[index],
-                              fontWeight: FontWeight.w600,
+                              text: '${inspectionItemList[index] == selectedInspectionType ? '✓' : ''} ${inspectionItemList[index]}',
+                              fontSize: inspectionItemList[index] == selectedInspectionType ? 1.1 : 1.0,
+                              fontWeight: inspectionItemList[index] == selectedInspectionType ? FontWeight.w600 : FontWeight.normal,
+                              color: inspectionItemList[index] == selectedInspectionType ? mainColor : Colors.black,
                               maxLinesCount: 1)
                       ),
 
                       /// 결과 Text
-                      Frame.myText(text: int.parse(fastestResult![index]) > 0 ? '양성' : '음성', fontWeight: FontWeight.w400, maxLinesCount: 1),
+                      Frame.myText(text: int.parse(fastestResult![index]) > 0 ? '양성' : '음성',
+                          fontWeight: inspectionItemList[index] == selectedInspectionType ? FontWeight.w600: FontWeight.w400,
+                          maxLinesCount: 1),
 
                       /// 결과 Image
-                      Image.asset(_resultStatusToImageStr(fastestResult![index]), height: 60, width: 90)
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Image.asset(_resultStatusToImageStr(fastestResult![index]), height: 60, width: 90),
+                      )
                     ]
                 ),
               )
@@ -212,6 +238,7 @@ class FastestResultListItem extends StatelessWidget {
       case '2' : return 'images/step_2.png';
       case '3' : return 'images/step_3.png';
       case '4' : return 'images/step_4.png';
+      case '5' : return 'images/step_4.png';
       default : return 'images/step_0.png';
     }
   }

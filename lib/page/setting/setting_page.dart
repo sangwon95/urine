@@ -28,18 +28,16 @@ class _SettingPageState extends State<SettingPage> {
 
       body: SingleChildScrollView(
         child: Container(
-          child: Padding(
-            padding: EdgeInsets.all(20),
-            child: Column(
-              children:
-              [
-                _buildMenu('프로필 수정'),
-                _buildMenu('비밀번호 재설정'),
-                _buildMenu('버전 정보'),
-                _buildMenu('이용약관 및 정책'),
-                _buildMenu('로그 아웃'),
-              ],
-            ),
+          margin: EdgeInsets.only(top: 10),
+          child: Column(
+            children:
+            [
+              _buildMenu('프로필 수정'),
+              _buildMenu('비밀번호 재설정'),
+              _buildMenu('버전 정보'),
+              _buildMenu('이용약관 및 정책'),
+              _buildMenu('로그 아웃'),
+            ],
           ),
         ),
       ),
@@ -68,18 +66,24 @@ class _SettingPageState extends State<SettingPage> {
       },
       child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(13, 30, 13, 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children:
-              [
-                Text(text, textScaleFactor: 1.0),
-                Icon(Icons.arrow_forward_ios_sharp, color: Colors.grey, size: 15),
-              ],
+          Container(
+            height: 60,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border.all(color: Colors.grey, width: 0.2),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children:
+                [
+                  Text(text, textScaleFactor: 1.0),
+                  Icon(Icons.arrow_forward_ios_sharp, color: Colors.grey, size: 15),
+                ],
+              ),
             ),
           ),
-          SizedBox(height: 10),
         ],
       ),
     );

@@ -6,17 +6,22 @@ import 'package:urine/main.dart';
 import 'package:urine/model/bluetooth_ble.dart';
 import 'package:urine/page/bluetooth/inspection_page.dart';
 import 'package:urine/page/bluetooth/search_device_page.dart';
-import 'package:urine/utils/count_provider.dart';
+import 'package:urine/providers/count_provider.dart';
 import '../../model/urine_model.dart';
 import '../../utils/constants.dart';
 import '../../utils/etc.dart';
+import '../../utils/frame.dart';
 import '../../widgets/progress_timeline.dart';
 import 'connection_page.dart';
 import 'preparation_page.dart';
 import 'result_page.dart';
 
 class BluetoothPage extends StatefulWidget {
-  const BluetoothPage({Key? key}) : super(key: key);
+  const BluetoothPage({Key? key, required this.countHomeIndex, this.writeCharacteristic, this.notificationCharacteristic}) : super(key: key);
+
+  final int countHomeIndex;
+  final BluetoothCharacteristic? writeCharacteristic;
+  final BluetoothCharacteristic? notificationCharacteristic;
 
   @override
   State<BluetoothPage> createState() => _BluetoothPageState();
@@ -24,7 +29,7 @@ class BluetoothPage extends StatefulWidget {
 
 class _BluetoothPageState extends State<BluetoothPage> {
 
-  int countIndex = 0;
+  late int countIndex ;
   late BluetoothDevice? device;
   late BluetoothCharacteristic? writeCharacteristic;
   late BluetoothCharacteristic? notificationCharacteristic;
@@ -34,29 +39,33 @@ class _BluetoothPageState extends State<BluetoothPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    countIndex = widget.countHomeIndex;
+    writeCharacteristic = widget.writeCharacteristic;
+    notificationCharacteristic = widget.notificationCharacteristic;
+  }
 
-    /// 연결 되어 있는지
-    /// 준비 및 연결 과정이 필요한지 체크 해야된다.
-
-
-    FlutterBluePlus.instance.connectedDevices.then((value){
-      mLog.i('connectedDevices : $value');
-      if(value.length>0){
-        countIndex = -1;
-        _bluetoothGattServiceLister(value[0]);
-      }
-    });
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    mLog.i('bluetooth page build called');
+
     var mWidth = MediaQuery.of(context).size.width;
     var mHeight = MediaQuery.of(context).size.height;
 
     if(countIndex == -1){
-      countIndex = 3;
+      countIndex = 3;  
       Provider.of<CountProvider>(context).connected();
-    } else {
+    }
+    else if(countIndex == -2) {
+      countIndex = 0;
+      Provider.of<CountProvider>(context).clean();
+    }
+    else {
       countIndex = Provider.of<CountProvider>(context).count;
       notificationCharacteristic = Provider.of<CountProvider>(context).notificationCharacteristic;
       writeCharacteristic = Provider.of<CountProvider>(context).writeCharacteristic;
@@ -66,6 +75,9 @@ class _BluetoothPageState extends State<BluetoothPage> {
     urineModel = Provider.of<CountProvider>(context).urineModel;
 
     return Scaffold(
+      appBar: Frame.myAppbar(
+        '검사하기'
+      ),
       body: SafeArea(
         child: Container(
           padding: EdgeInsets.only(left: 10, right: 10),
@@ -74,7 +86,7 @@ class _BluetoothPageState extends State<BluetoothPage> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               SizedBox(
-                height: 100,
+                height: 80,
                 child: ProcessTimelinePage(processIndex: countIndex)
               ),
 
@@ -89,7 +101,7 @@ class _BluetoothPageState extends State<BluetoothPage> {
   _stepView(double mWidth, double mHeight) {
     switch(countIndex){
       case 0: return PreparationPage(mWidth: mWidth);
-      case 1: return SearchDevicePage();
+      case 1: return PreparationPage(mWidth: mWidth);
       case 2: return ConnectionPage(device: device);
       case 3: return InspectionPage(
         writeCharacteristic: writeCharacteristic,

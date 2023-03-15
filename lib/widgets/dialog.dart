@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+import 'package:urine/utils/etc.dart';
 import '../utils/color.dart';
 
 class CustomDialog{
+  /// convert 0-1 to 0-1-0
 
   static showMyDialog(String title, String text, BuildContext mainContext, bool isCancelBtn) {
     return showDialog(

@@ -83,8 +83,8 @@ flutter:
     - images/logo.png
     - images/main_image_1.png
     - images/main_image_2.png
-    - images/main_image_3.png
     - images/main_image_4.png
+    - images/main_image_3.png
     - images/step_0.png
     - images/step_1.png
     - images/step_2.png
@@ -93,6 +93,7 @@ flutter:
     - images/past_icon.png
     - images/link.png
     - images/error.png
+    - images/innovation.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

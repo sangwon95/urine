@@ -16,9 +16,10 @@ class ResultListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     mLog.d(element['datetime']);
     return InkWell(
-      onTap: ()
-      {
-        Frame.doPagePush(context, RecentPage(title: '상세 결과', datetime: element['datetime']));
+      onTap: () {
+        Frame.doPagePush(
+            context,
+            RecentPage(title: '상세 결과', datetime: element['datetime']));
       },
       child: Container(
           height: 75,
@@ -47,8 +48,7 @@ class ResultListItem extends StatelessWidget {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children:
-                                [
+                                children: [
                                   Frame.myText(
                                       text: '음성:${element['negativeCnt']}  양성:${element['positiveCnt']}',
                                       fontWeight: FontWeight.w600,

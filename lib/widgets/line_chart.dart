@@ -61,6 +61,61 @@ class BarChart{
     ];
   }
 
+
+  /// Returns the cartesian stacked line chart.
+  SfCartesianChart buildColumnSeriesMiniChart({required List<ChartData> chartData}) {
+
+    this.chartData = chartData;
+
+    return SfCartesianChart(
+      plotAreaBorderWidth: 0,
+      legend: Legend(isVisible: false),
+
+      /// X축 설정
+      primaryXAxis: CategoryAxis(
+        labelStyle: TextStyle(fontSize: 0, fontWeight: FontWeight.bold, color: Colors.white),
+        axisLine: const AxisLine(width: 0),
+        majorGridLines: const MajorGridLines(width: 0),
+        labelRotation: 0, //0
+      ),
+
+      /// Y축 설정
+      primaryYAxis: NumericAxis(
+          minimum: 0,
+          maximum: 5,
+          axisLine: const AxisLine(width: 0),
+          majorGridLines: const MajorGridLines(dashArray: <double>[5,5], width: 1),
+          //labelFormat: '{value}',
+          //labelStyle: TextStyle(fontSize: 12),
+          majorTickLines: const MajorTickLines(size: 0)),
+      series: _getColumnSeriesMini(),
+      trackballBehavior: TrackballBehavior(enable: true, activationMode: ActivationMode.singleTap),
+    );
+  }
+
+  /// Returns the list of chart seris which need to render
+  /// on the stacked line chart.
+  List<ChartSeries<ChartData, String>> _getColumnSeriesMini() {
+    return <ChartSeries<ChartData, String>> [
+      StackedLineSeries<ChartData, String>(
+          dataSource: chartData,
+          xValueMapper: (ChartData sales, _) => sales.x.toString(),
+          yValueMapper: (ChartData sales, _) => sales.y.toInt(),
+          dataLabelMapper: (ChartData sales, _) => (sales.y.toString()),
+          color: mainColor,
+          width: 2.5,
+          dataLabelSettings:  DataLabelSettings(
+              isVisible: false,
+          ),
+          markerSettings: const MarkerSettings(
+              borderWidth: 3,
+              isVisible: true,
+              borderColor: Color(0xff265ed7)
+          )
+      ),
+
+    ];
+  }
 }
 
 

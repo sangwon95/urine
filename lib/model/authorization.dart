@@ -3,10 +3,9 @@
 class Authorization{
   late String userID;
   late String password;
-  late String address;
   late String name;
   late String type;
-
+  late String token;
 
   /// 한번 초기화로 계속 사용할 수 있다.
   static final Authorization _authInstance = Authorization.internal();
@@ -18,17 +17,17 @@ class Authorization{
   Authorization.internal() {
      userID   = '';
      password = '';
-     address = '';
      name = '';
      type = '';
+     token = '';
   }
 
   clear(){
      userID   = '';
      password = '';
-     address = '';
      name = '';
      type = '';
+     token = '';
   }
 
   Map<String, dynamic> toMap() {

@@ -43,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
                 /// 최상단 bi image
                 Container(
                     height: 250,
-                    padding: const EdgeInsets.fromLTRB(0, 100, 0, 10),
+                    padding: const EdgeInsets.fromLTRB(0, 150, 0, 10),
                     width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(color: Colors.white),
                     child: Center(
@@ -51,7 +51,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
 
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(30, 10, 30, 0),
+                  padding: const EdgeInsets.fromLTRB(30, 30, 30, 0),
                   child: LoginTextField(iconData: Icons.account_box, hint: '아이디를 입력해주세요.', controller: _loginEdit.idController, type: 'id')
                 ),
 

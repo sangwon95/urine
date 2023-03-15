@@ -2,13 +2,17 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:urine/main.dart';
-import 'package:urine/utils/count_provider.dart';
+import 'package:urine/model/urine_model.dart';
+import 'package:urine/page/bluetooth/search_device_page.dart';
+import 'package:urine/providers/count_provider.dart';
 
 import '../model/authorization.dart';
 import '../model/login_model.dart';
 import '../model/status_model.dart';
+import '../page/bluetooth/search_device_page2.dart';
 import '../page/login_page.dart';
 import '../page/signup_page.dart';
 import '../utils/auto_login.dart';
@@ -60,7 +64,6 @@ class LoginButton extends StatelessWidget {
     {
       CustomDialog.showMyDialog('로그인 확인!', '아이디 또는 패스워드가 비어 있습니다. 입력 후 다시 시도바랍니다.', context, false);
     }
-
     /// 로그인 시도
     else {
       try {
@@ -69,7 +72,8 @@ class LoginButton extends StatelessWidget {
          switch(loginModel.code){
            case SUCCESS: {
              mLog.d('login : SUCCESS');
-             //AutoLoginManager().authLogin(context, loginEdit.idController.text, loginEdit.passController.text);
+             Authorization().token = loginModel.token;
+             AutoLoginManager().authLogin(context, loginEdit.idController.text, loginEdit.passController.text);
              break;
            }
            case LOGIN_ERROR: {
@@ -339,15 +343,14 @@ class PreparationToSearchButton extends StatelessWidget {
 
   final BuildContext context;
   final String text;
-  PreparationToSearchButton({required this.context,  required this.text });
-
-  late CountProvider _countProvider;
+  final Function(UrineModel) onBackCallbackResult;
+  PreparationToSearchButton({required this.context,  required this.text, required this.onBackCallbackResult});
 
   @override
   Widget build(BuildContext context) {
-    _countProvider = Provider.of<CountProvider>(context);
+
     return Container(
-        padding: const EdgeInsets.only(bottom: 10),
+        padding: const EdgeInsets.all(10),
         width: double.infinity,
         child: TextButton(
             style: TextButton.styleFrom(
@@ -355,9 +358,11 @@ class PreparationToSearchButton extends StatelessWidget {
                 backgroundColor: mainColor,
                 padding: EdgeInsets.all(17.0),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0))),
-            onPressed: ()
-            {
-              _countProvider.increase();
+            onPressed: () {
+              Navigator.pop(context);
+              Frame.doPagePush(context, SearchDevicePage2(
+                  onBackCallbackResult: (UrineModel) => onBackCallbackResult(UrineModel))
+              );
             },
             child: Text(text, textScaleFactor: 1.1, style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600))
         )
@@ -368,17 +373,21 @@ class PreparationToSearchButton extends StatelessWidget {
 
 /// 검색 화면에서 연결 화면으로 이동 버튼
 /// 또는 디바이스 재 검색 버튼
-// ignore: must_be_immutable
 class SearchToConnectionButton extends StatelessWidget {
+  SearchToConnectionButton({
+    required this.text,
+    required this.againSearchFunction,
+    required this.foundDevice,
+    required this.onBackCallbackConnect,
+  });
 
   final String text;
   final VoidCallback againSearchFunction;
-  SearchToConnectionButton({ required this.text, required this.againSearchFunction });
+  final BluetoothDevice? foundDevice;
+  final Function(BluetoothDevice) onBackCallbackConnect;
 
-  late CountProvider _countProvider;
   @override
   Widget build(BuildContext context) {
-    _countProvider = Provider.of<CountProvider>(context);
 
     return Container(
         padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
@@ -394,7 +403,8 @@ class SearchToConnectionButton extends StatelessWidget {
               if(text == '재 시도'){
                 againSearchFunction();
               } else {
-                _countProvider.increase();
+                Navigator.pop(context);
+                onBackCallbackConnect(foundDevice!);
               }
             },
             child: Text(text,
@@ -414,12 +424,8 @@ class ConnectionToInspectionButton extends StatelessWidget {
   final VoidCallback reconnectFunction;
   ConnectionToInspectionButton({ required this.text, required this.reconnectFunction });
 
-  late CountProvider _countProvider;
-
   @override
   Widget build(BuildContext context) {
-    _countProvider = Provider.of<CountProvider>(context);
-
     return Container(
         padding: const EdgeInsets.all(10),
         width: double.infinity,
@@ -434,7 +440,7 @@ class ConnectionToInspectionButton extends StatelessWidget {
               if(text == '재 연결'){
                 reconnectFunction();
               } else {
-                _countProvider.increase();
+
               }
             },
             child: Text(text, textScaleFactor: 1.1, style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600))

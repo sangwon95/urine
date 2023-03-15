@@ -187,10 +187,10 @@ class DateTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 230,
+    return Expanded(
+      flex: 2,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children:
         [
           InkWell(
@@ -201,7 +201,6 @@ class DateTextField extends StatelessWidget {
             },
             child: Container(
                 height: 48.0,
-                alignment: Alignment.centerLeft,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   border: Border.all(color: textFieldBorderColor, width: 1.5),
@@ -209,8 +208,9 @@ class DateTextField extends StatelessWidget {
                 ),
                 child: Center(
                     child: Row(
-                      children: [
-
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children:
+                      [
                         Padding(
                           padding: const EdgeInsets.only(left: 10, right: 10),
                           child: Icon(Icons.date_range, size: 25, color: mainColor,),

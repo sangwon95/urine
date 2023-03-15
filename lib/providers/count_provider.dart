@@ -46,7 +46,7 @@ class CountProvider extends ChangeNotifier {
 
   clean() {
     _count = 0;
-    notifyListeners();
+    //notifyListeners();
   }
 
   /// 연결이 되어 있어 바로 검사 할 수 있는 화면으로 초기화

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:urine/page/home_page.dart';
+import 'package:urine/utils/frame.dart';
 import '../model/authorization.dart';
 import 'my_shared_preferences.dart';
 
@@ -8,11 +10,12 @@ class AutoLoginManager{
 
   void authLogin(BuildContext context, String id, String pwd)
   {
-    Authorization().userID         = id;
-    Authorization().password       = pwd;
-
+    Authorization().userID   = id;
+    Authorization().password = pwd;
 
     setSharedPreferencesData();
+
+    Frame.doPageAndRemoveUntil(context, HomePage());
   }
 
   /// save SharedPreferences

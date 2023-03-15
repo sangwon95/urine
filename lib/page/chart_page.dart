@@ -51,13 +51,11 @@ class _ChartPageState extends State<ChartPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    /// 수집된 수면데이터 [chartSleepData] 초기화
-
   }
 
   @override
   Widget build(BuildContext context) {
-    var width = MediaQuery.of(context).size.width;
+    var size = MediaQuery.of(context).size;
 
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
@@ -74,6 +72,7 @@ class _ChartPageState extends State<ChartPage> {
                 children:
                 [
                   Expanded(
+                    flex: 1,
                       child: ItemNameDropdownButton(
                           itemName: widget.itemName,
                           onChanged: (newValue) => _dropdownJobNameValueChanged(newValue))),
@@ -99,7 +98,7 @@ class _ChartPageState extends State<ChartPage> {
                           totalSwitches: 4,
                           inactiveBgColor: Colors.white,
                           activeBgColor: [mainColor],
-                          customWidths: [width/4 -11, width/4 -11, width/4 -11, width/4 -11,],
+                          customWidths: [size.width/4 -11, size.width/4 -11, size.width/4 -11, size.width/4 -11,],
                           labels: ['직접', '1주일', '1달', '6개월'],
                           fontSize: 13,
                           onToggle: (index) {
@@ -110,9 +109,10 @@ class _ChartPageState extends State<ChartPage> {
                                   case 0:
                                     _setSearchDate(0); // 오늘
                                   break;
+
                                   case 1:
                                     _setSearchDate(7); // 1주일
-                                    break; // 1주일
+                                    break;
 
                                   case 2:
                                     _setSearchDate(30); // 1달
@@ -137,11 +137,11 @@ class _ChartPageState extends State<ChartPage> {
                 child: Padding(
                   padding: const EdgeInsets.only(top: 20),
                   child: Card(
-                    elevation: 5,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+                    elevation: 2,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
                     child: Container(
-                      height: 350,
-                      width:  width - 45 + addWidth,
+                      height: size.height * 0.5,
+                      width:  size.width - 45 + addWidth,
                       alignment: Alignment.bottomCenter,
                       child: Padding(
                         padding: const EdgeInsets.all(25.0),
@@ -193,8 +193,7 @@ class _ChartPageState extends State<ChartPage> {
                                   setState((){
                                     if(chartData.length > 4){
                                       addWidth = 50 * chartData.length;
-                                    }
-                                    else{
+                                    } else {
                                       addWidth = 0;
                                     }
                                     if(chartListData.isEmpty){
@@ -204,11 +203,12 @@ class _ChartPageState extends State<ChartPage> {
                                 });
                               }
                             }
-                            return  ListView(
-                              children: [
+                            return ListView(
+                              children:
+                              [
                                 SizedBox(
-                                  height: 300,
-                                  width: width - 45 + addWidth,
+                                  height: (size.height * 0.5) -50,
+                                  width: size.width - 45 + addWidth,
                                   child: BarChart().buildColumnSeriesChart(chartData: chartData),
                                 ),
                               ],
@@ -231,69 +231,69 @@ class _ChartPageState extends State<ChartPage> {
               ),
 
 
-              Card(
-                elevation: 5,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-                child: Container(
-                  height: 750,
-                  width: width-40,
-                  child: widget.dataType == 'DT11'? ViewVitamin(width: width) : FutureBuilder(
-                    future: client.dioPrediction(widget.dataType),
-                    builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                      if (snapshot.hasError) {
-                        return Container(
-                            child: Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(snapshot.error.toString().replaceAll('Exception: ', ''),
-                                      textScaleFactor: 1.0, style: TextStyle(color: Colors.black)),
-                                ],
-                              ),
-                            ));
-                      }
-
-                      if (!snapshot.hasData) {
-                        return Container(
-                            child: Center(
-                                child: SizedBox(height: 40.0, width: 40.0,
-                                    child: CircularProgressIndicator(strokeWidth: 5))));
-                      }
-
-                      if(snapshot.connectionState == ConnectionState.done){
-                        predictionModel = snapshot.data;
-                      }
-
-                      return  Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: Column(
-                          children:
-                          [
-                            Container(
-                              child: Row(
-                                children: [
-                                  Icon(Icons.feed_outlined),
-                                  SizedBox(width: 10),
-                                  Frame.myText(
-                                    text: '건강예찰',
-                                    fontSize: 1.5,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            buildColumn(width, predictionModel.name, predictionModel.symptoms),
-                            buildColumn(width, '예상 질병', predictionModel.symptoms),
-                            buildColumn(width, '예상 증상', predictionModel.disease),
-                            buildColumn(width, '식이요법', predictionModel.food),
-                            buildColumn(width, '운동 가이드', predictionModel.exercise),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              )
+              // Card(
+              //   elevation: 5,
+              //   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+              //   child: Container(
+              //     height: 750,
+              //     width: width-40,
+              //     child: widget.dataType == 'DT11'? ViewVitamin(width: width) : FutureBuilder(
+              //       future: client.dioPrediction(widget.dataType),
+              //       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+              //         if (snapshot.hasError) {
+              //           return Container(
+              //               child: Center(
+              //                 child: Column(
+              //                   mainAxisAlignment: MainAxisAlignment.center,
+              //                   children: [
+              //                     Text(snapshot.error.toString().replaceAll('Exception: ', ''),
+              //                         textScaleFactor: 1.0, style: TextStyle(color: Colors.black)),
+              //                   ],
+              //                 ),
+              //               ));
+              //         }
+              //
+              //         if (!snapshot.hasData) {
+              //           return Container(
+              //               child: Center(
+              //                   child: SizedBox(height: 40.0, width: 40.0,
+              //                       child: CircularProgressIndicator(strokeWidth: 5))));
+              //         }
+              //
+              //         if(snapshot.connectionState == ConnectionState.done){
+              //           predictionModel = snapshot.data;
+              //         }
+              //
+              //         return  Padding(
+              //           padding: const EdgeInsets.all(20.0),
+              //           child: Column(
+              //             children:
+              //             [
+              //               Container(
+              //                 child: Row(
+              //                   children: [
+              //                     Icon(Icons.feed_outlined),
+              //                     SizedBox(width: 10),
+              //                     Frame.myText(
+              //                       text: '건강예찰',
+              //                       fontSize: 1.5,
+              //                       fontWeight: FontWeight.w600,
+              //                     ),
+              //                   ],
+              //                 ),
+              //               ),
+              //               buildColumn(width, predictionModel.name, predictionModel.symptoms),
+              //               buildColumn(width, '예상 질병', predictionModel.symptoms),
+              //               buildColumn(width, '예상 증상', predictionModel.disease),
+              //               buildColumn(width, '식이요법', predictionModel.food),
+              //               buildColumn(width, '운동 가이드', predictionModel.exercise),
+              //             ],
+              //           ),
+              //         );
+              //       },
+              //     ),
+              //   ),
+              // )
             ],
           ),
         ),

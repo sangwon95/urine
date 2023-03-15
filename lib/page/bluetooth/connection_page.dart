@@ -9,7 +9,7 @@ import '../../main.dart';
 import '../../model/bluetooth_ble.dart';
 import '../../utils/color.dart';
 import '../../utils/constants.dart';
-import '../../utils/count_provider.dart';
+import '../../providers/count_provider.dart';
 import '../../utils/frame.dart';
 import '../../widgets/button.dart';
 
