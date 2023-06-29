@@ -84,7 +84,7 @@ class BarChart{
           minimum: 0,
           maximum: 5,
           axisLine: const AxisLine(width: 0),
-          majorGridLines: const MajorGridLines(dashArray: <double>[5,5], width: 1),
+          majorGridLines: const MajorGridLines( width: 1, color: Colors.white),
           //labelFormat: '{value}',
           //labelStyle: TextStyle(fontSize: 12),
           majorTickLines: const MajorTickLines(size: 0)),
@@ -103,14 +103,15 @@ class BarChart{
           yValueMapper: (ChartData sales, _) => sales.y.toInt(),
           dataLabelMapper: (ChartData sales, _) => (sales.y.toString()),
           color: mainColor,
-          width: 2.5,
+          width: 1.5,
           dataLabelSettings:  DataLabelSettings(
               isVisible: false,
           ),
           markerSettings: const MarkerSettings(
+              shape: DataMarkerType.circle,
               borderWidth: 3,
               isVisible: true,
-              borderColor: Color(0xff265ed7)
+              borderColor: Color(0xff4182db)
           )
       ),
 

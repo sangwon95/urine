@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../utils/color.dart';
-import '../../utils/constants.dart';
 import '../../utils/edit_controller.dart';
 import '../../widgets/button.dart';
 
@@ -95,21 +94,61 @@ class SignUpPageState extends State<SignUpPage> {
   /// 회원가입 가이드 문구
   _buildGuideBox() {
     return Container(
-      height: 50,
-      margin: const EdgeInsets.fromLTRB(30, 20, 30, 15),
-      decoration: BoxDecoration(
-        color: guideBackGroundColor,
-        borderRadius: BorderRadius.circular(5),
+      height: 145,
+      width: double.infinity,
+      decoration:  BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          gradient: LinearGradient(
+            begin: FractionalOffset.bottomLeft,
+            end: FractionalOffset.topRight,
+            colors:
+            [
+              Color(0xff4182db),
+              Color(0xff6fbcd2),
+            ],
+            stops:
+            [
+              0.1, 1.0
+            ],
+          )
       ),
+      margin: const EdgeInsets.fromLTRB(30, 10, 30, 15),
       child: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Frame.myText(
-            text: SING_GUIDE_PHRASE,
-            color: Colors.grey.shade700,
-            fontWeight: FontWeight.w500,
-            maxLinesCount: 2,
-            fontSize: 0.9,
-            align: TextAlign.center),
+        padding: const EdgeInsets.all(15.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 5, top: 15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Frame.myText(
+                      text: '유린기 간편 회원가입',
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500,
+                      maxLinesCount: 2,
+                      fontSize: 1.6,
+                      align: TextAlign.center),
+                  SizedBox(height: 5),
+                  Frame.myText(
+                      text: '회원가입 후 다양한 서비스를 경험해보세요!',
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500,
+                      maxLinesCount: 2,
+                      fontSize: 0.9,
+                      align: TextAlign.center),
+                ],
+              ),
+            ),
+            Image.asset(
+              'images/register_image.png',
+              color: registerIconColor,
+              height: 87,
+            )
+          ],
+        ),
       ),
     );
   }
@@ -117,22 +156,37 @@ class SignUpPageState extends State<SignUpPage> {
  /// 회원가입 Item
   _buildSignItem() {
     return Container(
-      padding: const EdgeInsets.fromLTRB(30, 1, 30, 30),
+      padding: const EdgeInsets.fromLTRB(30, 10, 30, 30),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children:
         [
           /// 아이디
-          SignTextField(controller: editSignCnt.idController, headText: '아이디(이메일)', hint: '이메일를 입력해주세요.', type: 'id'),
+          SignTextField(
+              controller: editSignCnt.idController,
+              headText: '아이디',
+              hint: '아이디를 입력해주세요.',
+              type: 'id'
+          ),
+          SizedBox(height: 5),
+
+          SignTextField(
+              controller: editSignCnt.nameController,
+              headText: '이름',
+              hint: '이름을 입력해주세요.',
+              type: 'name'
+          ),
+          SizedBox(height: 5),
 
           /// 비밀번호
           PwdTextFiled(
               headText: '비밀번호',
-              hint: '특수,대소문자,숫자 포함 7자~15자 입력해주세요.',
+              hint: '특수,대소문자,숫자 7~15자 입력해주세요.',
               isViewPoint: false,
               controller: editSignCnt.passController,
               isSame: isSame
           ),
+          SizedBox(height: 5),
 
           /// 비밀번호 확인
           PwdTextFiled(
@@ -142,10 +196,6 @@ class SignUpPageState extends State<SignUpPage> {
               controller: editSignCnt.pass2Controller,
               isSame: isSame
             ),
-
-          SizedBox(height: 10),
-          /// 아이디
-          SignTextField(controller: editSignCnt.nameController, headText: '이름', hint: '이름을 입력해주세요.', type: 'name'),
         ],
       ),
     );
@@ -155,7 +205,7 @@ class SignUpPageState extends State<SignUpPage> {
 
   /// Initial Text
   _initStringText() {
-    title     = '회원 가입';
+    title = '회원 가입';
   }
 
 
@@ -164,8 +214,7 @@ class SignUpPageState extends State<SignUpPage> {
     mLog.d('_onChangedPwd 실행 : ${editSignCnt.pass2Controller.text}');
 
     if (editSignCnt.passController.text.isNotEmpty && editSignCnt.pass2Controller.text.isNotEmpty) {
-      if (editSignCnt.passController.text != editSignCnt.pass2Controller.text)
-      {
+      if (editSignCnt.passController.text != editSignCnt.pass2Controller.text) {
         setState(() {
           isPwdTextFiledHide = true;
           isSame = false;
@@ -177,7 +226,6 @@ class SignUpPageState extends State<SignUpPage> {
           isPwdTextFiledHide = true;
           isSame = true;
           mLog.d('isPwdTextFiledHide: $isPwdTextFiledHide / isSame: $isSame');
-
         });
       }
     }

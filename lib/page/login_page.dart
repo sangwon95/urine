@@ -71,28 +71,28 @@ class _LoginPageState extends State<LoginPage> {
                   [
                     Container(
                         child: InkWell(
-                            onTap: ()
-                            {
-                              Etc.showSnackBar(context, msg: '온워즈: 042-721-2997 문의 바랍니다.', durationTime: 4);
-                            },
+                            onTap: ()=> Etc.showSnackBar(context, msg: '온워즈: 042-721-2997 문의 바랍니다.', durationTime: 4),
                             child: Padding(
                                 padding: const EdgeInsets.all(20.0),
-                                child: Frame.myText(text: '문의 하기', fontSize: 0.9, color: Colors.grey, fontWeight: FontWeight.w600)))
+                                child: Frame.myText(
+                                    text: '문의 하기',
+                                    fontSize: 0.9,
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.w600)
+                            ))
                     ),
 
                     Etc.solidLineVertical(),
 
                     Container(
                         child: InkWell(
-                            onTap: ()
-                            {
+                            onTap: () {
                               showModalBottomSheet(
                                   isScrollControlled: true,
                                   context: context,
                                   builder: (BuildContext context){
                                     return StatefulBuilder(
-                                        builder: (BuildContext context, Function(void Function()) sheetSetState)
-                                        {
+                                        builder: (BuildContext context, Function(void Function()) sheetSetState) {
                                           return TermsBottomSheet();
                                         }
                                     );
@@ -101,11 +101,17 @@ class _LoginPageState extends State<LoginPage> {
                             },
                             child: Padding(
                                 padding: const EdgeInsets.all(20.0),
-                                child: Frame.myText(text: '회원가입', fontSize: 0.9, color: Colors.grey, fontWeight: FontWeight.w600)))
+                                child: Frame.myText(
+                                    text: '회원가입',
+                                    fontSize: 0.9,
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.w600
+                                )
+                            )
+                        )
                     )
                   ],
                 )
-
               ],
             ),
           ),

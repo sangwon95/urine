@@ -40,6 +40,10 @@ class Client {
     Etc.getValuesFromMap(data);
     try {
       Response response = await _createDio().post(API_AI, data: data);
+      print(' >>> [Response statusCode] : ' + response.statusCode.toString());
+      print(' >>> [Response statusMessage] : ' +
+          response.statusMessage.toString());
+
       if (response.statusCode == 200) {
         return response.data['result'];
       }
@@ -189,7 +193,7 @@ class Client {
     mLog.d(datetime);
     try {
       Response response = await _createDio().get(datetime == '' ? API_RESULT_RECENT : API_RESULT,
-          queryParameters: {'userID': 'sim3383', 'datetime': datetime});
+          queryParameters: {'userID': Authorization().userID, 'datetime': datetime});
 
       if (response.statusCode == 200) {
         if (response.data['status']['code'] == '200') {
@@ -236,9 +240,10 @@ class Client {
           if(response.data['status']['code'] == 'ERR_MS_4003'){
             throw Exception(MESSAGE_NO_RESULT_DATA);
           }
-
-          print(' >>> [List Error Code & Message]: ${response.data['status']['code']} /  ${response.data['status']['message']}');
-          throw Exception(MESSAGE_ERROR_RESPONSE);
+          else {
+            print(' >>> [List Error Code & Message]: ${response.data['status']['code']} /  ${response.data['status']['message']}');
+            throw Exception(MESSAGE_ERROR_RESPONSE);
+          }
         }
       }
       else {

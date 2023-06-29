@@ -30,8 +30,11 @@ class LoginTextField extends StatelessWidget {
             style: TextStyle(color: Colors.black),
             decoration: InputDecoration(
                 fillColor: mainColor,
-                border: OutlineInputBorder(borderRadius: const BorderRadius.all(const Radius.circular(5.0))),
-                enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: textFieldBorderColor, width: 1.5)),
+                border: OutlineInputBorder(
+                    borderRadius: const BorderRadius.all(const Radius.circular(15.0))),
+                enabledBorder: OutlineInputBorder(
+                    borderRadius: const BorderRadius.all(const Radius.circular(15.0)),
+                    borderSide: BorderSide(color: textFieldBorderColor, width: 1.0)),
                 contentPadding: EdgeInsets.only(top: 14.0),
                 prefixIcon: Icon(iconData, color: mainColor),
                 hintText: hint,
@@ -55,37 +58,49 @@ class SignTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children:
       [
         Padding(
-          padding: const EdgeInsets.fromLTRB(0, 15, 0, 0),
-          child: Text(headText, textScaleFactor: 1.0, style: TextStyle(color: Colors.grey[700], fontWeight: FontWeight.bold)),
+          padding: const EdgeInsets.fromLTRB(0, 22, 0, 0),
+          child: SizedBox(
+            width: 110,
+            child: Frame.myText(
+            text: headText,
+            fontSize: 1.1,
+              fontWeight: FontWeight.w300
+            ),
+          )
         ),
 
-        Container(
-            height: 60.0,
-            alignment: Alignment.centerLeft,
-            child: MediaQuery(
-              data:Etc.getScaleFontSize(context, fontSize: 0.75),
-              child: TextField(
-                enabled: type == 'birth' ? false : true,
-                autofocus: false,
-                obscureText: type == 'pass'? true : false,
-                controller: controller,
-                style: TextStyle(color: Colors.black),
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(borderRadius: const BorderRadius.all(const Radius.circular(5.0))),
-                    enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: textFieldBorderColor, width: 1.5)),
-                    contentPadding: EdgeInsets.only(left: 12, top: 15),
-                    fillColor: Colors.red,
-                    hoverColor: mainColor,
-                    hintText: hint,
-                    hintStyle: TextStyle(color: Colors.grey, fontWeight: FontWeight.w400)
+        Expanded(
+          child: Container(
+              height: 60.0,
+              alignment: Alignment.centerLeft,
+              child: MediaQuery(
+                data:Etc.getScaleFontSize(context, fontSize: 0.75),
+                child: TextField(
+                  enabled: type == 'birth' ? false : true,
+                  autofocus: false,
+                  obscureText: type == 'pass'? true : false,
+                  controller: controller,
+                  style: TextStyle(color: Colors.black),
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                          borderRadius: const BorderRadius.all(const Radius.circular(15.0))),
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: const BorderRadius.all(const Radius.circular(15.0)),
+                          borderSide: BorderSide(color: textFieldBorderColor, width: 1.0)),
+                      contentPadding: EdgeInsets.only(left: 12, top: 15),
+                      fillColor: Colors.red,
+                      hoverColor: mainColor,
+                      hintText: hint,
+                      hintStyle: TextStyle(color: Colors.grey, fontWeight: FontWeight.w400)
+                  ),
                 ),
-              ),
-            )
+              )
+          ),
         )
       ],
     );
@@ -122,34 +137,49 @@ class PwdTextFiled extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
 
-        Padding(
-          padding: const EdgeInsets.fromLTRB(0, 15, 0, 0),
-          child: Text(headText, textScaleFactor: 1.0,
-              style: TextStyle(color: Colors.grey[700], fontWeight: FontWeight.bold)),
-        ),
+            Padding(
+                padding: const EdgeInsets.fromLTRB(0, 22, 0, 0),
+                child: SizedBox(
+                  width: 110,
+                  child: Frame.myText(
+                      text: headText,
+                      fontSize: 1.1,
+                      fontWeight: FontWeight.w300
+                  ),
+                )
+            ),
 
-        Container(
-            height: 60.0,
-            alignment: Alignment.centerLeft,
-            child: MediaQuery(
-                data: Etc.getScaleFontSize(context, fontSize: 0.75),
-                child: TextField(
-                  autofocus: false,
-                  obscureText: true,
-                  controller: controller,
-                  keyboardType: TextInputType.text,
-                  style: TextStyle(color: Colors.black),
-                  decoration: InputDecoration(
-                      border:  OutlineInputBorder(borderRadius: const BorderRadius.all(const Radius.circular(5.0))),
-                      enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: textFieldBorderColor, width: 1.5)),
-                      contentPadding: EdgeInsets.only(left: 12, top: 15),
-                      hoverColor: mainColor,
-                      hintText: hint,
-                      hintStyle: TextStyle(color: Colors.grey)),
-                ))
+            Expanded(
+              child: Container(
+                  height: 60.0,
+                  alignment: Alignment.centerLeft,
+                  child: MediaQuery(
+                      data: Etc.getScaleFontSize(context, fontSize: 0.75),
+                      child: TextField(
+                        autofocus: false,
+                        obscureText: true,
+                        controller: controller,
+                        keyboardType: TextInputType.text,
+                        style: TextStyle(color: Colors.black),
+                        decoration: InputDecoration(
+                            border:  OutlineInputBorder(borderRadius: const BorderRadius.all(const Radius.circular(15.0))),
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius: const BorderRadius.all(const Radius.circular(15.0)),
+                                borderSide: BorderSide(color: textFieldBorderColor, width: 1.0)),
+                            contentPadding: EdgeInsets.only(left: 12, top: 15),
+                            hoverColor: mainColor,
+                            hintText: hint,
+                            hintStyle: TextStyle(color: Colors.grey)),
+                      ))
+              ),
+            ),
+          ],
         ),
 
         /// Bottom text widget
@@ -157,6 +187,7 @@ class PwdTextFiled extends StatelessWidget {
             visible: isViewPoint,
             child: Container(
                 height: 35,
+                width: 150,
                 padding: EdgeInsets.only(left: 5),
                 child: Row(
                     children:
@@ -167,12 +198,11 @@ class PwdTextFiled extends StatelessWidget {
                           color: isSame ? Colors.lightBlue :  Colors.red),
                       Padding(
                           padding: EdgeInsets.only(left: 5.0),
-                          child: Text(isSame ? '비밀번호가 일치합니다.' : '위 비밀번호와 다릅니다.', textScaleFactor: 0.9,
+                          child: Text(isSame ? '비밀번호가 일치합니다.' : '위 비밀번호와 다릅니다.', textScaleFactor: 0.9, textAlign: TextAlign.end,
                               style: TextStyle(color: isSame ? Colors.lightBlue :  Colors.red, fontWeight: FontWeight.w600)))
                     ]
                 ))
         ),
-
       ],
     );
   }
@@ -208,7 +238,7 @@ class DateTextField extends StatelessWidget {
                 ),
                 child: Center(
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children:
                       [
                         Padding(

@@ -7,7 +7,6 @@ import '../main.dart';
 import '../widgets/dialog.dart';
 import 'color.dart';
 import 'package:intl/intl.dart';
-
 import 'constants.dart';
 
 class Etc{
@@ -26,13 +25,10 @@ class Etc{
 
   /// 가로 라인 줄
   static solidLine(BuildContext context){
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(0, 5, 0, 10),
-      child: Container(
-        width: MediaQuery.of(context).size.width,
-        height: 1.0,
-        color: Colors.grey[350],
-      ),
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: 0.5,
+      color: Colors.white,
     );
   }
 
@@ -100,7 +96,7 @@ class Etc{
 
     final mDateTime = DateTime(year, month, day, hours, min, second);
 
-    return DateFormat('yy년 MM월 dd일 HH시 mm분 ss초').format(mDateTime);
+    return DateFormat('yyyy.MM.dd.  HH:mm:ss').format(mDateTime);
   }
 
   static String setGroupDateTime(String dateTime) {
@@ -332,6 +328,93 @@ class Etc{
     }
 
     return applicableCharacteristics;
+  }
+
+
+  /// 메인화면 버튼 이미지
+  static String buttonImageSwitch(String value){
+    switch(value){
+      case '검사하기':  return 'first_btn.png';
+      case '검사 내역':  return 'second_btn.png';
+      case 'AI 분석':  return 'third_btn.png';
+      case '나의 건강 관리':  return 'fourth_btn.png';
+      default : return 'first_btn.png';
+    }
+  }
+
+  static resultStatusToImageStr(List<String> fastestResult, int index){
+    if(index == 10 || index == 8 || index == 7){
+      switch(fastestResult[index]){
+        case '0' : return 'images/plus_1.png';
+        case '1' : return 'images/plus_2.png';
+        case '2' : return 'images/plus_3.png';
+        case '3' : return 'images/plus_4.png';
+        case '4' : return 'images/plus_4.png';
+        case '5' : return 'images/plus_4.png';
+        default  : return 'images/plus_1.png';
+      }
+    }
+    else {
+      switch(fastestResult[index]){
+        case '0' : return 'images/step_0.png';
+        case '1' : return 'images/step_1.png';
+        case '2' : return 'images/step_2.png';
+        case '3' : return 'images/step_3.png';
+        case '4' : return 'images/step_4.png';
+        case '5' : return 'images/step_4.png';
+        default  : return 'images/step_0.png';
+      }
+    }
+  }
+
+  static resultStatusToText(List<String> fastestResult, int index){
+    if(index == 10 || index == 8 || index == 7){
+      switch(fastestResult[index]){
+        case '0' : return '낮음';
+        case '1' : return '낮음';
+        case '2' : return '보통';
+        case '3' : return '높음';
+        case '4' : return '다소 높음';
+        case '5' : return '다소 높음';
+        default  : return '미 측정';
+      }
+    }
+    else {
+      switch(fastestResult[index]){
+        case '0' : return '안심';
+        case '1' : return '관심';
+        case '2' : return '주위';
+        case '3' : return '위험';
+        case '4' : return '심각';
+        case '5' : return '심각';
+        default  : return '미 측정';
+      }
+    }
+
+  }
+
+  static resultStatusToTextColor(List<String> fastestResult, int index) {
+    if (index == 10 || index == 8 || index == 7) {
+      return resultColor6;
+    }
+    else {
+      switch (fastestResult[index]) {
+        case '0':
+          return resultColor1;
+        case '1':
+          return resultColor2;
+        case '2':
+          return resultColor3;
+        case '3':
+          return resultColor4;
+        case '4':
+          return resultColor5;
+        case '5':
+          return resultColor5;
+        default:
+          return resultColor1;
+      }
+    }
   }
 }
 

@@ -58,7 +58,7 @@ class _ChartPageState extends State<ChartPage> {
     var size = MediaQuery.of(context).size;
 
     return Scaffold(
-      backgroundColor: Colors.grey.shade200,
+      backgroundColor: Colors.white,
       appBar: Frame.myAppbar(
         '결과 내역 추이'
       ),
@@ -96,7 +96,7 @@ class _ChartPageState extends State<ChartPage> {
                         child: ToggleSwitch(
                           initialLabelIndex: initialLabelIndex,
                           totalSwitches: 4,
-                          inactiveBgColor: Colors.white,
+                          inactiveBgColor: Colors.grey.shade200,
                           activeBgColor: [mainColor],
                           customWidths: [size.width/4 -11, size.width/4 -11, size.width/4 -11, size.width/4 -11,],
                           labels: ['직접', '1주일', '1달', '6개월'],
@@ -134,166 +134,81 @@ class _ChartPageState extends State<ChartPage> {
 
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 20),
-                  child: Card(
-                    elevation: 2,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-                    child: Container(
-                      height: size.height * 0.5,
-                      width:  size.width - 45 + addWidth,
-                      alignment: Alignment.bottomCenter,
-                      child: Padding(
-                        padding: const EdgeInsets.all(25.0),
-                        child: FutureBuilder(
-                          future: client.dioChartData(searchStartDate, searchEndDate),
-                          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                child: Container(
+                  width: size.width - 45 + addWidth,
+                  alignment: Alignment.topCenter,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 25, 25, 0),
+                    child: FutureBuilder(
+                      future: client.dioChartData(searchStartDate, searchEndDate),
+                      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
 
-                            if (snapshot.hasError) {
-                              return Container(
-                                  child: Center(
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Text(snapshot.error.toString().replaceAll('Exception: ', ''),
-                                            textScaleFactor: 1.0, style: TextStyle(color: Colors.black)),
-                                      ],
-                                    ),
-                                  ));
-                            }
+                        if (snapshot.hasError) {
+                          return Container(
+                              child: Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(snapshot.error.toString().replaceAll('Exception: ', ''),
+                                        textScaleFactor: 1.0, style: TextStyle(color: Colors.black)),
+                                  ],
+                                ),
+                              ));
+                        }
 
-                            if (!snapshot.hasData) {
-                              return Container(
-                                  child: Center(
-                                      child: SizedBox(height: 40.0, width: 40.0,
-                                          child: CircularProgressIndicator(strokeWidth: 5))));
-                            }
+                        if (!snapshot.hasData) {
+                          return Container(
+                              child: Center(
+                                  child: SizedBox(height: 40.0, width: 40.0,
+                                      child: CircularProgressIndicator(strokeWidth: 5))));
+                        }
 
-                            if (snapshot.connectionState == ConnectionState.done) {
+                        if (snapshot.connectionState == ConnectionState.done) {
 
-                              if(isScreenUpdate){
-                                isScreenUpdate = false;
-                                chartListData.clear();
-                                chartData.clear();
-                                addWidth = 0;
+                          if(isScreenUpdate){
+                            isScreenUpdate = false;
+                            chartListData.clear();
+                            chartData.clear();
+                            addWidth = 0;
 
-                                chartListData = snapshot.data;
+                            chartListData = snapshot.data;
 
-                                for(var value in chartListData)
-                                {
-                                  if(value.dataType == widget.dataType)
-                                  {
-                                    if(!chartData.any((element)=> element.x.toString().contains(Etc.setGroupDateTime(value.datetime)))){
-                                      chartData.add(ChartData(x: Etc.setGroupDateTime(value.datetime), y: int.parse(value.status)));
-                                    }
-                                  }
+                            for(var value in chartListData)
+                            {
+                              if(value.dataType == widget.dataType)
+                              {
+                                if(!chartData.any((element)=> element.x.toString().contains(Etc.setGroupDateTime(value.datetime)))){
+                                  chartData.add(ChartData(x: Etc.setGroupDateTime(value.datetime), y: int.parse(value.status)));
                                 }
-
-                                Future.delayed(Duration(milliseconds: 100), (){
-                                  setState((){
-                                    if(chartData.length > 4){
-                                      addWidth = 50 * chartData.length;
-                                    } else {
-                                      addWidth = 0;
-                                    }
-                                    if(chartListData.isEmpty){
-                                      CustomDialog.showMyDialog('차트 조회', '검색 하신 데이터가 없습니다.', context, false);
-                                    }
-                                  });
-                                });
                               }
                             }
-                            return ListView(
-                              children:
-                              [
-                                SizedBox(
-                                  height: (size.height * 0.5) -50,
-                                  width: size.width - 45 + addWidth,
-                                  child: BarChart().buildColumnSeriesChart(chartData: chartData),
-                                ),
-                              ],
-                            );
-                          },
-                        ),
-                      ),
+
+                            Future.delayed(Duration(milliseconds: 100), (){
+                              setState((){
+                                if(chartData.length > 4){
+                                  addWidth = 50 * chartData.length;
+                                } else {
+                                  addWidth = 0;
+                                }
+                                if(chartListData.isEmpty){
+                                  CustomDialog.showMyDialog('차트 조회', '검색 하신 데이터가 없습니다.', context, false);
+                                }
+                              });
+                            });
+                          }
+                        }
+                        return SizedBox(
+                          height: (size.height * 0.5) -150,
+                          width: size.width - 45 + addWidth,
+                          child: BarChart().buildColumnSeriesChart(chartData: chartData),
+                        );
+                      },
                     ),
                   ),
                 ),
               ),
-              Container(
-                padding: EdgeInsets.only(left: 20, top: 10, bottom: 50),
-                child: Frame.myText(
-                    text: '✓ 데이터가 많을 시 좌우로 스크롤이 가능합니다.',
-                    fontSize: 0.9,
-                    align: TextAlign.start,
-                    color: Colors.redAccent,
-                    fontWeight: FontWeight.w600),
-              ),
+              buildGuideBox(mainColor)
 
-
-              // Card(
-              //   elevation: 5,
-              //   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-              //   child: Container(
-              //     height: 750,
-              //     width: width-40,
-              //     child: widget.dataType == 'DT11'? ViewVitamin(width: width) : FutureBuilder(
-              //       future: client.dioPrediction(widget.dataType),
-              //       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-              //         if (snapshot.hasError) {
-              //           return Container(
-              //               child: Center(
-              //                 child: Column(
-              //                   mainAxisAlignment: MainAxisAlignment.center,
-              //                   children: [
-              //                     Text(snapshot.error.toString().replaceAll('Exception: ', ''),
-              //                         textScaleFactor: 1.0, style: TextStyle(color: Colors.black)),
-              //                   ],
-              //                 ),
-              //               ));
-              //         }
-              //
-              //         if (!snapshot.hasData) {
-              //           return Container(
-              //               child: Center(
-              //                   child: SizedBox(height: 40.0, width: 40.0,
-              //                       child: CircularProgressIndicator(strokeWidth: 5))));
-              //         }
-              //
-              //         if(snapshot.connectionState == ConnectionState.done){
-              //           predictionModel = snapshot.data;
-              //         }
-              //
-              //         return  Padding(
-              //           padding: const EdgeInsets.all(20.0),
-              //           child: Column(
-              //             children:
-              //             [
-              //               Container(
-              //                 child: Row(
-              //                   children: [
-              //                     Icon(Icons.feed_outlined),
-              //                     SizedBox(width: 10),
-              //                     Frame.myText(
-              //                       text: '건강예찰',
-              //                       fontSize: 1.5,
-              //                       fontWeight: FontWeight.w600,
-              //                     ),
-              //                   ],
-              //                 ),
-              //               ),
-              //               buildColumn(width, predictionModel.name, predictionModel.symptoms),
-              //               buildColumn(width, '예상 질병', predictionModel.symptoms),
-              //               buildColumn(width, '예상 증상', predictionModel.disease),
-              //               buildColumn(width, '식이요법', predictionModel.food),
-              //               buildColumn(width, '운동 가이드', predictionModel.exercise),
-              //             ],
-              //           ),
-              //         );
-              //       },
-              //     ),
-              //   ),
-              // )
             ],
           ),
         ),
@@ -325,6 +240,7 @@ class _ChartPageState extends State<ChartPage> {
     );
   }
 
+
   /// JobName Dropdown onChanged function
   _dropdownJobNameValueChanged(String? newValue){
     setState(() {
@@ -332,6 +248,8 @@ class _ChartPageState extends State<ChartPage> {
       widget.dataType = Etc.itemNameToDataType(widget.itemName);
     });
   }
+
+
   /// Date of Birth update method
   _updateDate(String searchStartDate, String searchEndDate){
     setState(() {
@@ -349,11 +267,13 @@ class _ChartPageState extends State<ChartPage> {
     });
   }
 
+
   _refresh(){
     setState(() {
       isScreenUpdate = true;
     });
   }
+
 
   _setSearchDate(int duration) {
     searchStartDate = Etc.setDateDuration(duration);
@@ -363,4 +283,64 @@ class _ChartPageState extends State<ChartPage> {
   }
 
 
+  buildGuideBox(Color topTextColor) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 60),
+      child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.2),
+                spreadRadius: 5,
+                blurRadius: 7,
+                offset: Offset(0, 3),
+              ),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children:
+            [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(10),
+                            topRight: Radius.circular(10)),
+                        color: topTextColor,
+                      ),
+                      padding: EdgeInsets.only(top: 10, bottom: 10),
+                      child: Center(
+                        child: Frame.myText(
+                            text: '알아보기',
+                            fontSize: 1.2,
+                            maxLinesCount: 30,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                            align: TextAlign.start),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+
+              Container(
+                padding: EdgeInsets.fromLTRB(20, 20, 20, 10),
+                child: Frame.myText(
+                    text: '• 결과 내역 추이를 통해서 자신의 건상상태 추이를 확인 할 수 있습니다.\n• 검사 항목은 총 11개 있습니다.\n'
+                        '• 검색 기간을 수동, 1주, 1달, 6개월 간단하게 설정 할 수 있습니다.\n• 사용 그래프는 좌우로 스크롤이 가능합니다.\n',
+                    fontSize: 1.1,
+                    maxLinesCount: 30,
+                    align: TextAlign.start),
+              ),
+            ],
+          )
+      ),
+    );
+  }
 }

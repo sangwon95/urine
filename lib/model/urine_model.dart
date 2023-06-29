@@ -1,6 +1,7 @@
 import 'package:urine/main.dart';
 import 'package:urine/model/authorization.dart';
 import 'package:intl/intl.dart';
+import 'package:urine/model/recent.dart';
 import 'package:urine/model/rest_response.dart';
 
 class UrineModel{
@@ -97,6 +98,28 @@ class UrineModel{
 
     date = DateFormat('yyyyMMddHHmmss').format(DateTime.now()).toString();
     mLog.i(date);
+  }
+
+  initOfList(List<Recent> resultList){
+    for(int i = 0 ; i<resultList.length ; i++){
+      urineList.add(resultList[i].status);
+
+      switch(i){
+        case 0 : blood = resultList[i].status; break;
+        case 1 : billrubin = resultList[i].status; break;
+        case 2 : urobillnogen = resultList[i].status; break;
+        case 3 : ketones = resultList[i].status; break;
+        case 4 : protein = resultList[i].status; break;
+        case 5 : nitrite = resultList[i].status; break;
+        case 6 : glucose = resultList[i].status; break;
+        case 7 : pH = resultList[i].status; break;
+        case 8 : sG = resultList[i].status; break;
+        case 9 : leucoytes = resultList[i].status; break;
+        case 10 : vitamin = resultList[i].status; break;
+        default: break;
+        //resultList[i].status -->0~6 String 값
+      }
+    }
   }
 
   String parsingResultBuffer(String baseStr, String sb){

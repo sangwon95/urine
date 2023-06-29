@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+import 'package:urine/main.dart';
 import 'package:urine/utils/etc.dart';
+import '../model/authorization.dart';
 import '../utils/color.dart';
 
 class CustomDialog{
-  /// convert 0-1 to 0-1-0
 
   static showMyDialog(String title, String text, BuildContext mainContext, bool isCancelBtn) {
     return showDialog(
@@ -19,66 +21,102 @@ class CustomDialog{
                 children: [
                   Icon(Icons.error, color: mainColor, size: 35),
                   SizedBox(height: 10),
-                  Text(title, textScaleFactor: 0.85, style: TextStyle(fontWeight: FontWeight.bold)),
+                  Text(title, textScaleFactor: 0.95, style: TextStyle(fontWeight: FontWeight.bold)),
                 ],
               ),
             ),
-            content: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 12, 20, 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+            content: SizedBox(
+              height: 135,
+              child: Column(
                 children: [
-                  Container(
-                      width: 190,
-                      child: Text(text, textAlign: TextAlign.center, textScaleFactor: 0.85)),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 5, 20, 0),
+                    child: SizedBox(
+                      height: 60,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                              width: 220,
+                              child: Text(text, textAlign: TextAlign.center, textScaleFactor: 0.85, style: TextStyle(fontWeight: FontWeight.w500))),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+
+                  Expanded(
+                    child: Container(
+                      width: double.infinity,
+                      child: TextButton(
+                          style: TextButton.styleFrom(
+                              elevation: 5.0,
+                              backgroundColor: mainColor,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.only(
+                                      bottomRight: Radius.circular(10.0),
+                                      bottomLeft: Radius.circular(10.0))
+                              )),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Text('확인', textScaleFactor: 1.1, style: TextStyle(color: Colors.white))
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
-            contentPadding:EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
-            actionsAlignment: MainAxisAlignment.center,
-            actions: <Widget>[
-              Visibility(
-                visible: isCancelBtn,
-                child: Container(
-                  width: 120,
-                  height: 40,
-                  margin: EdgeInsets.only(bottom: 10),
-                  child: TextButton(
-                      style: TextButton.styleFrom(
-                          elevation: 3.0,
-                          backgroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                             // side: BorderSide(width: 1.0, color: Colors.grey.shade100),
-                              borderRadius: BorderRadius.circular(5.0))),
-                      onPressed: ()
-                      {
-                        Navigator.pop(context);
-                      },
-                      child: Text('취소', textScaleFactor: 1.0, style: TextStyle(color: Colors.grey.shade600))
-                  ),
-                ),
-              ),
-
-              Container(
-                height: 40,
-                width: isCancelBtn ? 120 : 240,
-                margin: EdgeInsets.only(bottom: 10),
-                child: TextButton(
-                    style: TextButton.styleFrom(
-                        elevation: 5.0,
-                        backgroundColor: mainColor,
-                        shape: RoundedRectangleBorder(
-                            side: BorderSide(width: 1.0, color: mainColor),
-                            borderRadius: BorderRadius.circular(5.0))),
-                    onPressed: ()
-                    {
-                      Navigator.pop(context);
-                    },
-                    child: Text('확인', textScaleFactor: 1.0, style: TextStyle(color: Colors.white))
-                ),
-              ),
-
-            ],
+            contentPadding: EdgeInsets.all(0),
+            actionsAlignment: MainAxisAlignment.end,
+            actionsPadding: EdgeInsets.all(0),
+            // actions: [
+            //   Visibility(
+            //     visible: isCancelBtn,
+            //     child: Container(
+            //       width: 120,
+            //       height: 40,
+            //       margin: EdgeInsets.only(bottom: 10),
+            //       child: TextButton(
+            //           style: TextButton.styleFrom(
+            //               elevation: 3.0,
+            //               backgroundColor: Colors.white,
+            //               shape: RoundedRectangleBorder(
+            //                  // side: BorderSide(width: 1.0, color: Colors.grey.shade100),
+            //                   borderRadius: BorderRadius.circular(15.0))),
+            //           onPressed: ()
+            //           {
+            //             Navigator.pop(context);
+            //           },
+            //           child: Text('취소', textScaleFactor: 1.0, style: TextStyle(color: Colors.grey.shade600))
+            //       ),
+            //     ),
+            //   ),
+            //
+            //   Expanded(
+            //     child: Container(
+            //       height: 40,
+            //       width: isCancelBtn ? 120 : double.infinity,
+            //       child: TextButton(
+            //           style: TextButton.styleFrom(
+            //               elevation: 5.0,
+            //               backgroundColor: mainColor,
+            //               shape: RoundedRectangleBorder(
+            //                   side: BorderSide(width: 1.0, color: mainColor),
+            //                   borderRadius: BorderRadius.only(
+            //                       bottomLeft: Radius.circular(15),
+            //                       bottomRight: Radius.circular(15),
+            //                   )
+            //               )),
+            //           onPressed: ()
+            //           {
+            //             Navigator.pop(context);
+            //           },
+            //           child: Text('확인', textScaleFactor: 1.0, style: TextStyle(color: Colors.white))
+            //       ),
+            //     ),
+            //   ),
+            // ],
           );
         });
   }
@@ -124,10 +162,7 @@ class CustomDialog{
                         shape: RoundedRectangleBorder(
                             side: BorderSide(width: 1.0, color: mainColor),
                             borderRadius: BorderRadius.circular(5.0))),
-                    onPressed: ()
-                    {
-                      onPressed();
-                    },
+                    onPressed: () => onPressed(),
                     child: Text('확인', textScaleFactor: 1.0, style: TextStyle(color: Colors.white))
                 ),
               ),
@@ -137,8 +172,13 @@ class CustomDialog{
         });
   }
 
-  /// 다이얼 로그
-  static showActionDialog(String title, String text, BuildContext mainContext) {
+  /// 설정 다이얼 로그
+  static showSettingDialog({
+    required String title,
+    required String text,
+    required BuildContext mainContext,
+    required Function onPressed
+  }) {
     return showDialog(
         context: mainContext,
         barrierDismissible: false,
@@ -153,57 +193,68 @@ class CustomDialog{
                 ],
               ),
             ),
-            content: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 12, 20, 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+            content: SizedBox(
+              height: 130,
+              child: Column(
                 children: [
-                  Container(
-                      width: 190,
-                      child: Text(text, textAlign: TextAlign.center, textScaleFactor: 0.85)),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 12, 20, 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                            width: 190,
+                            height: 31,
+                            child: Text(text, textAlign: TextAlign.center, textScaleFactor: 0.85)),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 34),
+                    child: Row(
+                      children:
+                      [
+                        Expanded(
+                          child: Container(
+                            width: 60,
+                            height: 45,
+                            child: TextButton(
+                                style: TextButton.styleFrom(
+                                    elevation: 3.0,
+                                    backgroundColor: mainColor,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.only(
+                                            bottomLeft: Radius.circular(5.0)))),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text('취소', textScaleFactor: 1.0, style: TextStyle(color: Colors.white))
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(
+                            height: 45,
+                            width: 60,
+                            child: TextButton(
+                                style: TextButton.styleFrom(
+                                    elevation: 5.0,
+                                    backgroundColor: mainColor,
+                                    shape: RoundedRectangleBorder(
+                                        side: BorderSide(width: 1.0, color: mainColor),
+                                        borderRadius: BorderRadius.only(bottomRight: Radius.circular(5.0)))),
+                                onPressed: () => onPressed(),
+                                child: Text('확인', textScaleFactor: 1.0, style: TextStyle(color: Colors.white))
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
-            contentPadding:EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
-            actionsAlignment: MainAxisAlignment.center,
-            actions: <Widget>[
-              Container(
-                width: 120,
-                height: 40,
-                margin: EdgeInsets.only(bottom: 10),
-                child: TextButton(
-                    style: TextButton.styleFrom(
-                        elevation: 3.0,
-                        backgroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0))),
-                    onPressed: ()
-                    {
-                      Navigator.pop(context);
-                    },
-                    child: Text('취소', textScaleFactor: 1.0, style: TextStyle(color: Colors.grey.shade600))
-                ),
-              ),
-
-              Container(
-                height: 40,
-                width: 120,
-                margin: EdgeInsets.only(bottom: 10),
-                child: TextButton(
-                    style: TextButton.styleFrom(
-                        elevation: 5.0,
-                        backgroundColor: mainColor,
-                        shape: RoundedRectangleBorder(
-                            side: BorderSide(width: 1.0, color: mainColor),
-                            borderRadius: BorderRadius.circular(5.0))),
-                    onPressed: () async
-                    {
-
-                    },
-                    child: Text('확인', textScaleFactor: 1.0, style: TextStyle(color: Colors.white))
-                ),
-              ),
-
-            ],
+            contentPadding: EdgeInsets.all(0.0),
           );
         });
   }
@@ -345,9 +396,67 @@ class CustomDialog{
 
 
 
+  /// AI 분석
+  /// 분석 중일때 나오는 다이얼 로그
+  static showAIDialog(String title, String text, BuildContext mainContext, bool isCancelBtn) {
+    return showDialog(
+        context: mainContext,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+            title: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(height: 10),
+                  Text(title, textScaleFactor: 0.95, style: TextStyle(fontWeight: FontWeight.bold)),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 25),
+                    child: SpinKitFadingFour(
+                        color: mainColor,
+                        size: 70
+                    ),
+                  ),
+                  Text(
+                      '${Authorization().name}님 데이터 분석중입니다.',
+                      textScaleFactor: 0.85,
+                      style: TextStyle(fontWeight: FontWeight.bold, color: mainColor)
+                  ),
+                ],
+              ),
+            ),
+            content: SizedBox(
+              height: 100,
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                    child: SizedBox(
+                      height: 60,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                              width: 230,
+                              child: Text(text, textAlign: TextAlign.center, textScaleFactor: 0.85, style: TextStyle(fontWeight: FontWeight.w500))),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            contentPadding: EdgeInsets.all(0),
+            actionsAlignment: MainAxisAlignment.end,
+            actionsPadding: EdgeInsets.all(0),
+          );
+        });
+  }
+
   static showStartEndDialog(BuildContext mainContext, {required Function onPositive}) {
-   late String searchStartDate;
-   late String searchEndDate;
+    late String searchStartDate;
+    late String searchEndDate;
 
     return showDialog(
         context: mainContext,
@@ -429,6 +538,97 @@ class CustomDialog{
                             side: BorderSide(width: 1.0, color: mainColor),
                             borderRadius: BorderRadius.circular(5.0))),
                     onPressed: () => onPositive(searchStartDate, searchEndDate),
+                    child: Text('확인', textScaleFactor: 1.0, style: TextStyle(color: Colors.white))
+                ),
+              ),
+
+            ],
+          );
+        });
+  }
+
+  static showCalenderDialog(BuildContext mainContext, {required Function onPositive}) {
+    late DateTime searchDate;
+
+    return showDialog(
+        context: mainContext,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+            content: Container(
+              width: 100,
+              height: 300,
+              decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(18)),
+                  color: Colors.white),
+              child: SfDateRangePicker(
+                minDate: DateTime(2000),
+                maxDate: DateTime.now().add(Duration(hours: 1)),
+                onSelectionChanged: (DateRangePickerSelectionChangedArgs date)
+                {
+                 String substringDate = date.value.toString().substring(0, 10).replaceAll('-','');
+
+                  int year     = int.parse(substringDate.substring(0, 4));
+                  int month    = int.parse(substringDate.substring(4, 6));
+                  int day      = int.parse(substringDate.substring(6, 8));
+                  searchDate = DateTime(year, month, day);
+                },
+                selectionMode: DateRangePickerSelectionMode.single,
+                monthCellStyle: const DateRangePickerMonthCellStyle(
+                  textStyle: TextStyle(color: Colors.black),
+                  todayTextStyle: TextStyle(color: Colors.black),
+                ),
+                selectionTextStyle: const TextStyle(color: Colors.white),
+                todayHighlightColor: Colors.redAccent,
+                selectionColor: mainColor,
+                // backgroundColor: Colors.deepPurple,
+                allowViewNavigation: false,
+                view: DateRangePickerView.month,
+                headerHeight: 30,
+                headerStyle: const DateRangePickerHeaderStyle(
+                    textAlign: TextAlign.center,
+                    textStyle: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontSize: 18)),
+                monthViewSettings:
+                const DateRangePickerMonthViewSettings(
+                  enableSwipeSelection: false,
+                ),
+              ),
+            ),
+            contentPadding: EdgeInsets.fromLTRB(20, 30, 30, 10),
+            actionsAlignment: MainAxisAlignment.center,
+            actions: <Widget>[
+              Container(
+                height: 40,
+                width:  140,
+                margin: EdgeInsets.only(bottom: 10),
+                child: TextButton(
+                    style: TextButton.styleFrom(
+                        elevation: 1.0,
+                        backgroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                            side: BorderSide(width: 1.0, color: Colors.white),
+                            borderRadius: BorderRadius.circular(5.0))),
+                    onPressed: () => {
+                      Navigator.pop(context)
+                    },
+                    child: Text('취소', textScaleFactor: 1.0, style: TextStyle(color: mainColor))
+                ),
+              ),
+              Container(
+                height: 40,
+                width:  140,
+                margin: EdgeInsets.only(bottom: 10),
+                child: TextButton(
+                    style: TextButton.styleFrom(
+                        backgroundColor: mainColor,
+                        shape: RoundedRectangleBorder(
+                            side: BorderSide(width: 1.0, color: mainColor),
+                            borderRadius: BorderRadius.circular(5.0))),
+                    onPressed: () => onPositive(searchDate),
                     child: Text('확인', textScaleFactor: 1.0, style: TextStyle(color: Colors.white))
                 ),
               ),

@@ -185,7 +185,7 @@ class _ResultPageState extends State<ResultPage> {
                 physics: NeverScrollableScrollPhysics(),
                 itemCount: widget.urineModel?.urineList.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return FastestResultListItem(
+                  return ResultListItem(
                     index: index,
                     fastestResult: widget.urineModel?.urineList,
                     selectedInspectionType: inspectionItem,

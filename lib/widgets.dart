@@ -329,6 +329,8 @@ class EmptyView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children:
           [
+            Image.asset('images/empty_image.png'),
+            SizedBox(height: 15),
             Frame.myText(text: text, fontSize: 1.3, color: mainColor, fontWeight: FontWeight.w600),
           ],
         ),
@@ -421,6 +423,72 @@ class ViewVitamin extends StatelessWidget {
         ),
 
         Etc.solidLineSetting(context),
+      ],
+    );
+  }
+}
+
+class HighLightedText extends StatelessWidget {
+  final String data;
+  final Color highLightColor;
+  final Color fontColor;
+  final double fontSize;
+
+  const HighLightedText(
+      this.data, {
+        super.key,
+        required this.highLightColor,
+        required this.fontColor,
+        this.fontSize = 14,
+      });
+
+  Size getTextSize({
+    required String text,
+    required TextStyle style,
+    required BuildContext context,
+  }) {
+    final Size size = (TextPainter(
+      text: TextSpan(text: text, style: style),
+      maxLines: 1,
+      textScaleFactor: MediaQuery.of(context).textScaleFactor,
+      textDirection: TextDirection.ltr,
+    )..layout())
+        .size;
+    return size;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final TextStyle textStyle = TextStyle(
+      fontSize: fontSize,
+      color: fontColor,
+      fontWeight: FontWeight.bold,
+    );
+    final Size textSize = getTextSize(
+      text: data,
+      style: textStyle,
+      context: context,
+    );
+    return Stack(
+      children: [
+        Frame.myText(
+            text: data,
+            fontSize: 1.1,
+            maxLinesCount: 30,
+            fontWeight: FontWeight.w600,
+            align: TextAlign.start),
+
+        Positioned(
+          top: textSize.height / 2,
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(2),
+              color: highLightColor.withOpacity(0.3),
+            ),
+            height: textSize.height / 3,
+            width: textSize.width,
+          ),
+        )
       ],
     );
   }

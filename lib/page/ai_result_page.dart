@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:urine/model/authorization.dart';
 import 'package:urine/utils/frame.dart';
+import 'package:urine/widgets.dart';
 
 import '../model/ai_result_data.dart';
 import '../utils/color.dart';
@@ -21,25 +22,31 @@ class AIResultPage extends StatefulWidget {
 class _AIResultPageState extends State<AIResultPage> {
 
   List<AIResultData> aiResultDataList = [];
-  int resultPoint = 5;
+  int resultPoint = 6;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
-    if(widget.result.contains('만성신장질환')){
+    String str = widget.result.toString();
+    List<String> parts = str.split(',');
+    String mainResult = parts[0];
+
+    if(mainResult == '만성신장질환'){
       resultPoint = 0;
-    } else if(widget.result.contains('방광염')){
+    } else if(mainResult == '방광염'){
       resultPoint = 1;
-    }else if(widget.result.contains('췌장염')){
+    }else if(mainResult == '췌장염'){
       resultPoint = 2;
-    }else if(widget.result.contains('빈혈')){
+    }else if(mainResult == '빈혈'){
       resultPoint = 3;
-    }else if(widget.result.contains('당뇨')){
+    }else if(mainResult == '당뇨'){
       resultPoint = 4;
-    } else {
+    }else if(mainResult == '신장염'){
       resultPoint = 5;
+    } else {
+      resultPoint = 6;
     }
 
     aiResultDataList.add(
@@ -63,8 +70,9 @@ class _AIResultPageState extends State<AIResultPage> {
   }
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
+      backgroundColor: Colors.white,
+
       appBar: Frame.myAppbar(
         'AI 분석 결과'
       ),
@@ -119,7 +127,7 @@ class _AIResultPageState extends State<AIResultPage> {
       );
   }
 
-   buildResultBox(AIResultData aiResultData,Color topTextColor) {
+   buildResultBox(AIResultData aiResultData, Color topTextColor) {
     return Padding(
       padding: EdgeInsets.only(top: 20),
       child: Container(
@@ -171,7 +179,7 @@ class _AIResultPageState extends State<AIResultPage> {
                       text: aiResultData.mainText,
                       fontSize: 1.1,
                       maxLinesCount: 30,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w600,
                       align: TextAlign.start),
                 ),
                   Container(
@@ -188,24 +196,11 @@ class _AIResultPageState extends State<AIResultPage> {
               ),
     );
   }
-  //'방광염의 식이요법은 기본적으로 자극적인 음식과 음료를 피하는 것이 중요합니다. 특히 다음과 같은 식품을 제한하는 것이 좋습니다.\n\n'+
-  //
-  //                             '• 커피, 차, 탄산음료 등 자극적인 음료\n'+
-  //                             '• 알코올, 담배 등의 유해물질\n'+
-  //                             '• 매운 음식, 청량고추, 간장, 소금 등 자극적인 조미료\n'+
-  //                             '• 반면 다음과 같은 식품을 적극적으로 섭취하는 것이 좋습니다.\n\n'+
-  //
-  //                             '• 물, 천연 주스, 녹차 등의 무자극적인 음료\n'+
-  //                             '• 신선한 채소와 과일 등의 식이섬유가 풍부한 식품\n'+
-  //                             '• 우유, 요구르트 등의 유산류\n'+
-  //                             '• 식초, 오이, 김치 등의 식품\n\n'+
-  //                            '운동적인 측면에서는 근력 운동과 요가가 방광염 치료에 도움이 된다는 연구 결과가 있습니다. 하지만 증상이 심한 경우에는 휴식이 필요할 수 있으며, 전문의의 지시에 따라 치료를 받아야 합니다.\n',
-
 
   _buildAIResultText(String text) {
     return Container(
       height: 40,
-      width: 330,
+      width: 380,
       margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
       decoration: BoxDecoration(
         color: guideBackGroundColor,
@@ -216,7 +211,7 @@ class _AIResultPageState extends State<AIResultPage> {
         child: Row(
           children: [
             Frame.myText(
-                text: '귀하는 현재 ',
+                text: '성분 분석 결과 ',
                 fontWeight: FontWeight.normal,
                 maxLinesCount: 1,
                 fontSize: 0.9,
@@ -229,7 +224,7 @@ class _AIResultPageState extends State<AIResultPage> {
                 fontSize: 1.0,
                 align: TextAlign.center),
             Frame.myText(
-                text: text.contains('건강검진') ? '이 필요합니다.' : '으로 의심됩니다',
+                text: text.contains('건강검진') ? '이 필요합니다.' : '관련성분이 검출 되었습니다.',
                 fontWeight: FontWeight.normal,
                 maxLinesCount: 2,
                 fontSize: 0.9,

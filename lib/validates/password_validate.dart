@@ -15,7 +15,7 @@ class PasswordValidate{
       RegExp regExp = new RegExp(pattern);
 
       if(!regExp.hasMatch(value)){
-        CustomDialog.showMyDialog('현재 비밀번호 확인!', '특수, 대소문자, 숫자 포함 7자~15자로 입력하세요.', context, false);
+        CustomDialog.showMyDialog('현재 비밀번호 확인!', '특수,대소문자,숫자 포함 7~15자로 입력하세요.', context, false);
         return false;
       }
 
@@ -41,7 +41,7 @@ class PasswordValidate{
       RegExp regExp = new RegExp(pattern);
 
       if(!regExp.hasMatch(value)){
-        CustomDialog.showMyDialog('새 비밀번호 확인!', '특수, 대소문자, 숫자 포함 7자~15자로 입력하세요.', context, false);
+        CustomDialog.showMyDialog('새 비밀번호 확인!', '특수,대소문자,숫자 포함 7~15자로 입력하세요.', context, false);
         return false;
       }
       else{

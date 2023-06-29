@@ -27,7 +27,6 @@ import '../validates/password_validate.dart';
 import '../validates/sign_validate.dart';
 import 'dialog.dart';
 
-
 /// 로그인 버튼
 class LoginButton extends StatelessWidget {
 
@@ -43,15 +42,20 @@ class LoginButton extends StatelessWidget {
         width: double.infinity,
         child: TextButton(
             style: TextButton.styleFrom(
-                elevation: 5.0,
+                elevation: 0.0,
                 backgroundColor: mainColor,
                 padding: EdgeInsets.all(17.0),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0))),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0))),
             onPressed: ()
             {
               _checkLogin(context);
             },
-            child: Text('로그인', textScaleFactor: 1.1, style: TextStyle(color: Colors.white))
+            child: Frame.myText(
+              text: '로그인',
+              fontWeight: FontWeight.w400,
+              fontSize: 1.2,
+              color: Colors.white,
+            )
         )
     );
   }
@@ -62,7 +66,7 @@ class LoginButton extends StatelessWidget {
     /// 아이디, 비밀번호 입력란이 비어있다.
     if (loginEdit.idController.text.isEmpty || loginEdit.passController.text.isEmpty)
     {
-      CustomDialog.showMyDialog('로그인 확인!', '아이디 또는 패스워드가 비어 있습니다. 입력 후 다시 시도바랍니다.', context, false);
+      CustomDialog.showMyDialog('로그인 확인', '아이디 또는 패스워드가 비어 있습니다. 입력 후 다시 시도바랍니다.', context, false);
     }
     /// 로그인 시도
     else {
@@ -77,11 +81,11 @@ class LoginButton extends StatelessWidget {
              break;
            }
            case LOGIN_ERROR: {
-             CustomDialog.showMyDialog('로그인 확인!', '아이디 또는 비밀번호를 확인 후 다시 시도바랍니다.', context, false);
+             CustomDialog.showMyDialog('로그인 확인', '아이디 또는 비밀번호를 확인 후 다시 시도바랍니다.', context, false);
              break;
            }
            default: {
-             CustomDialog.showMyDialog('로그인 에러!', MESSAGE_ERROR_RESPONSE, context, false);
+             CustomDialog.showMyDialog('로그인 확인', '아이디 또는 비밀번호를 확인 후 다시 시도바랍니다.', context, false);
            }
          }
       } catch (error) {
@@ -107,15 +111,20 @@ class SignButton extends StatelessWidget {
         width: double.infinity,
         child: TextButton(
             style: TextButton.styleFrom(
-                elevation: 5.0,
+                elevation: 0.0,
                 backgroundColor: mainColor,
                 padding: EdgeInsets.all(17.0),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0))),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0))),
             onPressed: ()
             {
               _doSign();
             },
-            child: Text('회원 가입', textScaleFactor: 1.1, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold))
+            child: Frame.myText(
+              text: '회원 가입',
+              fontWeight: FontWeight.w400,
+              fontSize: 1.2,
+              color: Colors.white,
+            )
         )
     );
   }
@@ -187,8 +196,7 @@ class TermsButton extends StatelessWidget {
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0))),
               onPressed: ()
               {
-                if(agree[1] == false || agree[2] == false || agree[3] == false)
-                {
+                if(agree[1] == false || agree[2] == false || agree[3] == false) {
                   CustomDialog.showMyDialog('이용약관 동의','모두 동의해주시기 바랍니다.', context, false);
                   //Etc.showSnackBar(this.context, msg: '모두 동의 바랍니다.', durationTime: 4);
                 }
@@ -348,7 +356,6 @@ class PreparationToSearchButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
         padding: const EdgeInsets.all(10),
         width: double.infinity,

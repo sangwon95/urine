@@ -1,9 +1,12 @@
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:urine/page/login_page.dart';
 import 'package:urine/page/setting/password_change_page.dart';
 import 'package:urine/page/setting/version_page.dart';
 
 
+import '../../model/authorization.dart';
 import '../../utils/etc.dart';
 import '../../utils/frame.dart';
 import '../../widgets/dialog.dart';
@@ -36,6 +39,7 @@ class _SettingPageState extends State<SettingPage> {
               _buildMenu('비밀번호 재설정'),
               _buildMenu('버전 정보'),
               _buildMenu('이용약관 및 정책'),
+              _buildMenu('회원 탈퇴'),
               _buildMenu('로그 아웃'),
             ],
           ),
@@ -59,10 +63,24 @@ class _SettingPageState extends State<SettingPage> {
           Frame.doPagePush(context, TermsFullPage());
 
         else if(text == '회원 탈퇴')
-          CustomDialog.showActionDialog('회원 탈퇴!', '회원 탈퇴 하시겠습니까?\n주의! 개인정보가 삭제됩니다.', context);
+          CustomDialog.showSettingDialog(
+              title: '회원 탈퇴!',
+              text: '회원 탈퇴 하시겠습니까?\n주의! 개인정보가 삭제됩니다.',
+              mainContext: context, onPressed: (){},
+          );
 
         else if(text == '로그 아웃')
-          CustomDialog.showActionDialog('로그 아웃!', '로그 아웃 하시겠습니까?', context);
+          CustomDialog.showSettingDialog(
+              title: '로그 아웃!',
+              text: '로그 아웃 하시겠습니까?\n로그인 화면으로 전환됩니다.',
+              mainContext: context,
+              onPressed: () async
+              {
+                Etc.showSnackBar(context, msg: '로그아웃 되었습니다.', durationTime: 3);
+                Authorization().clear();
+                Frame.doPageAndRemoveUntil(context, LoginPage());
+              }
+          );
       },
       child: Column(
         children: [
@@ -70,7 +88,7 @@ class _SettingPageState extends State<SettingPage> {
             height: 60,
             decoration: BoxDecoration(
               color: Colors.white,
-              border: Border.all(color: Colors.grey, width: 0.2),
+              border: Border(top: BorderSide(color: Colors.grey, width: 0.2)),
             ),
             child: Padding(
               padding: const EdgeInsets.all(15.0),

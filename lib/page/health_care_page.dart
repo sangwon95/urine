@@ -12,14 +12,16 @@ class HealthCarePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: Frame.myAppbar(
         title,
       ),
       body: Container(
         child: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
+              SizedBox(height: 150),
               Image.asset('images/innovation.png', height: 150, width: 150),
               SizedBox(height: 30),
               Frame.myText(

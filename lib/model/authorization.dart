@@ -1,4 +1,6 @@
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 /// 권한 계정 클래스
 class Authorization{
   late String userID;
@@ -22,7 +24,9 @@ class Authorization{
      token = '';
   }
 
-  clear(){
+  clear() async {
+    var pref = await SharedPreferences.getInstance();
+    pref.clear();
      userID   = '';
      password = '';
      name = '';

@@ -50,7 +50,7 @@ class ProgressPage extends ModalRoute {
                       color: mainColor,
                       size: 70,
                     ):
-                    SpinKitThreeBounce(
+                    SpinKitFadingFour(
                       color: mainColor,
                       size: 70
                     )

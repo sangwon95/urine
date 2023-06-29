@@ -72,8 +72,10 @@ class BluetoothController{
       if (value == BluetoothState.off) {
         bluetoothStateProvider.setStateOff();
       }
-      else if( value == BluetoothState.on){
+      else if(value == BluetoothState.on){
         bluetoothStateProvider.setStateOn();
+      } else {
+        mLog.i('${value.toString()}');
       }
     });
   }

@@ -9,11 +9,13 @@ import 'dart:math';
 
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:urine/model/login_model.dart';
 import 'package:urine/page/bluetooth/bluetooth_page.dart';
 import 'package:urine/page/bluetooth/search_device_page2.dart';
+import 'package:urine/page/calender_timeline_page.dart';
 import 'package:urine/page/home_page.dart';
 import 'package:urine/page/login_page.dart';
 import 'package:urine/providers/bluetooth_state_provider.dart';
@@ -33,6 +35,8 @@ Future<void> main() async{
   /// 플랫폼 채널의 위젯 바인딩을 보장해야한다.
   WidgetsFlutterBinding.ensureInitialized();
   await _initAuthorization();
+
+
 
   runApp(
       MultiProvider(

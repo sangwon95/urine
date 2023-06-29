@@ -15,6 +15,10 @@ import '../../utils/dio_client.dart';
 import '../../utils/etc.dart';
 import '../../utils/frame.dart';
 
+
+enum BluetoothStatusType { search, connection, inspection }
+
+
 /// 기기 찾기
 class SearchDevicePage2 extends StatefulWidget {
   const SearchDevicePage2({Key? key, required this.onBackCallbackResult}) : super(key: key);
@@ -50,6 +54,8 @@ class _SearchDevicePage2State extends State<SearchDevicePage2> {
 
   /// Bluetooth 연결 상태
   bool connectState = false;
+  bool isOnceRun = true;
+
 
   @override
   void initState() {
@@ -59,16 +65,18 @@ class _SearchDevicePage2State extends State<SearchDevicePage2> {
     _bluetoothScanResultsLister(); // 블루투스 스캔 리스너 등록
     _bluetoothScanStart();
 
-    stateWidget = _buildProgressView();
+    stateWidget = _buildProgressView(BluetoothStatusType.search);
   }
   @override
   void dispose() {
     super.dispose();
+
     serviceLister?.cancel();
     connectionLister?.cancel();
     onValueChangedStream?.cancel();
 
     sb.clear();
+    isOnceRun = true;
     isNoResponse = true;
     notificationCharacteristic = null;
     writeCharacteristic = null;
@@ -78,100 +86,117 @@ class _SearchDevicePage2State extends State<SearchDevicePage2> {
     connectionLister = null;
 
     device!.disconnect();
+    device!.clearGattCache();
   }
 
   /// 검색 View
   _configureInitSearch() {
     isDeviceFound = false;
     stateText = '검사기를 찾고있습니다.\n잠시만 기다려 주세요.';
-    stateWidget = _buildProgressView();
+    stateWidget = _buildProgressView(BluetoothStatusType.search);
   }
 
   _configureInitConnection() {
     isDeviceFound = true;
     stateText = '연결 중입니다.\n 잠시만 기다려 주세요.';
-    stateWidget = _buildProgressView();
+    stateWidget = _buildProgressView(BluetoothStatusType.connection);
   }
 
   _configureInitCompleted() {
     isDeviceFound = true;
     stateText = '검사 진행 중입니다. \n 잠시만 기다려 주세요.';
-    stateWidget = _buildProgressView();
+    stateWidget = _buildProgressView(BluetoothStatusType.inspection);
     isShowButton = false;
   }
-
-
 
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: Frame.myAppbar(
         '검사 진행'
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children:
-        [
-          /// 상태 이미지
-          stateWidget,
+      body: Container(
+        decoration:  BoxDecoration(
+            gradient: LinearGradient(
+              begin: FractionalOffset.topLeft,
+              end: FractionalOffset.bottomRight,
+              colors: [
+                Color(0xff5d9bef),
+                Color(0xff7cbdd0),
+              ],
+              stops: [
+                0.1, 1.0
+              ],
+            )
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children:
+          [
+            /// 상태 이미지
+            stateWidget,
 
-          /// 상태 텍스트
-          Frame.myText(
-              text: stateText,
-              maxLinesCount: 3,
-              fontSize: 1.2,
-              fontWeight: FontWeight.w600,
-              align: TextAlign.center
-          ),
+            /// 상태 텍스트
+            SizedBox(
+              width: double.infinity,
+              child: Frame.myText(
+                  text: stateText,
+                  maxLinesCount: 3,
+                  fontSize: 1.2,
+                  fontWeight: FontWeight.w600,
+                  align: TextAlign.center
+              ),
+            ),
 
-          SizedBox(height: 50),
+            SizedBox(height: 50),
 
-          /// 버튼
-          Visibility(
-              visible: isShowButton, // 파동을 없애는 동시에 버튼 생성
-              child: _buildNextButton(btnText)
-          )
-        ],
-      ),
-    );
-  }
-
-
-  _buildProgressView() {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 110),
-      child: Material(     // Replace this child with your own
-        elevation: 4.0,
-        shape: CircleBorder(),
-        child: CircleAvatar(
-          backgroundColor: Colors.grey[100],
-          child: SpinKitCircle(
-            color: mainColor,
-            size: 70,
-          ),
-          radius: 45.0,
+            /// 버튼
+            Visibility(
+                visible: isShowButton, // 파동을 없애는 동시에 버튼 생성
+                child: _buildNextButton(btnText)
+            )
+          ],
         ),
       ),
     );
   }
 
 
-  _buildErrorView() {
+  _buildProgressView(BluetoothStatusType type) {
     return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 110),
-      child: Material(     // Replace this child with your own
-        elevation: 4.0,
-        shape: CircleBorder(),
-        child: CircleAvatar(
-          backgroundColor: Colors.grey[100],
-          child: Icon(Icons.question_mark, color: Colors.blue, size: 50),
-          radius: 45.0,
+      padding: const EdgeInsets.only(top: 170, bottom: 30),
+      child: Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+        elevation: 3,
+        child: Padding(
+          padding: const EdgeInsets.all(30.0),
+          child: Image.asset(
+              type == BluetoothStatusType.search ? 'images/search.png':
+              type == BluetoothStatusType.connection ? 'images/connection.png':
+              'images/inspection.png', width: 100, height: 100),
         ),
-      ),
+      )
+    );
+  }
+
+
+  _buildErrorView(BluetoothStatusType type) {
+    return Container(
+      padding: const EdgeInsets.only(top: 170, bottom: 30),
+      child: Card(
+        elevation: 3,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+        child: Padding(
+          padding: const EdgeInsets.all(30.0),
+          child: Image.asset(
+              type == BluetoothStatusType.search ? 'images/search_failure.png':
+              type == BluetoothStatusType.connection ? 'images/connection_failure.png':
+              'images/inspection_failure.png', width: 100, height: 100),
+        ),
+      )
     );
   }
 
@@ -208,20 +233,22 @@ class _SearchDevicePage2State extends State<SearchDevicePage2> {
 
   /// 디바이스 찾기 결과 리스너
   _bluetoothScanResultsLister() {
-    bool isOnceRun = true;
+    _connectionTimeOut();
+
     FlutterBluePlus.instance.scanResults.listen((results) {
       for (ScanResult r in results) {
-        if(r.device.name.contains('PhotoMT')){
-          FlutterBluePlus.instance.stopScan();
-            if(mounted && isOnceRun){
+        mLog.i('${r.device.name}');
+        if(r.device.name.contains('PhotoMT')|| r.device.name.contains('YOCHECK')){
+          mLog.i('mounted: ${mounted} isOnceRun: ${isOnceRun}');
+            if(isOnceRun){
+              mLog.i('안쪽 실행');
               isOnceRun = false;
-              setState(() {
-                device = r.device;
-                addBluetoothDeviceConnectionLister(device!); // 디바이스 연결 상태 리스너 등록
-                device!.connect(autoConnect: false);
-                _configureInitConnection();
-                _connectionTimeOut();
-              });
+                setState(() {
+                  device = r.device;
+                  addBluetoothDeviceConnectionLister(device!); // 디바이스 연결 상태 리스너 등록
+                  device!.connect(autoConnect: false);
+                  _configureInitConnection();
+                });
             }
           return;
         }
@@ -231,13 +258,13 @@ class _SearchDevicePage2State extends State<SearchDevicePage2> {
 
   /// 연결이 잘되었는지 4초 뒤에 획인한다.
   void _connectionTimeOut() {
-    Future.delayed(Duration(seconds: 4),(){
+    Future.delayed(Duration(seconds: 5),(){
       if(!connectState && mounted){
           setState(() {
             isShowButton = true;
             stateText = '유린검사기와 정상적으로 연결되지 않았습니다.';
             btnText = '재 시도';
-            stateWidget = _buildErrorView();
+            stateWidget = _buildErrorView(BluetoothStatusType.connection);
           });
       }
     });
@@ -252,7 +279,43 @@ class _SearchDevicePage2State extends State<SearchDevicePage2> {
           connectState = true;
           mLog.i('[BluetoothDeviceState]: Connected!');
           if(serviceLister == null){ // 등록된 GattServiceLister 가 없으면 실행된다.
-            addBluetoothGattServiceLister();
+            device.discoverServices().then((service){
+              for (var value in service) {
+                mLog.i('gattService: ${value.uuid}');
+                for (var characteristics in value.characteristics) {
+                  mLog.i('characteristics: ${characteristics.uuid}');
+                }
+              }
+
+              if (service.length > 0) {
+                if (notificationCharacteristic == null && writeCharacteristic == null) {
+                  /// Gatt Service 찾기
+                  BluetoothService? bluetoothService = Etc.findBluetoothService(service);
+
+                  if (bluetoothService == null) {
+                    mLog.i('gattService 를 찾지 못했습니다.');
+                  } else {
+                    /// notificationCharacteristic 찾기
+                    notificationCharacteristic =
+                    Etc.findBluetoothCharacteristic(bluetoothService, BLE_GATT_UUID_NOTIFICATION)!;
+
+                    /// writeCharacteristic 찾기
+                    writeCharacteristic =
+                    Etc.findBluetoothCharacteristic(bluetoothService, BLE_GATT_UUID_WRITE)!;
+
+                    _setNotification();
+                  }
+                } else {
+                  mLog.i('notificationCharacteristic or writeCharacteristic not NULL');
+                  _setNotification();
+                }
+              } else {
+                mLog.i('[gattService.length]:${service.length}');
+              }
+
+
+            });
+            //addBluetoothGattServiceLister();
           } else {
             mLog.i('[BluetoothController] serviceLister: 리스너가 등록 되어 있다.');
           }
@@ -273,7 +336,7 @@ class _SearchDevicePage2State extends State<SearchDevicePage2> {
   /// notification,write Characteristic 찾는다.
   addBluetoothGattServiceLister() {
     mLog.i("[BluetoothController/addBluetoothGattServiceLister] device.id: ${device!.id} 실행");
-    device!.discoverServices();
+
 
     serviceLister = device!.services.listen((List<BluetoothService> gattService) {
       for (var value in gattService) {
@@ -309,6 +372,8 @@ class _SearchDevicePage2State extends State<SearchDevicePage2> {
         mLog.i('[gattService.length]:${gattService.length}');
       }
     });
+
+
   }
 
 
@@ -316,11 +381,11 @@ class _SearchDevicePage2State extends State<SearchDevicePage2> {
   _setNotification() async {
     if(notificationCharacteristic != null){
       try {
-        isNotifyValue = await notificationCharacteristic!.setNotifyValue(true);
+        await notificationCharacteristic!.setNotifyValue(true);
         addValueChangedStreamListener();
 
         Future.delayed(Duration(seconds: 1),(){
-          if (isNotifyValue && mounted) {
+          if (mounted) {
             setState(() {
               _configureInitCompleted();
               _startInspection();
@@ -381,7 +446,7 @@ class _SearchDevicePage2State extends State<SearchDevicePage2> {
         mLog.i('startInspection() / popProgress() : ${sb.length}');
         if(isNoResponse && mounted){
           setState((){
-            stateWidget = _buildErrorView();
+            stateWidget = _buildErrorView(BluetoothStatusType.inspection);
             stateText = '유린기로부터 데이터를 받지 못했습니다.\n다시 시도바랍니다.';
             isShowButton = true;
             btnText = '재 검사';
@@ -407,7 +472,7 @@ class _SearchDevicePage2State extends State<SearchDevicePage2> {
           stateText = '유린검사기를 찾지 못했습니다.\n검사기가 켜져있는지 확인해보세요.';
           btnText = '재 시도';
 
-          stateWidget = _buildErrorView();
+          stateWidget = _buildErrorView(BluetoothStatusType.search);
           FlutterBluePlus.instance.stopScan();
         });
       }

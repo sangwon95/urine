@@ -1,7 +1,6 @@
 
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
+import 'package:urine/model/urine_model.dart';
 import 'package:urine/page/chart_page.dart';
 import 'package:urine/utils/etc.dart';
 import 'package:urine/utils/frame.dart';
@@ -11,6 +10,7 @@ import '../model/recent.dart';
 import '../utils/color.dart';
 import '../utils/constants.dart';
 import '../utils/dio_client.dart';
+import '../widgets/bottom_sheet.dart';
 
 /// 최근 검사 내역 화면
 class RecentPage extends StatefulWidget {
@@ -26,16 +26,17 @@ class RecentPage extends StatefulWidget {
 class _RecentPageState extends State<RecentPage> {
 
   late List<Recent> resultList = [];
+  late Size size;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    size = MediaQuery.of(context).size;
 
+    return Scaffold(
       appBar: Frame.myAppbar(
         widget.title
       ),
       backgroundColor: Colors.white,
-
       body: FutureBuilder(
         future: client.dioRecent(widget.datetime),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
@@ -56,6 +57,11 @@ class _RecentPageState extends State<RecentPage> {
 
           if (snapshot.connectionState == ConnectionState.done) {
             resultList = snapshot.data;
+            // UrineModel urineModel = UrineModel();
+            // urineModel.initOfList(resultList);
+            //
+            // /// 바텀샷 결과 페이지 보여주기
+            // _showResult(urineModel);
           }
 
 
@@ -77,6 +83,19 @@ class _RecentPageState extends State<RecentPage> {
           );
         },
       ),
+    );
+  }
+
+  _showResult(UrineModel urineModel) {
+    /// 결과 데이터 view
+    showModalBottomSheet(
+        isScrollControlled: true,
+        context: context,
+        builder: (BuildContext context){
+          return StatefulBuilder(
+              builder: (BuildContext context, Function(void Function()) sheetSetState) {
+                return FastestBottomSheet(urineModel: urineModel, size: size);
+              });}
     );
   }
 
@@ -163,14 +182,13 @@ class RecentListItem extends StatelessWidget {
   }
 }
 
-class FastestResultListItem extends StatelessWidget {
-
+class ResultListItem extends StatelessWidget {
   final int index;
   final String selectedInspectionType;
   final List<String>? fastestResult;
   final Function(int) changeItem;
 
-  const FastestResultListItem({Key? key,
+  const ResultListItem({Key? key,
     required this.index,
     required this.fastestResult,
     required this.selectedInspectionType,
@@ -188,58 +206,48 @@ class FastestResultListItem extends StatelessWidget {
       },
       child: Container(
           height: 60,
-
-          child: Card(
-              color: inspectionItemList[index] == selectedInspectionType ? Colors.grey.shade200 : Colors.white,
-              elevation: inspectionItemList[index] == selectedInspectionType?  3 : 2,
-              shape: RoundedRectangleBorder(
-                  side: inspectionItemList[index] == selectedInspectionType ?
-                  BorderSide(width: 1, color: Colors.grey) :
-                  BorderSide(width: 0, color: Colors.white),
-                  borderRadius: BorderRadius.circular(10.0)
-              ),
-              child: Padding(
-                padding: EdgeInsets.only(left: 20, right: 20),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      /// 항목
-                      Container(
-                          width: 80,
-                          child: Frame.myText(
-                              text: '${inspectionItemList[index] == selectedInspectionType ? '✓' : ''} ${inspectionItemList[index]}',
-                              fontSize: inspectionItemList[index] == selectedInspectionType ? 1.1 : 1.0,
-                              fontWeight: inspectionItemList[index] == selectedInspectionType ? FontWeight.w600 : FontWeight.normal,
-                              color: inspectionItemList[index] == selectedInspectionType ? mainColor : Colors.black,
-                              maxLinesCount: 1)
-                      ),
-
-                      /// 결과 Text
-                      Frame.myText(text: int.parse(fastestResult![index]) > 0 ? '양성' : '음성',
-                          fontWeight: inspectionItemList[index] == selectedInspectionType ? FontWeight.w600: FontWeight.w400,
-                          maxLinesCount: 1),
-
-                      /// 결과 Image
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Image.asset(_resultStatusToImageStr(fastestResult![index]), height: 60, width: 90),
-                      )
-                    ]
-                ),
+          padding: EdgeInsets.symmetric(horizontal: 10),
+          decoration: BoxDecoration(
+            border: Border(
+              top: BorderSide(
+                color: Colors.grey,
+                width: 0.5
               )
+            )
+          ),
+          child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                /// 항목
+                Container(
+                    width: 90,
+                    child: Frame.myText(
+                        text: '${inspectionItemList[index] == selectedInspectionType ? '✓' : ''} ${inspectionItemList[index]}',
+                        fontSize: inspectionItemList[index] == selectedInspectionType ? 1.2 : 1.1,
+                        fontWeight: inspectionItemList[index] == selectedInspectionType ? FontWeight.w600 : FontWeight.normal,
+                        color: inspectionItemList[index] == selectedInspectionType ? mainColor : Colors.black,
+                        maxLinesCount: 1)
+                ),
+
+                /// 결과 Image
+                Image.asset(
+                    Etc.resultStatusToImageStr(fastestResult!, index),
+                    height: 90,
+                    width: 170
+                ),
+
+                /// 결과 Text
+                Frame.myText(
+                    text: Etc.resultStatusToText(fastestResult!, index),
+                    fontWeight: inspectionItemList[index] == selectedInspectionType ? FontWeight.w600: FontWeight.w400,
+                    color: Etc.resultStatusToTextColor(fastestResult!, index),
+                    maxLinesCount: 1
+                ),
+              ]
           )),
     );
   }
 
-  _resultStatusToImageStr(String status){
-    switch(status){
-      case '0' : return 'images/step_0.png';
-      case '1' : return 'images/step_1.png';
-      case '2' : return 'images/step_2.png';
-      case '3' : return 'images/step_3.png';
-      case '4' : return 'images/step_4.png';
-      case '5' : return 'images/step_4.png';
-      default : return 'images/step_0.png';
-    }
-  }
+
+
 }

@@ -14,15 +14,16 @@ class Frame{
           statusBarIconBrightness: Brightness.dark,
           statusBarColor: Colors.white
       ),
-      title: Text(
-        title,
-        textScaleFactor: 0.8,
-        style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+      title: Frame.myText(
+        text: title,
+        fontSize: 1.0,
+        color: mainColor,
+        fontWeight: FontWeight.w600
       ),
       centerTitle: true,
-      backgroundColor: mainColor,
-      elevation: 0.5,
-      iconTheme: IconThemeData(color: Colors.white),
+      backgroundColor: Colors.white,
+      elevation: 0.0,
+      iconTheme: IconThemeData(color: Colors.black),
       actions:
       [
         /// 채팅화면 우측 상단 아이콘 버튼
@@ -39,6 +40,36 @@ class Frame{
       ],
     );
   }
+
+ /// 앱바 타이틀 이미지 위젯
+ static AppBar myImageAppbar({bool isIconBtn = false, Function? onPressed, IconData? icon = Icons.settings_rounded}){
+   return AppBar(
+     systemOverlayStyle: SystemUiOverlayStyle(
+         statusBarBrightness: Brightness.light,
+         statusBarIconBrightness: Brightness.dark,
+         statusBarColor: Colors.white
+     ),
+     title: Image.asset('images/main_logo.png', color: mainColor, height: 25,),
+     centerTitle: true,
+     backgroundColor: Colors.white,
+     elevation: 0.0,
+     iconTheme: IconThemeData(color: Colors.black),
+     actions:
+     [
+       /// 채팅화면 우측 상단 아이콘 버튼
+       Visibility(
+         visible: isIconBtn,
+         child: Padding(
+           padding: const EdgeInsets.only(right: 10),
+           child: IconButton(
+               onPressed: () => onPressed!(),
+               icon: Icon(icon, size: 25)
+           ),
+         ),
+       ),
+     ],
+   );
+ }
 
   static TextStyle textSpanBoldStyle(){
    return TextStyle(fontWeight: FontWeight.w600, color: Colors.blueAccent, fontSize: 14);

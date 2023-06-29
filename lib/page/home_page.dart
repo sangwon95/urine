@@ -3,10 +3,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:urine/model/authorization.dart';
 import 'package:urine/model/urine_model.dart';
 import 'package:urine/page/bluetooth/search_device_page2.dart';
+import 'package:urine/page/my_health_page.dart';
 import 'package:urine/page/progress_page.dart';
 import 'package:urine/page/result_list_page.dart';
 import 'package:urine/page/setting/setting_page.dart';
@@ -21,9 +23,11 @@ import '../model/recent.dart';
 import '../utils/color.dart';
 import '../utils/frame.dart';
 import '../utils/network_connectivity.dart';
+import '../widgets/dialog.dart';
 import 'ai_result_page.dart';
-import 'bluetooth/bluetooth_controller.dart';
+import 'calender_timeline_page.dart';
 import 'health_care_page.dart';
+import 'package:geolocator/geolocator.dart';
 
 /// Devices Name :
 class HomePage extends StatefulWidget {
@@ -37,10 +41,9 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   final String title = '홈 화면';
 
   late AnimationController animationController;
-  late BluetoothStateProvider _bluetoothStateProvider;
   late Size size;
-
   var userName = '-';
+
 
   @override
   void initState() {
@@ -57,7 +60,10 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
           animationController.repeat();
         }
       });
+
+    _checkPermission();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -66,21 +72,11 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     /// 네트워크 연결 상태 확인
     NetWorkConnectivity(context: context);
 
-    _bluetoothStateProvider = Provider.of<BluetoothStateProvider>(context);
-    BluetoothController().bluetoothStateProvider =  _bluetoothStateProvider;
-    BluetoothController().context =  context;
-    BluetoothController().animationController =  animationController;
-    BluetoothController().size =  size;
-
-
     return Scaffold(
       backgroundColor: homeBackgroundColor,
-      appBar: Frame.myAppbar(
-          title,
+      appBar: Frame.myImageAppbar(
           isIconBtn: true,
-          onPressed: () {
-             Frame.doPagePush(context, SettingPage());
-          }
+          onPressed: () => Frame.doPagePush(context, SettingPage())
       ),
       body: FutureBuilder(
         future:  _fetchUserName(),
@@ -92,7 +88,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                      Frame.myText(
-                       text: '서버와 연결이 원활하지 않습니다.\n 다시 시도 바랍니다.',
+                       text: '서버와 연결이 원활하지 않습니다.\n다시 시도 바랍니다.',
                        fontWeight: FontWeight.bold,
                        fontSize: 1.1,
                        maxLinesCount: 2,
@@ -113,140 +109,209 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
           if (snapshot.connectionState == ConnectionState.done) {
             userName = snapshot.data;
           }
-            return Container(
-            child: Column(
-              children: [
-                Container(
-                  height: 100,
-                  margin: EdgeInsets.only(left: 30, top: 80),
-                  width: double.infinity,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children:
-                    [
-                      Frame.myText(text: '$userName 님', fontSize: 1.7, color: mainColor, fontWeight: FontWeight.w600, align: TextAlign.start),
-                      Frame.myText(text: '오늘도 즐거운 하루 되세요.', fontSize: 1.3, align: TextAlign.start)
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.symmetric(horizontal: 20.0),
+            return SafeArea(
+              child: Container(
+                child: Column(
+                  children: [
+                    Container(
+                      height: size.height * 0.65,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(40.0),
+                              bottomRight: Radius.circular(40.0),
+                          ),
+                          gradient: LinearGradient(
+                            begin: FractionalOffset.topLeft,
+                            end: FractionalOffset.bottomRight,
+                            colors: [
+                              Color(0xff4182db),
+                              Color(0xff98dad1),
+                            ],
+                            stops: [
+                              0.01, 1.0
+                            ],
+                          )
+                      ),
+
                     child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            buildMenuBtn('검사하기',  '1'),
-                            buildMenuBtn('검사 내역', '2'),
-                          ],
+                      children:
+                      [
+                        Container(
+                          height: size.height * 0.1,
+                          margin: EdgeInsets.only(left: 30, top:  size.height * 0.05, bottom: size.height * 0.03),
+                          width: double.infinity,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children:
+                            [
+                              Row(
+                                children: [
+                                  Frame.myText(
+                                      text: '$userName',
+                                      fontSize: 2.0,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w700,
+                                      align: TextAlign.start
+                                  ),
+                                  Frame.myText(
+                                      text: ' 님,',
+                                      fontSize: 1.5,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w500,
+                                      align: TextAlign.start
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 5),
+
+                              Frame.myText(
+                                  text: '오늘도 즐거운 하루 보내세요!',
+                                  fontSize: 1.5,
+                                  color: Colors.white,
+                                  align: TextAlign.start
+                              )
+                            ],
+                          ),
                         ),
-                        Row(
-                          children:
-                          [
-                            buildMenuBtn('AI 분석', '3'),
-                            buildMenuBtn('나의 건강 관리', '4'),
-                          ],
+                        Expanded(
+                          child: Container(
+                            width: double.infinity,
+                            padding: EdgeInsets.symmetric(horizontal: 20.0),
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    buildMenuBtn('검사하기'),
+                                    buildMenuBtn('검사 내역'),
+                                  ],
+                                ),
+                                Row(
+                                  children:
+                                  [
+                                    buildMenuBtn('AI 분석'),
+                                    buildMenuBtn('나의 건강 관리'),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                       ],
                     ),
-                  ),
+          ),
+
+                    Expanded(
+                      child: Stack(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(top: 50),
+                            width: double.infinity,
+                            child: ColorFiltered(
+                              colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.35), BlendMode.darken),
+                              child: Image.asset('images/home_bottom.jpg', fit: BoxFit.fitWidth),
+                            ),
+                          ),
+                          Positioned(
+                            bottom: 40,
+                            left: 40,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Frame.myText(
+                                  text:'당신의 건강한 삶에 함께 하는',
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                Row(
+                                  children: [
+                                    Frame.myText(
+                                      text:'YO',
+                                      color: Colors.redAccent,
+                                      fontSize: 1.7,
+                                      fontWeight: FontWeight.bold
+                                    ),
+                                    Frame.myText(
+                                        text:'CHECK',
+                                        color: Colors.white,
+                                        fontSize: 1.7,
+                                        fontWeight: FontWeight.bold
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
                 ),
-              ],
-            ),
-          );
+              ),
+            );
         },
       ),
     );
   }
 
-  Expanded buildMenuBtn(String text, String imageName) {
+  Expanded buildMenuBtn(String text) {
     return Expanded(
       child: InkWell(
-        onTap: () {
-          if(text == '검사하기'){
+        onTap: () async {
+          if(text == '검사하기') {
+            bool isLocationEnabled = await Geolocator.isLocationServiceEnabled();
 
-            showModalBottomSheet(
-                isScrollControlled: true,
-                context: context,
-                builder: (BuildContext context){
-                  return StatefulBuilder(
-                      builder: (BuildContext context, Function(void Function()) sheetSetState) {
-                        return PreparationBottomSheet(
-                            size: size,
-                            onBackCallbackResult: (urineModel) =>_showResult(urineModel)
-                        );
-                      }
-                  );
-                }
-            );
-
-            /*Frame.doPagePush(context, SearchDevicePage2(onBackCallbackResult: (urineModel) {
+            if(!isLocationEnabled){
+              CustomDialog.showMyDialog('위치정보', '휴대폰의 위치정보를 켜주시기 바랍니다.', context, false);
+            }
+            else {
               showModalBottomSheet(
                   isScrollControlled: true,
                   context: context,
                   builder: (BuildContext context){
-
                     return StatefulBuilder(
                         builder: (BuildContext context, Function(void Function()) sheetSetState) {
-                          return FastestBottomSheet(urineModel: urineModel, size: size);
-                        });}
+                          return PreparationBottomSheet(
+                              size: size,
+                              onBackCallbackResult: (urineModel) =>_showResult(urineModel)
+                          );
+                        }
+                    );
+                  }
               );
-            },));*/
+            }
 
-
-
-            // FlutterBluePlus.instance.connectedDevices.then((connectedDeviceList){
-            //   if(connectedDeviceList.length > 0) {
-            //
-            //     BluetoothController().showConnectionDialog(
-            //         title: '연결 상태',
-            //         content: '유린기와 연결되어 있습니다. 바로 검사를 진행하시겠습니까?',
-            //         mainContext: context,
-            //         controller: animationController
-            //     );
-            //   }
-            //   else {
-            //     if(BluetoothController().writeCharacteristic != null){
-            //       BluetoothController().instanceClean();
-            //     }
-
-            //   }
-            // });
           } else if(text == '검사 내역'){
-            Frame.doPagePush(context, ResultListPage());
+            Frame.doPagePush(context, CalenderTimeLinePage());
           } else if(text == '나의 건강 관리'){
-            Frame.doPagePush(context, HealthCarePage());
+            //Frame.doPagePush(context, HealthCarePage());
+            Frame.doPagePush(context, MyHealthPage());
           } else if(text == 'AI 분석') {
             _fetchAIAnalyze();
 
           }
         },
         child: Container(
-          height: 180,
+          height: size.height * 0.22,
           child: Card(
-            elevation: 5,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
+              borderRadius: BorderRadius.circular(20.0),
             ),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.end,
               children:
               [
                 Expanded(
-                  flex: 4,
                   child: Padding(
                     padding: const EdgeInsets.all(20.0),
-                    child: Image.asset('images/main_image_$imageName.png'),
+                    child: Image.asset('images/${Etc.buttonImageSwitch(text)}'),
                   ),
                 ),
 
-                Expanded(
-                  flex: 1,
+                SizedBox(
+                  height: size.height * 0.05,
                   child: Frame.myText(
                       text: text,
-                      fontSize: 1.2,
-                      fontWeight: FontWeight.w600,
+                      fontSize: 1.3,
                       align: TextAlign.center),
                 ),
               ],
@@ -261,34 +326,43 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   /// AI 분석: 측정된 소변데이터로
   /// 한밭대학교에서 제공해주는 API 연동
   _fetchAIAnalyze() async {
-    Navigator.of(context).push(ProgressPage(InspectionType.ai));
-    List<Recent> resultList = await client.dioRecent('');
+    CustomDialog.showAIDialog(
+      'AI 분석',
+      '제공되는 데이터는 참고 용도로만 사용되어야 하며, 전문가와의 상담을 권장합니다.',
+      context,
+      false
+    );
 
-    Map<String, dynamic> toMap = {
-      "blood": int.parse(resultList[0].status),
-      "bilirubin": int.parse(resultList[1].status),
-      "urobilinogen": int.parse(resultList[2].status),
-      "ketones": int.parse(resultList[3].status),
-      "protein": int.parse(resultList[4].status),
-      "nitrite": int.parse(resultList[5].status),
-      "glucose": int.parse(resultList[6].status),
-      "ph": int.parse(resultList[7].status),
-      "sg": int.parse(resultList[8].status),
-      "leukocytes": int.parse(resultList[9].status),
-    };
+    Future.delayed(Duration(seconds: 8), () async {
+      try {
+        List<Recent> resultList = await client.dioRecent('');
 
-//UrineModel{blood: 2, billrubin: 0, urobillnogen: 0, ketones: 0, protein: 2, nitrite: 0, glucose: 0, pH: 2, sG: 2, leucoytes: 0, vitamin: 1}
-    String result = await client.dioAI(toMap);
+        Map<String, dynamic> toMap = {
+          "blood": resultList[0].status == '0' ? "-" : "${resultList[0].status}+",
+          "bilirubin": resultList[1].status == '0' ? "-" : "${resultList[1].status}+",
+          "urobilinogen": resultList[2].status == '0' ? "-" : "${resultList[2].status}+",
+          "ketones": resultList[3].status == '0' ? "-" : "${resultList[3].status}+",
+          "protein": resultList[4].status == '0' ? "-" : "${resultList[4].status}+",
+          "nitrite": resultList[5].status == '0' ? "-" : "${resultList[5].status}+",
+          "glucose": resultList[6].status == '0' ? "-" : "${resultList[6].status}+",
+          "leukocytes": resultList[9].status == '0' ? "-" : "${resultList[9].status}+",
+        };
+        String result = await client.dioAI(toMap);
 
-    if(result != 'ERROR' ||  result != 'unknown') {
-      mLog.i('[AI result]: $result');
-    }
-    Future.delayed(Duration(seconds: 3),() {
-      Navigator.pop(context);
-      Frame.doPagePush(context, AIResultPage(result: result));
-      mLog.i('[AI result]: $result 증상이 나왔습니다.');
+        if (result != 'ERROR' || result != 'unknown') {
+          mLog.i('[AI result]: $result');
+          Navigator.pop(context);
+          Frame.doPagePush(context, AIResultPage(result: result));
+          // CustomDialog.showMyDialog('AI 분석',
+          //     '${Authorization().name}님의 검사 내역이 없습니다.', context, false);
+        }
+      } catch (e) {
+        mLog.d('에러');
+        Navigator.pop(context);
+        CustomDialog.showMyDialog(
+            'AI 분석', '정상적으로 처리 되지 않았습니다.\n다시 시도 해주세요.', context, false);
+      }
     });
-
   }
 
   _fetchUserName() async {
@@ -301,7 +375,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     }
   }
 
-  void _showResult(UrineModel urineModel) {
+  _showResult(UrineModel urineModel) {
     /// 결과 데이터 view
     showModalBottomSheet(
         isScrollControlled: true,
@@ -312,5 +386,14 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                 return FastestBottomSheet(urineModel: urineModel, size: size);
               });}
     );
+  }
+
+
+  /**
+   * 휴대폰 위치 정보가 on/off 인지 확인한다.
+   */
+  _checkPermission() async {
+    await Permission.location.request();
+    await Permission.bluetooth.request();
   }
 }
