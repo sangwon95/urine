@@ -1,4 +1,3 @@
-/*
 
 import 'package:flutter/material.dart';
 import 'package:grouped_list/grouped_list.dart';
@@ -10,8 +9,10 @@ import 'package:urine/widgets.dart';
 
 import '../model/result_list.dart';
 import '../utils/color.dart';
+import '../utils/etc.dart';
 import '../widgets/list_item.dart';
 
+/// 결과 화면
 class ResultListPage extends StatefulWidget {
   const ResultListPage({Key? key}) : super(key: key);
 
@@ -19,23 +20,42 @@ class ResultListPage extends StatefulWidget {
   State<ResultListPage> createState() => _ResultListPageState();
 }
 
-class _ResultListPageState extends State<ResultListPage> {
+class _ResultListPageState extends State<ResultListPage> with TickerProviderStateMixin {
 
   final String title = '검사 내역';
   List<ResultList> resultList = [];
-  List<Map<String, String>> groupResultList = [];
+  List<ResultList> recentResultList = [];
   ScrollController _scrollController = ScrollController();
+  ScrollController _recentScrollController = ScrollController();
+  int recentPageIndex = 1;
   int pageIndex = 1;
 
+  late String startDateRecent;
+  late String endDateRecent;
+
+  late Size size;
+  late TabController _tabController;
+
+  /// 전체 결과 리스트
+  String searchEndDate = '';
   String searchStartDate = '';
-  String searchEndDate   = '';
 
   @override
   void initState() {
+    _tabController = TabController(
+      length: 2,
+      vsync: this,  //vsync에 this 형태로 전달해야 애니메이션이 정상 처리됨
+    );
+
     super.initState();
-
+    _setRecentSearchDate();
     _scrollListener();
+  }
 
+  /// 최근 1주일 DateTime 초기화
+  _setRecentSearchDate() {
+    startDateRecent = Etc.setDateDuration(7);
+    endDateRecent = Etc.setDateDuration(0);
   }
 
   Future<Null> _refreshList() async {
@@ -44,97 +64,185 @@ class _ResultListPageState extends State<ResultListPage> {
   }
     @override
     Widget build(BuildContext context) {
-
+      size = MediaQuery.of(context).size;
       return Scaffold(
+        backgroundColor: Colors.white,
         appBar: Frame.myAppbar(
             title,
-            isIconBtn: true,
+            isIconBtn: false,
             icon: Icons.search_rounded,
-            onPressed: (){
-              showEndConsultationDialog(context, onPositive: ()=>{ Navigator.pop(context)});
-            }
         ),
-        body: FutureBuilder(
-          future: client.dioResultList(pageIndex, searchStartDate, searchEndDate),
-          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-            if (snapshot.hasError) {
-              return Container(
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(snapshot.error.toString().replaceAll('Exception: ', ''),
-                            textScaleFactor: 1.0, style: TextStyle(color: Colors.black)),
-                        InkWell(
-                            onTap: () => {
-                              searchStartDate = '',
-                              searchEndDate = '',
-                              _refreshList(),
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Icon(Icons.replay, size: 30),
-                            ))
-                      ],
+        body: Column(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey.shade200),
+              ),
+              child: TabBar(
+                tabs: [
+                  Container(
+                    height: 40,
+                    alignment: Alignment.center,
+                    child: Text(
+                      '최근',
                     ),
-                  ));
-            }
+                  ),
+                  Container(
+                    height: 40,
+                    alignment: Alignment.center,
+                    child: Text(
+                      '전체',
+                    ),
+                  ),
+                ],
+                indicator: BoxDecoration(
+                  color: mainColor
+                ),
+                labelColor: Colors.white,
+                unselectedLabelColor: Colors.black,
+                controller: _tabController,
+              ),
+            ),
+            
+            Expanded(
+              child: TabBarView(
+                controller: _tabController,
+                children: [
+                  FutureBuilder(
+                    future: client.dioResultList(recentPageIndex, searchStartDate, searchEndDate),
+                    builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
 
-            if (!snapshot.hasData) {
-              return Container(
-                  child: Center(
-                      child: SizedBox(height: 40.0, width: 40.0,
-                          child: CircularProgressIndicator(strokeWidth: 5))));
-            }
+                      if (snapshot.hasError) {
+                        return Container(
+                            child: Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(snapshot.error.toString().replaceAll('Exception: ', ''),
+                                      textScaleFactor: 1.0, style: TextStyle(color: Colors.black)),
+                                  InkWell(
+                                      onTap: () => {
+                                        _refreshList(),
+                                      },
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: const Icon(Icons.replay, size: 30),
+                                      ))
+                                ],
+                              ),
+                            ));
+                      }
 
-            if (snapshot.connectionState == ConnectionState.done) {
-              groupResultList.clear();
+                      if (!snapshot.hasData) {
+                        return Container(
+                            child: Center(
+                                child: SizedBox(height: 40.0, width: 40.0,
+                                    child: CircularProgressIndicator(strokeWidth: 5))));
+                      }
 
-              if (pageIndex == 1) {
-                resultList = snapshot.data;
-              }
-              else {
-                resultList = resultList..addAll(snapshot.data);
-              }
-              for (var elements in resultList) {
-                String referenceDate = elements.datetime.substring(0, 8);
-                if (elements.datetime.contains(referenceDate)) {
-                  Map<String, String> resultMap = {};
-                  resultMap['datetime'] = elements.datetime;
-                  resultMap['positiveCnt'] = elements.positiveCnt;
-                  resultMap['negativeCnt'] = elements.negativeCnt;
-                  resultMap['group'] = referenceDate;
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        if (recentPageIndex == 1) {
+                          recentResultList = snapshot.data;
+                        }
+                        else {
+                         recentResultList = recentResultList..addAll(snapshot.data);
+                        }
+                      }
 
-                  groupResultList.add(resultMap);
-                }
-              }
+                      return recentResultList.isEmpty ? EmptyView(text: '저장된 데이터가 없습니다.',) : Container(
+                          margin: EdgeInsets.only(bottom: 15),
+                          child: ListView.builder(
+                              controller: _recentScrollController,
+                              itemCount: recentResultList.length<6 ? recentResultList.length : 5,
+                              itemBuilder: (BuildContext context, int index) =>
+                                  ResultListItem(
+                                      resultListItem: recentResultList[index],
+                                      size: size,
+                                      context: context
+                                  )
+                          )
+                      );
+                    },
+                  ),
 
-              mLog.d(groupResultList.toString());
-            }
 
-            return resultList.isEmpty ? EmptyView(text: '저장된 데이터가 없습니다.',) : Container(
-                child: GroupedListView<dynamic, String>(
-                  controller: _scrollController,
-                  elements: groupResultList,
-                  groupBy: (element) => element['group'],
-                  groupComparator: (value1, value2) => value2.compareTo(value1),
-                  order: GroupedListOrder.ASC,
-                  useStickyGroupSeparators: false,
-                  groupSeparatorBuilder: (String value) => GroupListHeader(headerText: value),
-                  itemBuilder: (c, element)
-                  {
-                    return ResultListItem(element: element);
-                  },
+                  FutureBuilder(
+                    future: client.dioResultList(pageIndex, searchStartDate, searchEndDate),
+                    builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                      if (snapshot.hasError) {
+                        return Container(
+                            child: Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(snapshot.error.toString().replaceAll('Exception: ', ''),
+                                      textScaleFactor: 1.0, style: TextStyle(color: Colors.black)),
+                                  InkWell(
+                                      onTap: () => {
+                                        searchStartDate = '',
+                                        searchEndDate = '',
+                                        _refreshList(),
+                                      },
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Icon(Icons.replay, size: 30),
+                                      ))
+                                ],
+                              ),
+                            ));
+                      }
 
-                )
-            );
-          },
+                      if (!snapshot.hasData) {
+                        return Container(
+                            child: Center(
+                                child: SizedBox(height: 40.0, width: 40.0,
+                                    child: CircularProgressIndicator(strokeWidth: 5))));
+                      }
+
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        if (pageIndex == 1) {
+                          resultList = snapshot.data;
+                        }
+                        else {
+                          resultList = resultList..addAll(snapshot.data);
+                        }
+                      }
+
+                      return resultList.isEmpty ? EmptyView(text: '저장된 데이터가 없습니다.',) : Container(
+                          margin: EdgeInsets.only(bottom: 15),
+                          child: ListView.builder(
+                              controller: _scrollController,
+                              itemCount: resultList.length,
+                              itemBuilder: (BuildContext context, int index) =>
+                                  ResultListItem(
+                                      resultListItem: resultList[index],
+                                      size: size,
+                                      context: context
+                                  )
+                          )
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       );
     }
 
     /// 스크롤 이벤트 리스너
     void _scrollListener() {
+    _recentScrollController.addListener(() {
+      if (_recentScrollController.offset == _recentScrollController.position.maxScrollExtent) {
+        if (resultList.length % 10 == 0) {
+          ++recentPageIndex;
+          print('====> recentPageCount : ' + recentPageIndex.toString());
+          _refreshList();
+        }
+      }
+    });
+
     _scrollController.addListener(() {
       if (_scrollController.offset == _scrollController.position.maxScrollExtent) {
         if (resultList.length % 10 == 0) {
@@ -147,7 +255,6 @@ class _ResultListPageState extends State<ResultListPage> {
   }
 
 
-  /// 상담 종료 팝업
   /// HomePage, MenuPage
    showEndConsultationDialog(BuildContext mainContext, {required Function onPositive}) {
     return showDialog(
@@ -250,4 +357,3 @@ class _ResultListPageState extends State<ResultListPage> {
 
 
 
-*/

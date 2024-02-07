@@ -49,11 +49,11 @@ class Frame{
          statusBarIconBrightness: Brightness.dark,
          statusBarColor: Colors.white
      ),
-     title: Image.asset('images/main_logo.png', color: mainColor, height: 25,),
+     title: Image.asset('images/logo.png', color: mainColor, height: 25,),
      centerTitle: true,
      backgroundColor: Colors.white,
      elevation: 0.0,
-     iconTheme: IconThemeData(color: Colors.black),
+     iconTheme: IconThemeData(color: Colors.grey.shade600),
      actions:
      [
        /// 채팅화면 우측 상단 아이콘 버튼

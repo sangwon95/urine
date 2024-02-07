@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:urine/model/authorization.dart';
+import 'package:urine/page/vitamin_info_page.dart';
 import 'package:urine/utils/frame.dart';
 import 'package:urine/widgets.dart';
 
@@ -74,16 +75,16 @@ class _AIResultPageState extends State<AIResultPage> {
       backgroundColor: Colors.white,
 
       appBar: Frame.myAppbar(
-        'AI 분석 결과'
+        '성분 분석 결과'
       ),
       body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
         child: Padding(
           padding: EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                padding: EdgeInsets.fromLTRB(10, 20, 20, 20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -105,7 +106,7 @@ class _AIResultPageState extends State<AIResultPage> {
                       ),
 
                       Frame.myText(
-                        text: 'AI 분석 결과입니다.',
+                        text: '성분 분석 결과입니다.',
                         fontSize: 1.5,
                         align: TextAlign.start,
                         fontWeight: FontWeight.w500,
@@ -115,7 +116,11 @@ class _AIResultPageState extends State<AIResultPage> {
               ),
 
               _buildAIResultText(widget.result),
+              const SizedBox(height: 30),
 
+              buildVitaminAdvice(),
+
+              const SizedBox(height: 15),
               buildResultBox(aiResultDataList[0], stepAI1),
               buildResultBox(aiResultDataList[1], stepAI2),
               buildResultBox(aiResultDataList[2], stepAI3),
@@ -130,108 +135,165 @@ class _AIResultPageState extends State<AIResultPage> {
    buildResultBox(AIResultData aiResultData, Color topTextColor) {
     return Padding(
       padding: EdgeInsets.only(top: 20),
-      child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.4),
-                      spreadRadius: 5,
-                      blurRadius: 7,
-                      offset: Offset(0, 3),
-                    ),
-                  ],
-                ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children:
-                [
-                  Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(10),
-                            topRight: Radius.circular(10)),
-                          color: topTextColor,
-                        ),
-                        padding: EdgeInsets.only(top: 10, bottom: 10),
-                        child: Center(
-                          child: Frame.myText(
-                              text: aiResultData.title,
-                              fontSize: 1.2,
-                              maxLinesCount: 30,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                              align: TextAlign.start),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children:
+        [
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0),
+            child: Frame.myText(
+                text: aiResultData.title,
+                fontSize: 1.2,
+                maxLinesCount: 30,
+                color: mainColor,
+                fontWeight: FontWeight.w600,
+                align: TextAlign.start),
+          ),
+        const SizedBox(height: 10),
 
-                Container(
-                  padding: EdgeInsets.fromLTRB(20, 20, 20, 10),
-                  child: Frame.myText(
-                      text: aiResultData.mainText,
-                      fontSize: 1.1,
-                      maxLinesCount: 30,
-                      fontWeight: FontWeight.w600,
-                      align: TextAlign.start),
-                ),
-                  Container(
-                    padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
-                    child: Frame.myText(
-                        text:aiResultData.subMainText,
-                        fontSize: 1.1,
-                        maxLinesCount: 30,
-                        fontWeight: FontWeight.w500,
-                        align: TextAlign.start),
-                  )
-                ],
-              )
+        Container(
+          decoration: BoxDecoration(
+            color: Color(0xFFecf4f6),
+            borderRadius: BorderRadius.circular(10.0)
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: double.infinity,
+                padding: EdgeInsets.fromLTRB(20, 15, 20, 0),
+                child: Frame.myText(
+                    text: aiResultData.mainText,
+                    fontSize: 1.1,
+                    maxLinesCount: 30,
+                    fontWeight: FontWeight.w600,
+                    align: TextAlign.start),
               ),
+              Container(
+                padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                child: Frame.myText(
+                    text:aiResultData.subMainText,
+                    maxLinesCount: 30,
+                    fontWeight: FontWeight.w500,
+                    align: TextAlign.start),
+              )
+            ],
+          ),
+        )
+        ],
+      ),
     );
   }
 
   _buildAIResultText(String text) {
     return Container(
-      height: 40,
-      width: 380,
-      margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
       decoration: BoxDecoration(
         color: guideBackGroundColor,
         borderRadius: BorderRadius.circular(10),
       ),
       child: Padding(
         padding: const EdgeInsets.all(10.0),
-        child: Row(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Frame.myText(
-                text: '성분 분석 결과 ',
-                fontWeight: FontWeight.normal,
-                maxLinesCount: 1,
-                fontSize: 0.9,
-                align: TextAlign.center),
-            Frame.myText(
-                text: ' "$text" ',
-                fontWeight: FontWeight.w600,
-                color: mainColor,
-                maxLinesCount: 1,
-                fontSize: 1.0,
-                align: TextAlign.center),
-            Frame.myText(
-                text: text.contains('건강검진') ? '이 필요합니다.' : '관련성분이 검출 되었습니다.',
-                fontWeight: FontWeight.normal,
-                maxLinesCount: 2,
-                fontSize: 0.9,
-                align: TextAlign.center)
+            SizedBox(
+              width: double.infinity,
+              child: MediaQuery(
+                data: Etc.getScaleFontSize(context, fontSize: 1.2),
+                child: RichText(
+                  text:TextSpan(
+                    text: '성분 분석 결과 ',
+                    style: TextStyle(color: Colors.black),
+                    children: <TextSpan>[
+                      TextSpan(text: ' "$text" ', style: TextStyle(fontWeight: FontWeight.bold, color: mainColor, fontSize: 15)),
+                      TextSpan(text: text.contains('건강검진') ? '이 필요합니다.' : '관련성분이 검출 되었습니다'),
+                    ],
+                  ),
+                ),
+              )
+            ),
           ],
         ),
       ),
+    );
+  }
+
+  /// 비타민 검출에 대한 조언 위젯
+  buildVitaminAdvice(){
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 8.0, bottom: 8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Frame.myText(
+                      text: 'Tip!',
+                      fontSize: 1.2,
+                      maxLinesCount: 30,
+                      color: Colors.yellow.shade600,
+                      fontWeight: FontWeight.w600,
+                      align: TextAlign.start),
+
+                  const SizedBox(width: 10),
+
+                  Frame.myText(
+                      text: '비타민 검출 영향',
+                      fontSize: 1.0,
+                      maxLinesCount: 30,
+                      color: Colors.yellow.shade600,
+                      fontWeight: FontWeight.w600,
+                      align: TextAlign.start),
+                ],
+              ),
+
+              InkWell(
+                onTap: ()=> Frame.doPagePush(context, VitaminInfoPage()),
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(10,0,10,0),
+                  child: Frame.myText(
+                    text: '더보기',
+                    color: Colors.grey,
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+
+        Container(
+          decoration: BoxDecoration(
+              color: Color(0xFFecf4f6),
+              borderRadius: BorderRadius.circular(10.0)
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: double.infinity,
+                padding: EdgeInsets.fromLTRB(20, 15, 20, 10),
+                child: Frame.myText(
+                    text: '성분 분석 결과 대부분 음성이며, "소변 건강양호"로 분석 되었습니다.',
+                    maxLinesCount: 30,
+                    align: TextAlign.start),
+              ),
+              Container(
+                padding: EdgeInsets.fromLTRB(20, 0, 20, 10),
+                child: Frame.myText(
+                    text: '과잉 비타민 C 는 일부 성분의 위음성에 영향을 줄 수 있으므로 해당 시 재검사를 권장합니다.',
+                    maxLinesCount: 30,
+                    color: Colors.red.shade300,
+                    fontWeight: FontWeight.w500,
+                    align: TextAlign.start),
+              )
+            ],
+          ),
+        )
+      ],
     );
   }
 }

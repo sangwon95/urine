@@ -6,6 +6,7 @@ import 'package:msh_checkbox/msh_checkbox.dart';
 import 'package:provider/provider.dart';
 import 'package:urine/main.dart';
 import 'package:urine/model/authorization.dart';
+import 'package:urine/page/ai_result_page.dart';
 import 'package:urine/providers/bluetooth_state_provider.dart';
 import 'package:urine/utils/etc.dart';
 import 'package:urine/widgets/button.dart';
@@ -36,6 +37,7 @@ class _TermsBottomSheetState extends State<TermsBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
+    mLog.d('이용약관 화면 갱신');
     return Container(
       color: Color(0xFF737373),
       child: Container(
@@ -181,7 +183,7 @@ class _PreparationBottomSheetState extends State<PreparationBottomSheet> {
   bool isDevice       = false; // 디바이스 상태
   bool bluetoothState = false;// 블루투스 상태 Text
 
-  String deviceStateText = '유린기 OFF'; // 디바이스 상태 Text
+  String deviceStateText = '검사기 OFF'; // 디바이스 상태 Text
 
   late BluetoothStateProvider _bluetoothStateProvider;
 
@@ -312,7 +314,7 @@ class _PreparationBottomSheetState extends State<PreparationBottomSheet> {
                                         onTap: (){
                                           setState((){
                                             isDevice = !isDevice;
-                                            deviceStateText = isDevice ? '유린기 ON' : '유린기 OFF';
+                                            deviceStateText = isDevice ? '검사기 ON' : '검사기 OFF';
                                           });
                                         },
                                         child: Padding(
@@ -330,7 +332,7 @@ class _PreparationBottomSheetState extends State<PreparationBottomSheet> {
                                                 onChanged: (selected) {
                                                   setState(() {
                                                     isDevice = selected;
-                                                    deviceStateText = '유린기 ON';
+                                                    deviceStateText = '검사기 ON';
                                                   });
                                                 },
                                               ),
@@ -350,7 +352,7 @@ class _PreparationBottomSheetState extends State<PreparationBottomSheet> {
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Frame.myText(
-                                          text: '유린기가 켜져있는지\n확인 해주세요.',
+                                          text: '검사기가 켜져있는지\n확인 해주세요.',
                                           fontSize: 1.0,
                                           color: Colors.grey.shade600,
                                           maxLinesCount: 2,
@@ -406,7 +408,7 @@ class _PreparationBottomSheetState extends State<PreparationBottomSheet> {
                           visible: bluetoothState && isDevice,
                           child: PreparationToSearchButton(
                               context: context,
-                              text: '준비 완료',
+                              text: '검사 진행',
                               onBackCallbackResult: (UrineModel) => widget.onBackCallbackResult(UrineModel))
                             //onBackCallbackConnect: (BluetoothDevice) => widget.onBackCallbackConnect(BluetoothDevice))
                       )
@@ -424,11 +426,11 @@ class _PreparationBottomSheetState extends State<PreparationBottomSheet> {
 
   /// 시스템 블루투스 on/off 상태 리스너
   _addBluetoothStateLister(){
-    FlutterBluePlus.instance.state.listen((value){
-      if (value == BluetoothState.off) {
+    FlutterBluePlus.adapterState.listen((value){
+      if (value == BluetoothAdapterState.off) {
         _bluetoothStateProvider.setStateOff();
       }
-      else if(value == BluetoothState.on){
+      else if(value == BluetoothAdapterState.on){
         _bluetoothStateProvider.setStateOn();
       } else {
         mLog.i('${value.toString()}');
@@ -469,7 +471,9 @@ class _FastestBottomSheetState extends State<FastestBottomSheet> {
   late String inspectionItem;
   bool isScreenUpdate = true;
 
-  int selectedIdx = 1;
+  int selectedIdx = 7;
+
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -477,8 +481,8 @@ class _FastestBottomSheetState extends State<FastestBottomSheet> {
     super.initState();
 
     /// searchStartData, searchEndDate 날짜 초기 해야됨
-    inspectionType = inspectionItemTypeList[0]; //DT01: 잠혈로 초기화
-    inspectionItem =  inspectionItemList[0]; // 잠혈 Text
+    inspectionType = inspectionItemTypeList[6]; //DT01: 잠혈로 초기화
+    inspectionItem =  inspectionItemList[6]; // 잠혈 Text
     _setSearchDate(180);
 
     print(widget.urineModel.toString());
@@ -495,21 +499,27 @@ class _FastestBottomSheetState extends State<FastestBottomSheet> {
               topRight: Radius.circular(20))),
       padding: EdgeInsets.only(bottom: bottomPadding(context)),
       child: SizedBox(
-        height: widget.size.height * 0.85,
+        height: widget.size.height-35,
         child: Container(
           padding: EdgeInsets.all(15),
           child: Column(
             children:
             [
               /// 상단 내림 바
-              _buildTopBar(),
+              _buildTopCancelBar(),
 
-              _buildUserInfoBox(),
+              // 23.8.22
+              // 건강 지수 생략 요청
+              //_buildUserInfoBox(),
 
+              /// 7일간의 추이 차트
               _buildMyHealthReportBox(),
 
               /// 건강 차트
               _buildResultList(),
+
+              /// 해당 데이터 성분 분석 버튼
+              _buildComponentAnalysisButton(),
             ],
           ),
         ),
@@ -519,18 +529,13 @@ class _FastestBottomSheetState extends State<FastestBottomSheet> {
 
 
   /// 상단 바 widget
-  _buildTopBar() {
+  _buildTopCancelBar() {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        Container(
-          width: 70,
-          height: 3,
-          decoration: BoxDecoration(
-              color: Colors.grey,
-              borderRadius: BorderRadius.all(Radius.circular(10.0))
-          ),
-        )
+        InkWell(
+            onTap: ()=> {Navigator.pop(context)},
+            child: Icon(Icons.cancel_outlined, size: 30))
       ],
     );
   }
@@ -605,7 +610,7 @@ class _FastestBottomSheetState extends State<FastestBottomSheet> {
   _buildMyHealthReportBox() {
     return Container(
       padding: EdgeInsets.all(5),
-      margin: EdgeInsets.symmetric(vertical: 10),
+      margin: EdgeInsets.symmetric(vertical: 20),
       width: widget.size.width,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
@@ -652,7 +657,7 @@ class _FastestBottomSheetState extends State<FastestBottomSheet> {
                   if (!chartData.any((element) => element.x
                       .toString()
                       .contains(Etc.setGroupDateTime(value.datetime)))) {
-                    if (chartData.length < 5) {
+                    if (chartData.length < 7) {
                       chartData.add(ChartData(
                           x: Etc.setGroupDateTime(value.datetime),
                           y: int.parse(value.status)));
@@ -728,8 +733,6 @@ class _FastestBottomSheetState extends State<FastestBottomSheet> {
                 ),
               ),
 
-              SizedBox(height: 10),
-
               SizedBox(
                   height: 90,
                   width: widget.size.width - 90,
@@ -739,6 +742,29 @@ class _FastestBottomSheetState extends State<FastestBottomSheet> {
           );
         },
       ),
+    );
+  }
+
+
+  /// 성분 분석 버튼
+  _buildComponentAnalysisButton(){
+    return Container(
+        padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+        width: double.infinity,
+        child: TextButton(
+            style: TextButton.styleFrom(
+                elevation: 0.0,
+                backgroundColor: mainColor,
+                padding: EdgeInsets.all(17.0),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0))),
+            onPressed: () =>_fetchAIAnalyze(),
+            child: Frame.myText(
+              text: '성분 분석',
+              fontWeight: FontWeight.w400,
+              fontSize: 1.2,
+              color: Colors.white,
+            )
+        )
     );
   }
 
@@ -763,25 +789,32 @@ class _FastestBottomSheetState extends State<FastestBottomSheet> {
     Expanded(
       child: Container(
         padding: EdgeInsets.only(top: 15),
-        child: ListView(
-          children: [
-            Container(
-              height: 700,
-              child: ListView.builder(
-                //physics: NeverScrollableScrollPhysics(),
-                physics: BouncingScrollPhysics(),
-                itemCount: widget.urineModel?.urineList.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return ResultListItem(
-                    index: index,
-                    fastestResult: widget.urineModel?.urineList,
-                    selectedInspectionType: inspectionItem,
-                    changeItem: (int) => _changeItem(int),
-                  );
-                  },
-              ),
+        child: Scrollbar(
+          thickness: 2,
+          controller: _scrollController,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: ListView(
+              children: [
+                Container(
+                  height: 700,
+                  child: ListView.builder(
+                    //physics: NeverScrollableScrollPhysics(),
+                    physics: BouncingScrollPhysics(),
+                    itemCount: widget.urineModel?.urineList.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return ResultListItem(
+                        index: index,
+                        fastestResult: widget.urineModel?.urineList,
+                        selectedInspectionType: inspectionItem,
+                        changeItem: (int) => _changeItem(int),
+                      );
+                      },
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
@@ -809,5 +842,48 @@ class _FastestBottomSheetState extends State<FastestBottomSheet> {
     var result = MediaQuery.of(ctx).viewInsets.bottom;
     if (result == 0) result = 10;
     return result;
+  }
+
+  /// 성분 분석: 측정된 소변데이터로
+  /// 한밭대학교에서 제공해주는 API 연동
+  _fetchAIAnalyze() async {
+    CustomDialog.showAIDialog(
+        '성분 분석',
+        '제공되는 데이터는 참고 용도로만 사용되어야 하며, 전문가와의 상담을 권장합니다.',
+        context,
+        false
+    );
+
+    Future.delayed(Duration(seconds: 5), () async {
+
+      try {
+        List<String>? resultList = widget.urineModel?.urineList;
+
+        Map<String, dynamic> toMap = {
+          "blood": resultList![0] == '0' ? "-" : "${resultList[0]}+",
+          "bilirubin": resultList[1] == '0' ? "-" : "${resultList[1]}+",
+          "urobilinogen": resultList[2] == '0' ? "-" : "${resultList[2]}+",
+          "ketones": resultList[3] == '0' ? "-" : "${resultList[3]}+",
+          "protein": resultList[4] == '0' ? "-" : "${resultList[4]}+",
+          "nitrite": resultList[5] == '0' ? "-" : "${resultList[5]}+",
+          "glucose": resultList[6] == '0' ? "-" : "${resultList[6]}+",
+          "leukocytes": resultList[9] == '0' ? "-" : "${resultList[9]}+",
+        };
+        String result = await client.dioAI(toMap);
+
+        if (result != 'ERROR' || result != 'unknown') {
+          mLog.i('[AI result]: $result');
+          Navigator.pop(context);
+          Frame.doPagePush(context, AIResultPage(result: result));
+          // CustomDialog.showMyDialog('AI 분석',
+          //     '${Authorization().name}님의 검사 내역이 없습니다.', context, false);
+        }
+      } catch (e) {
+        mLog.d('에러');
+        Navigator.pop(context);
+        CustomDialog.showMyDialog(
+            'AI 성분분석', '정상적으로 처리 되지 않았습니다.\n다시 시도 해주세요.', context, false);
+      }
+    });
   }
 }

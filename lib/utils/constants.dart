@@ -68,6 +68,10 @@ const String BLE_GATT_UUID_GATT_SERVICE = '0783b03e-8535-b5a0-7140-a304d2495cb7'
 const String BLE_GATT_UUID_NOTIFICATION = '0783b03e-8535-b5a0-7140-a304d2495cb8';
 const String BLE_GATT_UUID_WRITE        = '0783b03e-8535-b5a0-7140-a304d2495cba';
 
+// const String NEW_BLE_GATT_UUID_GATT_SERVICE = '6e400001-b5a3-f393-e0a9-e50e24dcca9e';
+// const String NEW_BLE_GATT_UUID_NOTIFICATION = '6e400003-b5a3-f393-e0a9-e50e24dcca9e';
+// const String NEW_BLE_GATT_UUID_WRITE        = '6e400002-b5a3-f393-e0a9-e50e24dcca9e';
+
 const jobNameList  = [
  ' 보건의료직',
  ' 제조생산직',

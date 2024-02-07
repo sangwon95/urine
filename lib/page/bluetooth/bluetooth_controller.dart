@@ -68,7 +68,7 @@ class BluetoothController{
 
   /// 시스템 블루투스 on/off 상태 리스너
   _addBluetoothStateLister(){
-    FlutterBluePlus.instance.state.listen((value){
+    FlutterBluePlus.adapterState.listen((value){
       if (value == BluetoothState.off) {
         bluetoothStateProvider.setStateOff();
       }
@@ -81,29 +81,29 @@ class BluetoothController{
   }
 
   /// 선택된 디바이스 연결 상태 리스너
-  addBluetoothDeviceConnectionLister(BluetoothDevice device){
-    this.mDevice = device;
-    connectionLister = mDevice.state.listen((value){
-      switch (value) {
-        case BluetoothDeviceState.connected: {
-          mLog.i('[BluetoothController/addBluetoothDeviceConnectionLister]: Connected!');
-          /// Gatt Service 찾기
-         if(serviceLister == null){ // 등록된 GattServiceLister 가 없으면 실행된다.
-           addBluetoothGattServiceLister();
-         } else {
-           mLog.i('[BluetoothController/addBluetoothDeviceConnectionLister] serviceLister: 리스너가 등록 되어 있다.');
-         }
-          break;
-        }
-        case BluetoothDeviceState.disconnected:
-          mLog.i('[BluetoothController/addBluetoothDeviceConnectionLister]: Disconnected!');
-          break;
-        default:
-          mLog.d('BluetoothDeviceState.connected : ${value.toString().substring(21).toUpperCase()}');
-          break;
-      }
-    });
-  }
+  // addBluetoothDeviceConnectionLister(BluetoothDevice device){
+  //   this.mDevice = device;
+  //   connectionLister = mDevice.connectionState.listen((value){
+  //     switch (value) {
+  //       case BluetoothConnectionState.connected: {
+  //         mLog.i('[BluetoothController/addBluetoothDeviceConnectionLister]: Connected!');
+  //         /// Gatt Service 찾기
+  //        if(serviceLister == null){ // 등록된 GattServiceLister 가 없으면 실행된다.
+  //          addBluetoothGattServiceLister();
+  //        } else {
+  //          mLog.i('[BluetoothController/addBluetoothDeviceConnectionLister] serviceLister: 리스너가 등록 되어 있다.');
+  //        }
+  //         break;
+  //       }
+  //       case BluetoothDeviceState.disconnected:
+  //         mLog.i('[BluetoothController/addBluetoothDeviceConnectionLister]: Disconnected!');
+  //         break;
+  //       default:
+  //         mLog.d('BluetoothDeviceState.connected : ${value.toString().substring(21).toUpperCase()}');
+  //         break;
+  //     }
+  //   });
+  // }
 
   /// GattServiceLister 등록
   /// notification,write Characteristic 찾는다.
@@ -153,7 +153,7 @@ class BluetoothController{
         mLog.i('[BluetoothController] writeCharacteristic uuid: ${writeCharacteristic!.uuid}');
         showConnectionDialog(
               title: '연결 완료',
-              content: '유린기와 연결이 완료되었습니다. 검사를 진행하시겠습니까?',
+              content: '검사기와 연결이 완료되었습니다. 검사를 진행하시겠습니까?',
               mainContext: context,
               controller: animationController
         );
@@ -221,7 +221,7 @@ class BluetoothController{
           popProgress();
           showNoResponseDialog(
               title: '문제',
-              content: '유린기로부터 데이터를 받지 못했습니다. 다시 시도바랍니다.',
+              content: '검사기로부터 데이터를 받지 못했습니다. 다시 시도바랍니다.',
               controller: animationController,
               mainContext: context
           );

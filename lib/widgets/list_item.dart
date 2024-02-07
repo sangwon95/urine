@@ -57,7 +57,7 @@ class ResultListItem extends StatelessWidget {
                       [
                         /// icon image
                         Image.asset('images/past_icon.png',
-                            height: 55, width: 55),
+                            height: 45, width: 45),
 
                         /// 항목
                         Container(
@@ -87,7 +87,7 @@ class ResultListItem extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Icon(Icons.arrow_forward_ios_sharp, color: Colors.grey)
+                  Icon(Icons.arrow_forward_ios_sharp, color: Colors.grey, size: 20)
                 ]
             ),
           )),

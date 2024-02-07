@@ -188,7 +188,6 @@ class PwdTextFiled extends StatelessWidget {
             child: Container(
                 height: 35,
                 width: 150,
-                padding: EdgeInsets.only(left: 5),
                 child: Row(
                     children:
                     [
@@ -226,7 +225,7 @@ class DateTextField extends StatelessWidget {
           InkWell(
             onTap: (){
                 CustomDialog.showStartEndDialog(context,
-                    onPositive: (searchStartDate, searchEndDate)=>updateDateBirth(searchStartDate, searchEndDate));
+                    onPositive: (searchStartDate, searchEndDate)=> updateDateBirth(searchStartDate, searchEndDate));
 
             },
             child: Container(

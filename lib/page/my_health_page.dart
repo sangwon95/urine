@@ -6,6 +6,7 @@ import 'package:urine/utils/frame.dart';
 
 import '../utils/color.dart';
 import '../utils/constants.dart';
+import 'chart_page.dart';
 
 /**
  * 나의 건강 관리
@@ -74,6 +75,33 @@ class _MyHealthPageState extends State<MyHealthPage> {
 
                 buildResultBox(aiResultDataList[0], stepAI3),
                 buildResultBox(aiResultDataList[1], stepAI4),
+
+                SizedBox(height: 24),
+
+                // TextButton(
+                //     style: TextButton.styleFrom(
+                //       primary: mainColor,
+                //       backgroundColor: mainColor,
+                //     ),
+                //     onPressed: () {
+                //       Frame.doPagePush(context, ChartPage());
+                //     },
+                //     child: SizedBox(
+                //       width: double.infinity,
+                //       height: 40,
+                //       child: Row(
+                //         mainAxisAlignment: MainAxisAlignment.center,
+                //         children: [
+                //           Frame.myText(
+                //               text: '추이 확인하러 가기',
+                //               color: Colors.white
+                //           ),
+                //           SizedBox(width: 10),
+                //           Icon(Icons.arrow_forward_ios_sharp, color: Colors.white, size: 20)
+                //         ],
+                //       ),
+                //     )
+                // )
               ],
             ),
           ),

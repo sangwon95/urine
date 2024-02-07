@@ -21,14 +21,13 @@ class _PreparationPageState extends State<PreparationPage> {
   /// step 0: 검사 준비
   bool isDevice         = false; // 디바이스 상태
   bool isBluetooth      = false; // 블루투스 상태
-  String deviceState    = '유린기 OFF'; // 디바이스 상태 Text
+  String deviceState    = '검사기 OFF'; // 디바이스 상태 Text
   String bluetoothState = '블루투스 OFF'; // 블루투스 상태 Text
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
     _bluetoothStateLister(); // BluetoothState 리스너 등록
   }
 
@@ -111,7 +110,7 @@ class _PreparationPageState extends State<PreparationPage> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Frame.myText(
-                          text: '유린기가 켜져있는지 확인 해주세요.',
+                          text: '검사기가 켜져있는지 확인 해주세요.',
                           fontSize: 1.0,
                           maxLinesCount: 2,
                           fontWeight: FontWeight.w600,
@@ -132,7 +131,7 @@ class _PreparationPageState extends State<PreparationPage> {
                                 setState(()
                                 {
                                   isDevice = selected;
-                                  deviceState = '유린기 ON';
+                                  deviceState = '검사기 ON';
                                 });
                               },
                             ),
@@ -176,16 +175,15 @@ class _PreparationPageState extends State<PreparationPage> {
 
   /// 시스템 블루투스 on/off 상태 리스너
   _bluetoothStateLister(){
-    FlutterBluePlus.instance.state.listen((value){
-
-      if (value == BluetoothState.off) {
+    FlutterBluePlus.adapterState.listen((value){
+      if (value == BluetoothAdapterState.off) {
         setState((){
           isBluetooth = false;
           bluetoothState = '블루투스 OFF';
         });
       }
 
-      else if(value == BluetoothState.on){
+      else if(value == BluetoothAdapterState.on){
         setState((){
           isBluetooth = true;
           bluetoothState = '블루투스 ON';

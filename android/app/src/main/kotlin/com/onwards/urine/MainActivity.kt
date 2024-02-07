@@ -1,4 +1,4 @@
-package com.onwards.urine
+package com.wonpl.urine
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -108,14 +108,14 @@ class ScanResultTile extends StatelessWidget {
             '${result.advertisementData.txPowerLevel ?? 'N/A'}'),
         _buildAdvRow(context, 'Manufacturer Data',
             getNiceManufacturerData(result.advertisementData.manufacturerData)),
-        _buildAdvRow(
-            context,
-            'Service UUIDs',
-            (result.advertisementData.serviceUuids.isNotEmpty)
-                ? result.advertisementData.serviceUuids.join(', ').toUpperCase()
-                : 'N/A'),
-        _buildAdvRow(context, 'Service Data',
-            getNiceServiceData(result.advertisementData.serviceData)),
+        // _buildAdvRow(
+        //     context,
+        //     'Service UUIDs',
+        //     (result.advertisementData.serviceUuids.isNotEmpty)
+        //         ? result.advertisementData.serviceUuids.join(', ').toUpperCase()
+        //         : 'N/A'),
+        // _buildAdvRow(context, 'Service Data',
+        //     getNiceServiceData(result.advertisementData.serviceData)),
       ],
     );
   }
@@ -329,9 +329,9 @@ class EmptyView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children:
           [
-            Image.asset('images/empty_image.png'),
+            Image.asset('images/empty_image.png', height: 90, width: 90,),
             SizedBox(height: 15),
-            Frame.myText(text: text, fontSize: 1.3, color: mainColor, fontWeight: FontWeight.w600),
+            Frame.myText(text: text, fontSize: 1.2, fontWeight: FontWeight.w600),
           ],
         ),
       ),

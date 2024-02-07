@@ -149,13 +149,13 @@ class _ConnectionPateState extends State<ConnectionPage> with SingleTickerProvid
   _bluetoothDeviceConnectionLister(BluetoothDevice device){
     device.state.listen((value){
       switch (value) {
-        case BluetoothDeviceState.connected: {
+        case BluetoothConnectionState.connected: {
           mLog.i('BluetoothDeviceState.connected : connected');
           _bluetoothGattServiceLister(device);
 
           break;
         }
-        case BluetoothDeviceState.disconnected: {
+        case BluetoothConnectionState.disconnected: {
           mLog.i('BluetoothDeviceState.connected : disconnected');
           break;
         }

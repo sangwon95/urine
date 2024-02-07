@@ -194,11 +194,11 @@ class CustomDialog{
               ),
             ),
             content: SizedBox(
-              height: 130,
+              height: 122,
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 12, 20, 8),
+                    padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -299,10 +299,10 @@ class CustomDialog{
                 child: TextButton(
                     style: TextButton.styleFrom(
                         elevation: 3.0,
-                        backgroundColor: Colors.white,
+                        backgroundColor: mainColor,
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0))),
                     onPressed: () => onPositive(),
-                    child: Text('확인', textScaleFactor: 1.0, style: TextStyle(color: Colors.grey.shade600))
+                    child: Text('확인', textScaleFactor: 1.0, style: TextStyle(color: Colors.white))
                 ),
               )
 
@@ -396,60 +396,66 @@ class CustomDialog{
 
 
 
-  /// AI 분석
+  /// 성분 분석
   /// 분석 중일때 나오는 다이얼 로그
   static showAIDialog(String title, String text, BuildContext mainContext, bool isCancelBtn) {
     return showDialog(
         context: mainContext,
         barrierDismissible: false,
         builder: (BuildContext context) {
-          return AlertDialog(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-            title: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(height: 10),
-                  Text(title, textScaleFactor: 0.95, style: TextStyle(fontWeight: FontWeight.bold)),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 25),
-                    child: SpinKitFadingFour(
-                        color: mainColor,
-                        size: 70
-                    ),
-                  ),
-                  Text(
-                      '${Authorization().name}님 데이터 분석중입니다.',
-                      textScaleFactor: 0.85,
-                      style: TextStyle(fontWeight: FontWeight.bold, color: mainColor)
-                  ),
-                ],
-              ),
-            ),
-            content: SizedBox(
-              height: 100,
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-                    child: SizedBox(
-                      height: 60,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                              width: 230,
-                              child: Text(text, textAlign: TextAlign.center, textScaleFactor: 0.85, style: TextStyle(fontWeight: FontWeight.w500))),
-                        ],
+          return WillPopScope(
+            onWillPop: () async {
+              // 뒤로가기 버튼을 이용한 닫힘을 방지
+              return false;
+            },
+            child: AlertDialog(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+              title: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(height: 10),
+                    Text(title, textScaleFactor: 0.95, style: TextStyle(fontWeight: FontWeight.bold)),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 25),
+                      child: SpinKitFadingFour(
+                          color: mainColor,
+                          size: 70
                       ),
                     ),
-                  ),
-                ],
+                    Text(
+                        '${Authorization().name}님 데이터 분석중입니다.',
+                        textScaleFactor: 0.85,
+                        style: TextStyle(fontWeight: FontWeight.bold, color: mainColor)
+                    ),
+                  ],
+                ),
               ),
+              content: SizedBox(
+                height: 100,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                      child: SizedBox(
+                        height: 60,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                                width: 230,
+                                child: Text(text, textAlign: TextAlign.center, textScaleFactor: 0.85, style: TextStyle(fontWeight: FontWeight.w500))),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              contentPadding: EdgeInsets.all(0),
+              actionsAlignment: MainAxisAlignment.end,
+              actionsPadding: EdgeInsets.all(0),
             ),
-            contentPadding: EdgeInsets.all(0),
-            actionsAlignment: MainAxisAlignment.end,
-            actionsPadding: EdgeInsets.all(0),
           );
         });
   }

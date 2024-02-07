@@ -60,7 +60,7 @@ class ProgressPage extends ModalRoute {
                   Frame.myText(
                     text: InspectionType.basic  == inspectionType ?
                     '검사 진행중입니다.\n잠시만 기다려주세요.':
-                    'AI 분석 중입니다.\n잠시만 기다려주세요.',
+                    '성분 분석 중입니다.\n잠시만 기다려주세요.',
                     align: TextAlign.center,
                     fontSize: 1.4,
                     maxLinesCount: 2,

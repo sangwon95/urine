@@ -82,9 +82,9 @@ class BarChart{
       /// Y축 설정
       primaryYAxis: NumericAxis(
           minimum: 0,
-          maximum: 5,
+          maximum: 7,
           axisLine: const AxisLine(width: 0),
-          majorGridLines: const MajorGridLines( width: 1, color: Colors.white),
+          majorGridLines: const MajorGridLines(width: 1, color: Colors.white),
           //labelFormat: '{value}',
           //labelStyle: TextStyle(fontSize: 12),
           majorTickLines: const MajorTickLines(size: 0)),

@@ -32,6 +32,16 @@ class Etc{
     );
   }
 
+  /// 비타민 화면에서 사용하고 있는 가로 라인 줄
+  static solidLineVitamin(BuildContext context){
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 3),
+      width: MediaQuery.of(context).size.width,
+      height: 0.3,
+      color: Colors.grey.shade400,
+    );
+  }
+
 
   /// 세로 라인 줄
   static solidLineVertical(){
@@ -336,8 +346,8 @@ class Etc{
     switch(value){
       case '검사하기':  return 'first_btn.png';
       case '검사 내역':  return 'second_btn.png';
-      case 'AI 분석':  return 'third_btn.png';
-      case '나의 건강 관리':  return 'fourth_btn.png';
+      case '성분 분석':  return 'third_btn.png';
+      case '나의 추이':  return 'second_btn.png';
       default : return 'first_btn.png';
     }
   }
@@ -390,7 +400,6 @@ class Etc{
         default  : return '미 측정';
       }
     }
-
   }
 
   static resultStatusToTextColor(List<String> fastestResult, int index) {

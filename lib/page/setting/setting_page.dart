@@ -35,7 +35,7 @@ class _SettingPageState extends State<SettingPage> {
           child: Column(
             children:
             [
-              _buildMenu('프로필 수정'),
+            //  _buildMenu('프로필 수정'),
               _buildMenu('비밀번호 재설정'),
               _buildMenu('버전 정보'),
               _buildMenu('이용약관 및 정책'),
@@ -64,14 +64,14 @@ class _SettingPageState extends State<SettingPage> {
 
         else if(text == '회원 탈퇴')
           CustomDialog.showSettingDialog(
-              title: '회원 탈퇴!',
+              title: '회원 탈퇴',
               text: '회원 탈퇴 하시겠습니까?\n주의! 개인정보가 삭제됩니다.',
-              mainContext: context, onPressed: (){},
+              mainContext: context, onPressed: (){ },
           );
 
         else if(text == '로그 아웃')
           CustomDialog.showSettingDialog(
-              title: '로그 아웃!',
+              title: '로그 아웃',
               text: '로그 아웃 하시겠습니까?\n로그인 화면으로 전환됩니다.',
               mainContext: context,
               onPressed: () async

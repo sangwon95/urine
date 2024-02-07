@@ -125,7 +125,7 @@ class SignUpPageState extends State<SignUpPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Frame.myText(
-                      text: '유린기 간편 회원가입',
+                      text: '검사기 간편 회원가입',
                       color: Colors.white,
                       fontWeight: FontWeight.w500,
                       maxLinesCount: 2,

@@ -12,7 +12,7 @@ import 'package:urine/providers/count_provider.dart';
 import '../model/authorization.dart';
 import '../model/login_model.dart';
 import '../model/status_model.dart';
-import '../page/bluetooth/search_device_page2.dart';
+import '../page/bluetooth/search_device_page.dart';
 import '../page/login_page.dart';
 import '../page/signup_page.dart';
 import '../utils/auto_login.dart';
@@ -22,6 +22,7 @@ import '../utils/dio_client.dart';
 import '../utils/edit_controller.dart';
 import '../utils/etc.dart';
 import '../utils/frame.dart';
+import '../utils/logging.dart';
 import '../utils/my_shared_preferences.dart';
 import '../validates/password_validate.dart';
 import '../validates/sign_validate.dart';
@@ -115,8 +116,7 @@ class SignButton extends StatelessWidget {
                 backgroundColor: mainColor,
                 padding: EdgeInsets.all(17.0),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0))),
-            onPressed: ()
-            {
+            onPressed: () {
               _doSign();
             },
             child: Frame.myText(
@@ -149,14 +149,14 @@ class SignButton extends StatelessWidget {
             CustomDialog.showMyDialog('회원가입!', MESSAGE_ERROR_CONNECT, context, false);
         }
       } catch (error){
+        logger.i(error);
         Etc.handleExceptionError(context, error.toString());
       }
 
     }
   }
 
-  static bool checkValidate(BuildContext context, SignEdit signEdit)
-  {
+  static bool checkValidate(BuildContext context, SignEdit signEdit) {
     if(
     SignValidate().checkID(signEdit.idController.text, context)&&                // 아이디
     SignValidate().checkPassword(signEdit.passController.text, context)&&        // 비밀번호
@@ -367,9 +367,11 @@ class PreparationToSearchButton extends StatelessWidget {
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0))),
             onPressed: () {
               Navigator.pop(context);
-              Frame.doPagePush(context, SearchDevicePage2(
-                  onBackCallbackResult: (UrineModel) => onBackCallbackResult(UrineModel))
-              );
+              Frame.doPagePush(
+                  context,
+                  SearchDevicePage(
+                      onBackCallbackResult: (UrineModel) =>
+                          onBackCallbackResult(UrineModel)));
             },
             child: Text(text, textScaleFactor: 1.1, style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600))
         )
@@ -484,6 +486,9 @@ class recheckButton extends StatelessWidget {
     );
   }
 }
+
+
+
 
 //
 //

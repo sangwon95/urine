@@ -39,7 +39,7 @@ class _FindDevicesPageState extends State<FindDevicesPage> {
               onPrimary: Colors.white,
             ),
             onPressed: Platform.isAndroid
-                ? () => FlutterBluePlus.instance.turnOff()
+                ? () => FlutterBluePlus.turnOff()
                 : null,
             child: const Text('TURN OFF'),
           ),
@@ -47,7 +47,7 @@ class _FindDevicesPageState extends State<FindDevicesPage> {
       ),
 
       body: RefreshIndicator(
-        onRefresh: () => FlutterBluePlus.instance.startScan(timeout: const Duration(seconds: 4)),
+        onRefresh: () => FlutterBluePlus.startScan(timeout: const Duration(seconds: 4)),
         child: SingleChildScrollView(
           child: Column(
             children:
@@ -84,7 +84,7 @@ class _FindDevicesPageState extends State<FindDevicesPage> {
               // ),
 
               StreamBuilder<List<ScanResult>>(
-                stream: FlutterBluePlus.instance.scanResults,
+                stream: FlutterBluePlus.scanResults,
                 initialData: const [],
                 builder: (c, snapshot) => Column(
                   children: snapshot.data!.map((r) => ScanResultTile(
@@ -105,21 +105,21 @@ class _FindDevicesPageState extends State<FindDevicesPage> {
         ),
       ),
       floatingActionButton: StreamBuilder<bool>(
-        stream: FlutterBluePlus.instance.isScanning,
+        stream: FlutterBluePlus.isScanning,
         initialData: false,
         builder: (c, snapshot)
         {
           if (snapshot.data!) {
             return FloatingActionButton(
               child: const Icon(Icons.stop),
-              onPressed: () => FlutterBluePlus.instance.stopScan(),
+              onPressed: () => FlutterBluePlus.stopScan(),
               backgroundColor: Colors.red,
             );
           }
           else {
             return FloatingActionButton(
                 child: const Icon(Icons.search),
-                onPressed: () => FlutterBluePlus.instance.startScan(timeout: const Duration(seconds: 4)));
+                onPressed: () => FlutterBluePlus.startScan(timeout: const Duration(seconds: 4)));
           }
         },
       ),

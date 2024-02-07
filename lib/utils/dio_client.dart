@@ -49,8 +49,7 @@ class Client {
       }
       else {
         print(' >>> [Response statusCode] : ' + response.statusCode.toString());
-        print(' >>> [Response statusMessage] : ' +
-            response.statusMessage.toString());
+        print(' >>> [Response statusMessage] : ' + response.statusMessage.toString());
         if (response.statusCode == 500)
           throw Exception(MESSAGE_SERVER_ERROR_DEFAULT);
         else
@@ -60,7 +59,7 @@ class Client {
 
     /// Timeout, serverConnect Error
     on DioError catch (error) {
-      throw Exception(error.type);
+      throw Exception(error.message);
     }
     catch (e) {
       print(e.toString());
@@ -87,8 +86,10 @@ class Client {
 
         if (response.statusCode == 500)
           throw Exception(MESSAGE_ERROR_RESPONSE);
-        else
+        else{
+          mLog.e('Sign statusMessage : ${response.statusMessage.toString()}');
           throw Exception(MESSAGE_ERROR_UNKNOWN);
+        }
       }
     } on DioError catch (e) {
       throw Exception(e);
@@ -229,7 +230,7 @@ class Client {
 
     try {
       Response response = await _createDio().get(API_RESULT_LIST,
-          queryParameters: {'userID': 'sim3383', 'page': pageIndex, 'searchStartDate': searchStartDate, 'searchEndDate': searchEndDate});
+          queryParameters: {'userID': Authorization().userID, 'page': pageIndex, 'searchStartDate': searchStartDate, 'searchEndDate': searchEndDate});
 
       if (response.statusCode == 200) {
         if (response.data['status']['code'] == '200') {
@@ -238,7 +239,8 @@ class Client {
         }
         else { // 그 외 error code
           if(response.data['status']['code'] == 'ERR_MS_4003'){
-            throw Exception(MESSAGE_NO_RESULT_DATA);
+            //throw Exception(MESSAGE_NO_RESULT_DATA);
+            return resultList;
           }
           else {
             print(' >>> [List Error Code & Message]: ${response.data['status']['code']} /  ${response.data['status']['message']}');
@@ -269,7 +271,7 @@ class Client {
     mLog.d('$searchStartDate $searchEndDate');
     try {
       Response response = await _createDio().get(API_CHART_DATA,
-          queryParameters: {'userID': 'sim3383', 'searchStartDate': searchStartDate, 'searchEndDate': searchEndDate});
+          queryParameters: {'userID': Authorization().userID, 'searchStartDate': searchStartDate, 'searchEndDate': searchEndDate});
 
       if (response.statusCode == 200) {
         if (response.data['status']['code'] == '200') {

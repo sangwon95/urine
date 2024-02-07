@@ -2,18 +2,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:provider/provider.dart';
 import 'package:urine/model/authorization.dart';
 import 'package:urine/model/urine_model.dart';
-import 'package:urine/page/bluetooth/search_device_page2.dart';
 import 'package:urine/page/my_health_page.dart';
-import 'package:urine/page/progress_page.dart';
 import 'package:urine/page/result_list_page.dart';
 import 'package:urine/page/setting/setting_page.dart';
-import 'package:urine/providers/bluetooth_state_provider.dart';
-import 'package:urine/utils/constants.dart';
 import 'package:urine/utils/dio_client.dart';
 import 'package:urine/utils/etc.dart';
 import 'package:urine/widgets/bottom_sheet.dart';
@@ -25,8 +19,7 @@ import '../utils/frame.dart';
 import '../utils/network_connectivity.dart';
 import '../widgets/dialog.dart';
 import 'ai_result_page.dart';
-import 'calender_timeline_page.dart';
-import 'health_care_page.dart';
+import 'chart_page.dart';
 import 'package:geolocator/geolocator.dart';
 
 /// Devices Name :
@@ -39,31 +32,15 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin{
 
   final String title = '홈 화면';
-
-  late AnimationController animationController;
   late Size size;
   var userName = '-';
 
-
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-
-    animationController = AnimationController(
-      duration: Duration(seconds: 3),
-      vsync: this,
-    )
-      ..forward()
-      ..addListener(() {
-        if (animationController.isCompleted) {
-          animationController.repeat();
-        }
-      });
 
     _checkPermission();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -188,8 +165,8 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                                 Row(
                                   children:
                                   [
-                                    buildMenuBtn('AI 분석'),
-                                    buildMenuBtn('나의 건강 관리'),
+                                    buildMenuBtn('성분 분석'),
+                                    buildMenuBtn('나의 추이'),
                                   ],
                                 ),
                               ],
@@ -200,6 +177,8 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                     ),
           ),
 
+                    /// 24.01.10
+                    /// TODO: 이지미 필터로 인해 화면 이동후 버벅거림 현상이 있씀
                     Expanded(
                       child: Stack(
                         children: [
@@ -208,7 +187,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                             width: double.infinity,
                             child: ColorFiltered(
                               colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.35), BlendMode.darken),
-                              child: Image.asset('images/home_bottom.jpg', fit: BoxFit.fitWidth),
+                              child: Image.asset('images/home_bottom.png', fit: BoxFit.fitWidth,),
                             ),
                           ),
                           Positioned(
@@ -253,7 +232,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     );
   }
 
-  Expanded buildMenuBtn(String text) {
+  buildMenuBtn(String text) {
     return Expanded(
       child: InkWell(
         onTap: () async {
@@ -281,13 +260,14 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
             }
 
           } else if(text == '검사 내역'){
-            Frame.doPagePush(context, CalenderTimeLinePage());
+            Frame.doPagePush(context, ResultListPage());
           } else if(text == '나의 건강 관리'){
             //Frame.doPagePush(context, HealthCarePage());
             Frame.doPagePush(context, MyHealthPage());
-          } else if(text == 'AI 분석') {
+          } else if(text == '나의 추이'){
+            Frame.doPagePush(context, ChartPage());
+          } else if(text == '성분 분석') {
             _fetchAIAnalyze();
-
           }
         },
         child: Container(
@@ -323,29 +303,37 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   }
 
 
-  /// AI 분석: 측정된 소변데이터로
+  /// 성분 분석: 측정된 소변데이터로
   /// 한밭대학교에서 제공해주는 API 연동
-  _fetchAIAnalyze() async {
+  _fetchAIAnalyze() async  {
     CustomDialog.showAIDialog(
-      'AI 분석',
+      '성분 분석',
       '제공되는 데이터는 참고 용도로만 사용되어야 하며, 전문가와의 상담을 권장합니다.',
       context,
       false
     );
 
-    Future.delayed(Duration(seconds: 8), () async {
+    Future.delayed(Duration(seconds: 2), () async {
       try {
         List<Recent> resultList = await client.dioRecent('');
 
         Map<String, dynamic> toMap = {
-          "blood": resultList[0].status == '0' ? "-" : "${resultList[0].status}+",
-          "bilirubin": resultList[1].status == '0' ? "-" : "${resultList[1].status}+",
-          "urobilinogen": resultList[2].status == '0' ? "-" : "${resultList[2].status}+",
-          "ketones": resultList[3].status == '0' ? "-" : "${resultList[3].status}+",
-          "protein": resultList[4].status == '0' ? "-" : "${resultList[4].status}+",
-          "nitrite": resultList[5].status == '0' ? "-" : "${resultList[5].status}+",
-          "glucose": resultList[6].status == '0' ? "-" : "${resultList[6].status}+",
-          "leukocytes": resultList[9].status == '0' ? "-" : "${resultList[9].status}+",
+          "blood": resultList[0].status == '0' ? "-" : "${resultList[0]
+              .status}+",
+          "bilirubin": resultList[1].status == '0' ? "-" : "${resultList[1]
+              .status}+",
+          "urobilinogen": resultList[2].status == '0' ? "-" : "${resultList[2]
+              .status}+",
+          "ketones": resultList[3].status == '0' ? "-" : "${resultList[3]
+              .status}+",
+          "protein": resultList[4].status == '0' ? "-" : "${resultList[4]
+              .status}+",
+          "nitrite": resultList[5].status == '0' ? "-" : "${resultList[5]
+              .status}+",
+          "glucose": resultList[6].status == '0' ? "-" : "${resultList[6]
+              .status}+",
+          "leukocytes": resultList[9].status == '0' ? "-" : "${resultList[9]
+              .status}+",
         };
         String result = await client.dioAI(toMap);
 
@@ -357,10 +345,10 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
           //     '${Authorization().name}님의 검사 내역이 없습니다.', context, false);
         }
       } catch (e) {
-        mLog.d('에러');
+        mLog.d('성분분석 : ${e}');
         Navigator.pop(context);
         CustomDialog.showMyDialog(
-            'AI 분석', '정상적으로 처리 되지 않았습니다.\n다시 시도 해주세요.', context, false);
+            '성분 분석', '정상적으로 처리 되지 않았습니다.\n다시 시도 해주세요.', context, false);
       }
     });
   }
@@ -395,5 +383,14 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   _checkPermission() async {
     await Permission.location.request();
     await Permission.bluetooth.request();
+    await Permission.locationWhenInUse.request();
+  }
+  Future<void> requestLocationPermission() async {
+    var status = await Permission.locationWhenInUse.status;
+    if (!status.isGranted) {
+      await Permission.locationWhenInUse.request();
+    }
   }
 }
+
+
