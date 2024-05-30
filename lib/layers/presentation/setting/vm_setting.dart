@@ -35,7 +35,6 @@ class SettingViewModel extends ChangeNotifier {
   /// 로그아웃 성공 처리
   _performLogoutSuccess(context) {
    Authorization().clean();
-   Authorization().clearSetStringData();
     SnackBarUtils.showPrimarySnackBar(
       context,
       '로그아웃 되었습니다.',

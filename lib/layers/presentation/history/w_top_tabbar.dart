@@ -34,6 +34,7 @@ class TopTabBar extends StatelessWidget {
         tabs: [
           Tab(
             text: recentText,
+
           ),
 
           Tab(
