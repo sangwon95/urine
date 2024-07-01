@@ -38,7 +38,7 @@ class BluetoothConnectionViewModel extends ChangeNotifier{
   bool _isErrorWidget = false;
 
   /// progress bar image path
-  String imagePath = '${AppStrings.imagePath}/urine/bluetooth/search.png';
+  String imagePath = '${Texts.imagePath}/urine/bluetooth/search.png';
 
   /// Notification Characteristic
   BluetoothCharacteristic? notificationChar;
@@ -73,9 +73,9 @@ class BluetoothConnectionViewModel extends ChangeNotifier{
   String get buttonText => _buttonText;
   bool get isErrorWidget => _isErrorWidget;
 
-  int get scanTimeCount => 10;   // 스캔 시간 15초
-  int get connectTimeCount => 6; // 연결 시간 6초
-  int get writeTimeCount => 8;   // write 응답받기까지 8초
+  int get scanTimeCount => 10;   // 스캔 시간 10초
+  int get connectTimeCount => 4; // 연결 시간 4초
+  int get writeTimeCount => 9;   // write 응답받기까지 9초
 
   final inspectionItemTypeList = [
     'DT01',
@@ -300,53 +300,53 @@ class BluetoothConnectionViewModel extends ChangeNotifier{
   configureView(BluetoothStatus status){
     switch(status){
       case BluetoothStatus.scan: {
-        imagePath = '${AppStrings.imagePath}/urine/bluetooth/search.png';
+        imagePath = '${Texts.imagePath}/urine/bluetooth/search.png';
         _stateText = status.message;
         _buttonText = '';
         _isErrorWidget = false;
       }
       case BluetoothStatus.connect: {
-        imagePath = '${AppStrings.imagePath}/urine/bluetooth/connection.png';
+        imagePath = '${Texts.imagePath}/urine/bluetooth/connection.png';
         _stateText = status.message;
       }
       case BluetoothStatus.inspection: {
-        imagePath = '${AppStrings.imagePath}/urine/bluetooth/inspection.png';
+        imagePath = '${Texts.imagePath}/urine/bluetooth/inspection.png';
         _stateText = status.message;
         _buttonText = '';
         _isErrorWidget = false;
       }
       case BluetoothStatus.scanError: {
-        imagePath = '${AppStrings.imagePath}/urine/bluetooth/search_failure.png';
+        imagePath = '${Texts.imagePath}/urine/bluetooth/search_failure.png';
         _stateText = status.message;
         _buttonText = '재 검색';
         _isErrorWidget = true;
       }
       case BluetoothStatus.connectError: {
-        imagePath = '${AppStrings.imagePath}/urine/bluetooth/connection_failure.png';
+        imagePath = '${Texts.imagePath}/urine/bluetooth/connection_failure.png';
         _stateText = status.message;
         _buttonText = '재 연결';
         _isErrorWidget = true;
       }
       case BluetoothStatus.inspectionError: {
-        imagePath = '${AppStrings.imagePath}/urine/bluetooth/inspection_failure.png';
+        imagePath = '${Texts.imagePath}/urine/bluetooth/inspection_failure.png';
         _stateText = status.message;
         _buttonText = '재 검사';
         _isErrorWidget = true;
       }
       case BluetoothStatus.stripError: {
-        imagePath = '${AppStrings.imagePath}/urine/bluetooth/inspection_failure.png';
+        imagePath = '${Texts.imagePath}/urine/bluetooth/inspection_failure.png';
         _stateText = status.message;
         _buttonText = '재 검사';
         _isErrorWidget = true;
       }
       case BluetoothStatus.cutoff: {
-        imagePath = '${AppStrings.imagePath}/urine/bluetooth/connection_failure.png';
+        imagePath = '${Texts.imagePath}/urine/bluetooth/connection_failure.png';
         _stateText = status.message;
         _buttonText = '재 검색';
         _isErrorWidget = true;
       }
       case BluetoothStatus.unableError:{
-        imagePath = '${AppStrings.imagePath}/urine/bluetooth/connection.png';
+        imagePath = '${Texts.imagePath}/urine/bluetooth/connection.png';
         _stateText = status.message;
         _buttonText = '재 검색';
         _isErrorWidget = true;

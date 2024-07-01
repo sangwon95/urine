@@ -33,7 +33,10 @@ class _MyAppState extends State<MyApp> with AfterLayoutMixin{
       theme:Theme.of(context).copyWith(
         colorScheme: themeData.colorScheme.copyWith(primary: AppColors.primaryColor),
       ),
-      initialRoute: Authorization().userID.isEmpty ? 'v_login' : 'v_home',
+      initialRoute:
+          (Authorization().userID.isEmpty || Authorization().userID == '-')
+              ? 'v_login'
+              : 'v_home',
       routes: {
         'v_login': (context) => const LoginView(),
         'v_home': (context) => const HomeView(),

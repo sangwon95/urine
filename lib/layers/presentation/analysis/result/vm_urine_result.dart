@@ -70,7 +70,7 @@ class UrineResultViewModel extends ChangeNotifier {
 
         if(_chartData.length == 7) break;
       }
-    } else if(urineChartDTO?.status.code =='ERR_MS_4003'){
+    } else if(urineChartDTO?.status.code == 'ERR_MS_4003'){
       print('해당 날짜에 검사한 이력이 없습니다.');
     }
     notifyListeners();

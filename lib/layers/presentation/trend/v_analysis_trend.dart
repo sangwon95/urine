@@ -83,6 +83,8 @@ class _AnalysisTrendViewState extends State<AnalysisTrendView> {
 
                   /// 더 알아보기
                   const LearnMoreBox(),
+                  const Gap(AppDim.large),
+
                 ],
               );
             },

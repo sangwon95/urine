@@ -54,7 +54,7 @@ class _UrineResultViewState extends State<UrineResultView> {
 
                     /// 검사 결과 리스트
                     SizedBox(
-                      height: 680,
+                      height: 580,
                       child: ListView.builder(
                         physics: const NeverScrollableScrollPhysics(),
                         itemCount: 11,
@@ -82,7 +82,7 @@ class _UrineResultViewState extends State<UrineResultView> {
                     );
                   },
                 ),
-                const Gap(AppDim.large),
+                const Gap(AppDim.xLarge),
 
               ],
             ),

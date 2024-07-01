@@ -10,6 +10,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'common/data/preference/prefs.dart';
 import 'common/di/di.dart';
 import 'layers/domain/usecase/auth_usecase.dart';
+import 'layers/entity/login_dto.dart';
 import 'layers/model/authorization.dart';
 
 
@@ -41,7 +42,7 @@ Future<void> main() async {
   initLocator();
 
   // 사용자 정보 초기화
-  initAuthorization();
+  await initAuthorization();
 
   runApp(
     EasyLocalization(
@@ -86,19 +87,20 @@ Future<void> login() async {
   }
 
   try {
-    LoginUseCase().execute(toMap()).then((resonse) => {
-        if (resonse?.status.code == '200' && resonse != null){
-          Authorization().token = resonse.data!,
-          Prefs.token.set(resonse.data!),
-          logger.d('로그인 성공: ${Authorization().userID}'),
+   LoginDTO? response = await LoginUseCase().execute(toMap());
+        if (response?.status.code == '200' && response != null){
+          Authorization().token = response.data!;
+          Prefs.token.set(response.data!);
+          logger.d('로그인 성공: ${Authorization().userID}');
         } else {
-          Authorization().userID = '',
+          Authorization().userID = '-';
         }
-    });
   } on DioException catch (e) {
     logger.e(e);
+    Authorization().userID = '-';
   } catch (e) {
     logger.e(e);
+    Authorization().userID = '-';
   }
 }
 

@@ -4,8 +4,8 @@ import '../../app.dart';
 import '../common.dart';
 
 // enum Language {
-//   korean(Locale('ko'), '${AppStrings.imagePath}/flag/flag_kr.png'),
-//   english(Locale('en'), '${AppStrings.imagePath}/flag/flag_us.png');
+//   korean(Locale('ko'), '${Texts.imagePath}/flag/flag_kr.png'),
+//   english(Locale('en'), '${Texts.imagePath}/flag/flag_us.png');
 //
 //   final Locale locale;
 //   final String flagPath;

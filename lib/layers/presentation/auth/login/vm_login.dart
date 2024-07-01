@@ -5,8 +5,10 @@ import 'package:urine/common/common.dart';
 import 'package:urine/layers/model/authorization.dart';
 
 import '../../../../common/data/preference/prefs.dart';
+import '../../../../common/util/dio/dio_exceptions.dart';
 import '../../../../main.dart';
 import '../../../domain/usecase/auth_usecase.dart';
+import '../../../entity/login_dto.dart';
 import '../../home/v_home.dart';
 import '../../widget/w_custom_dialog.dart';
 
@@ -27,32 +29,30 @@ class LoginViewModel extends ChangeNotifier{
   /// 로그인 진행
   Future login(BuildContext context) async {
     if (_idController.text.isEmpty || _passController.text.isEmpty) {
-      loginDialog(context, '아이디, 비밀번호 입력해주세요.');
+      loginDialog(context, Texts.loginEmptyField);
       return;
     }
     try {
-      LoginUseCase().execute(toMap()).then((resonse) => {
-        if (resonse?.status.code == '200' && resonse != null){
+      LoginDTO? resonse = await LoginUseCase().execute(toMap());
+        if (resonse?.status.code == Texts.successCode && resonse != null){
           Authorization().setValues(
               userID: _idController.text,
               password: _passController.text,
               token: resonse.data ?? '',
-          ),
+          );
 
-          saveAuthPrefs(resonse.data ?? ''),
-          Nav.doAndRemoveUntil(context, const HomeView()),
+          saveAuthPrefs(resonse.data ?? '');
+          Nav.doAndRemoveUntil(context, const HomeView());
         }
         else {
-          loginDialog(context, '아이디, 비밀번호가 일치하지 않습니다.')
+          loginDialog(context, Texts.loginFailed);
         }
-          }
-      );
     } on DioException catch (e) {
-      logger.e(e);
-      loginDialog(context, '죄송합니다.\n예기치 않은 문제가 발생했습니다.');
+      final msg = DioExceptions.fromDioError(e).toString();
+      loginDialog(context, msg);
     } catch (e) {
       logger.e(e);
-      loginDialog(context, '죄송합니다.\n예기치 않은 문제가 발생했습니다.');
+      loginDialog(context, Texts.unexpectedError);
     }
   }
 
@@ -76,7 +76,7 @@ class LoginViewModel extends ChangeNotifier{
   /// 로그인 다이얼로그
   loginDialog(BuildContext context, String message){
     CustomDialog.showMyDialog(
-      title: '로그인',
+      title: Texts.loginLabel,
       content: message,
       mainContext: context,
     );

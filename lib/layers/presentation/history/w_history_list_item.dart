@@ -47,13 +47,13 @@ class HistoryListItem extends StatelessWidget {
                   [
                     StyleText(
                         text: TextFormat.convertTimestamp(history.datetime),
-                        color: AppColors.greyTextColor,
+                        color: AppColors.blackTextColor,
                         size: AppDim.fontSizeSmall,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: AppDim.weight500,
                         maxLinesCount: 1,
                     ),
+                    const Gap(AppDim.small),
 
-                    const Gap(AppDim.xSmall),
                     Row(
                       children: [
                         Row(

@@ -1,11 +1,10 @@
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:urine/common/common.dart';
 import 'package:urine/layers/entity/user_name_dto.dart';
 import 'package:urine/layers/model/authorization.dart';
 import 'package:urine/main.dart';
 
-import '../../../../common/util/nav.dart';
 import '../../domain/usecase/urine/urine_ai_analysis_usecase.dart';
 import '../../domain/usecase/urine/urine_result_usecase.dart';
 import '../../domain/usecase/urine/user_name_usecase.dart';
@@ -13,7 +12,6 @@ import '../../entity/urine_result_dto.dart';
 import '../analysis/result/d_ai_analysis.dart';
 import '../ingredient/v_ingredient_result.dart';
 import '../widget/w_custom_dialog.dart';
-import '../widget/w_pie_chart.dart';
 
 class UrineViewModel extends ChangeNotifier {
 
@@ -21,17 +19,8 @@ class UrineViewModel extends ChangeNotifier {
     getUserName();
   }
 
-  /// 최근 소변검사 결과 리스트
-  List<String> _statusList = [];
-
-  /// [_statusList] 데이터값을 파이 데이터로 재가공데이터
-  final List<PieChartData> _pieData = [];
-
-  List<String> get statusList => _statusList;
-  List<PieChartData> get pieData => _pieData;
-
+  /// 유저 이름
   String userName = '-';
-
 
   /// 유저 이름 가져오기
   Future<void> getUserName() async {
@@ -39,7 +28,7 @@ class UrineViewModel extends ChangeNotifier {
       logger.d(Authorization().userID);
 
       UserNameDTO? response = await UserNameUesCase().execute();
-      if(response?.status.code == '200' && response?.name != null){
+      if(response?.status.code == Texts.successCode && response?.name != null){
         userName = response!.name;
         Authorization().name = userName;
       }

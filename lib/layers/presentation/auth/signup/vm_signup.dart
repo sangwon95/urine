@@ -8,6 +8,7 @@ import 'package:urine/layers/domain/usecase/auth_usecase.dart';
 import 'package:urine/main.dart';
 
 import '../../../../common/data/validate/singup_validate.dart';
+import '../../../../common/util/dio/dio_exceptions.dart';
 import '../../../../common/util/snackbar_utils.dart';
 import '../../../entity/signup_dto.dart';
 import '../../widget/bottomsheet/datepicker_bottom_sheet.dart';
@@ -77,22 +78,21 @@ class SignupViewModel extends ChangeNotifier {
     }
 
     try {
-      SignupUseCase().execute(toMap()).then((response) {
+      SignupDTO? response = await SignupUseCase().execute(toMap());
         if (response?.status.code == '200' && response != null) {
           Nav.doPop(context); // 회원가입 화면 pop
-          SnackBarUtils.showPrimarySnackBar(context, '회원가입이 완료 되었습니다.');
-        } else if (response!.status.code == 'ERR_EVS_8013') {
-          signDialog(context, '중복된 아이디입니다.\n다시 입력해주세요.');
+          SnackBarUtils.showPrimarySnackBar(context, Texts.signupSuccess);
+        } else if (response!.status.code == Texts.duplicationCode) {
+          signDialog(context, Texts.duplicateIdMsg);
         } else {
-          signDialog(context, '회원가입이 정상적으로 처리되지 않았습니다.');
+          signDialog(context, Texts.signupFailed);
         }
-      });
     } on DioException catch (e) {
-      logger.e(e);
-      signDialog(context, '죄송합니다.\n예기치 않은 문제가 발생했습니다.');
+      final msg = DioExceptions.fromDioError(e).toString();
+      signDialog(context, msg);
     } catch (e) {
       logger.e(e);
-      signDialog(context, '죄송합니다.\n예기치 않은 문제가 발생했습니다.');
+      signDialog(context, Texts.unexpectedError);
     }
   }
 
@@ -146,7 +146,7 @@ class SignupViewModel extends ChangeNotifier {
   /// 회원가입 다이얼로그
   signDialog(BuildContext context, String message){
     CustomDialog.showMyDialog(
-      title: '회원가입',
+      title: Texts.signupLabel,
       content: message,
       mainContext: context,
     );

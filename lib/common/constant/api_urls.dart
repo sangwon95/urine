@@ -1,6 +1,6 @@
 
 
-const String baseUrl = 'http://221.168.252.145:51001/ws';
+const String baseUrl = 'http://optosta.cafe24.com/ws';
 
 /// 테스트 서버
 //const String urineBaseUrl = 'http://192.168.0.54:50010/ws'; // 내부 테스트 서버

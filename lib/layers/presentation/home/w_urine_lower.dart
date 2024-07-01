@@ -15,7 +15,7 @@ class UrineHomeLower extends StatelessWidget {
         SizedBox(
           height: 130,
           width: double.infinity,
-          child: Image.asset('${AppStrings.imagePath}/urine/home/home_bottom.png', fit: BoxFit.fitWidth,),
+          child: Image.asset('${Texts.imagePath}/urine/home/home_bottom.png', fit: BoxFit.fitWidth,),
         ),
         const Positioned(
           bottom: 40,

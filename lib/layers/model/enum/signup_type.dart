@@ -1,8 +1,10 @@
+import 'package:urine/common/common.dart';
+
 enum SignupType {
-  id('아이디*', '아이디를 입력해주세요.'),
-  pass('비밀번호*', '특수,소문자,숫자 포함 7~15자'),
-  pass2('비밀번호 확인*', '특수,소문자,숫자 포함 7~15자'),
-  nickname('닉네임*', '닉네임 입력해주세요.'),
+  id('아이디*', Texts.enterIdMsg),
+  pass('비밀번호*', Texts.passhintMsg),
+  pass2('비밀번호 확인*', Texts.passhintMsg),
+  nickname('닉네임*', Texts.enterNickNameMsg),
   birthdate('생년월일', '생년월일을 입력해주세요.'),
   gender('성별', '선택');
 

@@ -16,9 +16,6 @@ class LoginTextField extends StatelessWidget {
     required this.controller,
   });
 
-  String get passHint => '비밀번호를 입력해주세요.';
-  String get idHint => '아이디를 입력해주세요.';
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -56,8 +53,8 @@ class LoginTextField extends StatelessWidget {
                         color: AppColors.primaryColor,
                     ),
                       hintText: type == LoginInputType.password
-                          ? passHint
-                          : idHint,
+                          ? Texts.passhintMsg
+                          : Texts.enterIdMsg,
                       hintStyle: const TextStyle(
                         fontSize: AppDim.fontSizeSmall,
                         color: Colors.grey,

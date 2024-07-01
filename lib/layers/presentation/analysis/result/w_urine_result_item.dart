@@ -18,7 +18,7 @@ class UrineResultListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: 60,
+        height: 52,
         padding: const EdgeInsets.symmetric(horizontal: AppDim.small),
         decoration: BoxDecoration(
             border: Border(
@@ -30,6 +30,7 @@ class UrineResultListItem extends StatelessWidget {
         ),
         child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children:
             [
               /// 항목
@@ -39,6 +40,7 @@ class UrineResultListItem extends StatelessWidget {
                     child: StyleText(
                       text: AppConstants.urineNameList[index],
                       fontWeight: AppDim.weight500,
+                      size: AppDim.fontSizeSmall,
                       color: AppColors.blackTextColor,
                     ),
                   )
@@ -52,11 +54,14 @@ class UrineResultListItem extends StatelessWidget {
               ),
 
               /// 결과 Text
-              StyleText(
-                  text: Branch.resultStatusToText(resultList!, index),
-                  fontWeight: AppDim.weight500,
-                  color: Branch.resultStatusToColor(resultList!, index),
-                  maxLinesCount: 1
+              SizedBox(
+                width: 45,
+                child: StyleText(
+                    text: Branch.resultStatusToText(resultList!, index),
+                    fontWeight: AppDim.weight500,
+                    color: Branch.resultStatusToColor(resultList!, index),
+                    maxLinesCount: 1
+                ),
               ),
             ]
         ));

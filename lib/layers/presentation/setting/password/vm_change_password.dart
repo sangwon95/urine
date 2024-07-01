@@ -1,12 +1,14 @@
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:urine/layers/entity/change_pass_dto.dart';
 import 'package:urine/layers/model/authorization.dart';
 
 import '../../../../../common/data/validate/singup_validate.dart';
 import '../../../../../common/util/nav.dart';
 import '../../../../../common/util/snackbar_utils.dart';
 import '../../../../../main.dart';
+import '../../../../common/util/dio/dio_exceptions.dart';
 import '../../../domain/usecase/auth_usecase.dart';
 import '../../auth/login/v_login.dart';
 import '../../widget/w_custom_dialog.dart';
@@ -33,17 +35,16 @@ class ChangePasswordViewModel extends ChangeNotifier {
     }
 
     try {
-      ChangePassUseCase().execute(toMap()).then((response) {
+      ChangePassDTO? response = await ChangePassUseCase().execute(toMap());
         if (response?.status.code == '200' && response != null) {
           Nav.doAndRemoveUntil(context, const LoginView());
           SnackBarUtils.showPrimarySnackBar(context, '비밀번호가 변경되었습니다.');
         } else {
           changePassDialog(context, '비밀번호 변경이 정상적으로\n처리되지 않았습니다.');
         }
-      });
     } on DioException catch (e) {
-      logger.e(e);
-      changePassDialog(context, '죄송합니다.\n예기치 않은 문제가 발생했습니다.');
+      final msg = DioExceptions.fromDioError(e).toString();
+      changePassDialog(context, msg);
     } catch (e) {
       logger.e(e);
       changePassDialog(context, '죄송합니다.\n예기치 않은 문제가 발생했습니다.');

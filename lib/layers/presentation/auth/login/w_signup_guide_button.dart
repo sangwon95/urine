@@ -10,8 +10,6 @@ class SignUpGuideButton extends StatelessWidget {
 
   String get signupQuestionText => '아직 회원이 아니신가요?';
 
-  String get signupText => '회원가입';
-
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -25,7 +23,7 @@ class SignUpGuideButton extends StatelessWidget {
         TextButton(
           onPressed: () => Nav.doPush(context, const SignupView()),
           child: StyleText(
-              text: signupText,
+              text: Texts.signupLabel,
               color: AppColors.greyTextColor,
               size: AppDim.fontSizeMedium,
               fontWeight: AppDim.weightBold,

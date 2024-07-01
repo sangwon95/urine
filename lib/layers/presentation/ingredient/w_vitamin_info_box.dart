@@ -8,7 +8,6 @@ import '../widget/frame_container.dart';
 import '../widget/style_text.dart';
 
 class VitaminInfoBox extends StatelessWidget {
-  final String issuedDate;
   final String resultTitleText;
   final String additionalText;
   final String title;
@@ -16,7 +15,6 @@ class VitaminInfoBox extends StatelessWidget {
   const VitaminInfoBox({
     super.key,
     required this.title,
-    required this.issuedDate,
     required this.resultTitleText,
     required this.additionalText,
   });
@@ -31,16 +29,14 @@ class VitaminInfoBox extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               StyleText(
                 text: title,
-                fontWeight: FontWeight.w600,
+                size: AppDim.fontSizeLarge,
+                fontWeight: AppDim.weightBold,
               ),
-              StyleText(
-                text: '최근 검진일 : $issuedDate',
-                size: AppDim.fontSizeXSmall,
-              )
+
             ],
           ),
           const Gap(AppDim.medium),

@@ -49,7 +49,7 @@ class Branch {
         case '3' : return '위험';
         case '4' : return '심각';
         case '5' : return '심각';
-        default  : return '미 측정';
+        default  : return '안심';
       }
     }
   }
@@ -58,24 +58,24 @@ class Branch {
   static resultStatusToImageStr(List<String> fastestResult, int index){
     if(index == 10 || index == 8 || index == 7){
       switch(fastestResult[index]){
-        case '0' : return '${AppStrings.imagePath}/urine/result/plus_1.png';
-        case '1' : return '${AppStrings.imagePath}/urine/result/plus_2.png';
-        case '2' : return '${AppStrings.imagePath}/urine/result/plus_3.png';
-        case '3' : return '${AppStrings.imagePath}/urine/result/plus_4.png';
-        case '4' : return '${AppStrings.imagePath}/urine/result/plus_4.png';
-        case '5' : return '${AppStrings.imagePath}/urine/result/plus_4.png';
-        default  : return '${AppStrings.imagePath}/urine/result/plus_1.png';
+        case '0' : return '${Texts.imagePath}/urine/result/plus_1.png';
+        case '1' : return '${Texts.imagePath}/urine/result/plus_2.png';
+        case '2' : return '${Texts.imagePath}/urine/result/plus_3.png';
+        case '3' : return '${Texts.imagePath}/urine/result/plus_4.png';
+        case '4' : return '${Texts.imagePath}/urine/result/plus_4.png';
+        case '5' : return '${Texts.imagePath}/urine/result/plus_4.png';
+        default  : return '${Texts.imagePath}/urine/result/plus_1.png';
       }
     }
     else {
       switch(fastestResult[index]){
-        case '0' : return '${AppStrings.imagePath}/urine/result/step_0.png';
-        case '1' : return '${AppStrings.imagePath}/urine/result/step_1.png';
-        case '2' : return '${AppStrings.imagePath}/urine/result/step_2.png';
-        case '3' : return '${AppStrings.imagePath}/urine/result/step_3.png';
-        case '4' : return '${AppStrings.imagePath}/urine/result/step_4.png';
-        case '5' : return '${AppStrings.imagePath}/urine/result/step_4.png';
-        default  : return '${AppStrings.imagePath}/urine/result/step_0.png';
+        case '0' : return '${Texts.imagePath}/urine/result/step_0.png';
+        case '1' : return '${Texts.imagePath}/urine/result/step_1.png';
+        case '2' : return '${Texts.imagePath}/urine/result/step_2.png';
+        case '3' : return '${Texts.imagePath}/urine/result/step_3.png';
+        case '4' : return '${Texts.imagePath}/urine/result/step_4.png';
+        case '5' : return '${Texts.imagePath}/urine/result/step_4.png';
+        default  : return '${Texts.imagePath}/urine/result/step_0.png';
       }
     }
   }

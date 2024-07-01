@@ -15,7 +15,7 @@ class VersionView extends StatelessWidget {
       appBarTitle: title,
       body: Center(
         child: StyleText(
-          text: '현재 앱 버전 ${AppStrings.appVersion}',
+          text: '현재 앱 버전 ${Texts.appVersion}',
           color: AppColors.greyTextColor,
           size: AppDim.fontSizeLarge,
         ),

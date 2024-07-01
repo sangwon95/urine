@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
+import 'package:urine/common/common.dart';
 import 'package:urine/common/constant/app_dimensions.dart';
 import 'package:urine/layers/presentation/auth/signup/vm_signup.dart';
 import 'package:urine/layers/presentation/auth/signup/w_signup_button.dart';
@@ -21,8 +22,6 @@ class SignupView extends StatefulWidget {
 
 class _SignupViewState extends State<SignupView> {
 
-  String get title => '회원가입';
-
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -31,7 +30,7 @@ class _SignupViewState extends State<SignupView> {
         builder: (context, provider, child) {
           return  FrameScaffold(
             isKeyboardHide: true,
-            appBarTitle: title,
+            appBarTitle: Texts.signupLabel,
             body: SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
               child: Column(

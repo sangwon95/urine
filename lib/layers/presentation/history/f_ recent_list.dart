@@ -34,8 +34,7 @@ class RecentListFragment extends StatelessWidget {
                     ? recentListMaxCount
                     : historyList.length,
                 itemBuilder: (BuildContext context, int index) =>
-                    HistoryListItem(
-                  history: historyList[index],
+                    HistoryListItem(history: historyList[index],
                 ),
                 separatorBuilder: (BuildContext context, int index) {
                   return const DottedLine(mWidth: double.infinity);

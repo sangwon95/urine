@@ -32,9 +32,9 @@
 			<true/>
 		</dict>
 		<key>NSBluetoothAlwaysUsageDescription</key>
-		<string>Need BLE permission</string>
+		<string>작업을 위한 장치를 연결하려면 블루투스 권한이 필요합니다.</string>
 		<key>NSBluetoothPeripheralUsageDescription</key>
-		<string>Need BLE permission</string>
+		<string>작업을 위한 장치를 연결하려면 블루투스 권한이 필요합니다.</string>
 		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 		<string>Need Location permission</string>
 		<key>NSLocationAlwaysUsageDescription</key>

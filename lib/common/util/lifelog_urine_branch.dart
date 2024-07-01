@@ -8,36 +8,36 @@ class LifeLogUrineBranch {
     if (dataDesc == '비타민' || dataDesc == '비중' || dataDesc == '산성도') {
       switch (value) {
         case '0':
-          return '${AppStrings.imagePath}/tab/daily/plus_1.png';
+          return '${Texts.imagePath}/tab/daily/plus_1.png';
         case '1':
-          return '${AppStrings.imagePath}/tab/daily/plus_2.png';
+          return '${Texts.imagePath}/tab/daily/plus_2.png';
         case '2':
-          return '${AppStrings.imagePath}/tab/daily/plus_3.png';
+          return '${Texts.imagePath}/tab/daily/plus_3.png';
         case '3':
-          return '${AppStrings.imagePath}/tab/daily/plus_4.png';
+          return '${Texts.imagePath}/tab/daily/plus_4.png';
         case '4':
-          return '${AppStrings.imagePath}/tab/daily/plus_4.png';
+          return '${Texts.imagePath}/tab/daily/plus_4.png';
         case '5':
-          return '${AppStrings.imagePath}/tab/daily/plus_4.png';
+          return '${Texts.imagePath}/tab/daily/plus_4.png';
         default:
-          return '${AppStrings.imagePath}/tab/daily/plus_1.png';
+          return '${Texts.imagePath}/tab/daily/plus_1.png';
       }
     } else {
       switch (value) {
         case '0':
-          return '${AppStrings.imagePath}/tab/daily/step_0.png';
+          return '${Texts.imagePath}/tab/daily/step_0.png';
         case '1':
-          return '${AppStrings.imagePath}/tab/daily/step_1.png';
+          return '${Texts.imagePath}/tab/daily/step_1.png';
         case '2':
-          return '${AppStrings.imagePath}/tab/daily/step_2.png';
+          return '${Texts.imagePath}/tab/daily/step_2.png';
         case '3':
-          return '${AppStrings.imagePath}/tab/daily/step_3.png';
+          return '${Texts.imagePath}/tab/daily/step_3.png';
         case '4':
-          return '${AppStrings.imagePath}/tab/daily/step_4.png';
+          return '${Texts.imagePath}/tab/daily/step_4.png';
         case '5':
-          return '${AppStrings.imagePath}/tab/daily/step_4.png';
+          return '${Texts.imagePath}/tab/daily/step_4.png';
         default:
-          return '${AppStrings.imagePath}/tab/daily/step_0.png';
+          return '${Texts.imagePath}/tab/daily/step_0.png';
       }
     }
   }
@@ -58,7 +58,7 @@ class LifeLogUrineBranch {
         case '5':
           return '다소 높음';
         default:
-          return '미 측정';
+          return '안심';
       }
     } else {
       switch (value) {
@@ -75,7 +75,7 @@ class LifeLogUrineBranch {
         case '5':
           return '심각';
         default:
-          return '미 측정';
+          return '안심';
       }
     }
   }

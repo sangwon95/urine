@@ -11,8 +11,6 @@ class SignUpButton extends StatelessWidget {
     required this.onPressed,
   });
 
-  String get btnText => '회원가입';
-
   @override
   Widget build(BuildContext context) {
     return TextButton(
@@ -25,7 +23,7 @@ class SignUpButton extends StatelessWidget {
         ),
       ),
       child: StyleText(
-        text: btnText,
+        text: Texts.signupLabel,
         color: AppColors.whiteTextColor,
         size: AppDim.fontSizeMedium,
         fontWeight: AppDim.weightBold,

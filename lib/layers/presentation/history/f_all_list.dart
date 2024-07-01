@@ -31,10 +31,9 @@ class AllListFragment extends StatelessWidget {
                   controller: allScrollController,
                   physics: const BouncingScrollPhysics(),
                   itemCount: historyList.length,
-                  itemBuilder: (BuildContext context, int index) =>
-                      HistoryListItem(
-                    history: historyList[index],
-                  ),
+                  itemBuilder: (BuildContext context, int index) {
+                    return HistoryListItem(history: historyList[index]);
+                  },
                   separatorBuilder: (BuildContext context, int index) {
                     return const DottedLine(mWidth: double.infinity);
                   },

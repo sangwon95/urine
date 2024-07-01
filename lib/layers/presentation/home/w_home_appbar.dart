@@ -20,7 +20,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
             statusBarIconBrightness: Brightness.dark,
             statusBarColor: Colors.white),
         title: Image.asset(
-          '${AppStrings.imagePath}/urine/home/logo.png',
+          '${Texts.imagePath}/urine/home/logo.png',
           color: AppColors.primaryColor,
           height: AppDim.large,
         ),

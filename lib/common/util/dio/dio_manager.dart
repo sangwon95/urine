@@ -25,8 +25,8 @@ class DioManager {
     dio.options.connectTimeout = timeout.seconds;
     dio.options.receiveTimeout = timeout.seconds;
     dio.options.headers = {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
+      // 'Content-Type': 'application/json',
+      // 'Accept': 'application/json'
     };
     return dio;
   }

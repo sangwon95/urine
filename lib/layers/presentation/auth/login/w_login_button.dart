@@ -11,8 +11,6 @@ class LoginButton extends StatelessWidget {
     required this.onPressed,
   });
 
-  String get btnText => '로그인';
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -27,7 +25,7 @@ class LoginButton extends StatelessWidget {
           ),
         ),
         child: StyleText(
-          text: btnText,
+          text: Texts.loginLabel,
           color: AppColors.whiteTextColor,
           size: AppDim.fontSizeMedium,
           fontWeight: AppDim.weightBold,
