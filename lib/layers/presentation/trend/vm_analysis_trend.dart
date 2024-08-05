@@ -1,6 +1,8 @@
+
 import 'package:flutter/material.dart';
 import 'package:urine/common/dart/extension/datetime_extension.dart';
 import 'package:urine/common/util/branch.dart';
+import 'package:urine/common/util/snackbar_utils.dart';
 import 'package:urine/layers/model/authorization.dart';
 
 import '../../../../../common/common.dart';
@@ -47,7 +49,7 @@ class AnalysisTrendViewModel extends ChangeNotifier {
 
 
   /// 차트 데이터 조회
-  Future<void> fetchUrineChartDio() async {
+  Future<void> fetchUrineChartDio(context) async {
     final toMap = {
       'userID': Authorization().userID,
       'searchStartDate': _rangeStartDate,
@@ -64,7 +66,7 @@ class AnalysisTrendViewModel extends ChangeNotifier {
       // 같은 dataType으로만 골라 x,y축 데이터를 만들어 _chartData에 추가한다.
       for(var value in urineChartDTO!.data)
       {
-        if(value.dataType == Branch.urineNameToUrineDataType(_selectedUrineName))
+        if(value.dataType == Branch.urineLabelToUrineDataType(_selectedUrineName))
         {
           if (!_chartData.any((element) => element.x
               .toString()
@@ -79,11 +81,13 @@ class AnalysisTrendViewModel extends ChangeNotifier {
       // 측정한 날짜가 4일 이상이면 가로로 스크롤 할 수 있게
       // [_addWidthChartLength]를 늘려준다.
       if(chartData.length > 4){
-        _addWidthChartLength = 50.0 * chartData.length;
+        _addWidthChartLength = 30.0 * chartData.length;
       }
     } else if(urineChartDTO?.status.code =='ERR_MS_4003'){
       print('해당 날짜에 검사한 이력이 없습니다.');
     }
+
+    SnackBarUtils.showCenterSnackBar(context, '좌우로 이동 가능합니다');
     notifyListeners();
   }
 

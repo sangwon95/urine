@@ -62,7 +62,6 @@ class _UrineHistoryViewViewState extends State<UrineHistoryView> with TickerProv
                     TopTabBar(tabController: tabController),
 
                     /// 히스토리
-                    const Gap(AppDim.medium),
                     Expanded(
                         child: Consumer<HistoryViewModel>(
                           builder: (context, provider, child) {

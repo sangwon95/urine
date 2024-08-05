@@ -8,6 +8,7 @@ import 'package:urine/common/constant/app_dimensions.dart';
 class StyleText extends StatelessWidget {
   final String text;
   final double size;
+  final double height;
   final Color color;
   final FontWeight fontWeight;
   final TextAlign align;
@@ -22,6 +23,7 @@ class StyleText extends StatelessWidget {
     super.key,
     required this.text,
     this.size = AppDim.fontSizeMedium,
+    this.height = 1.0,
     this.color = AppColors.veryDarkGrey,
     this.fontWeight = FontWeight.normal,
     this.align = TextAlign.start,
@@ -42,6 +44,7 @@ class StyleText extends StatelessWidget {
       maxLines: maxLinesCount,
       softWrap: softWrap,
       style: TextStyle(
+          height: height,
           color: color,
           fontSize: size,
           fontWeight: fontWeight,

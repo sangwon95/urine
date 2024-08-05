@@ -2,72 +2,61 @@
 
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:urine/layers/presentation/widget/result_item_box.dart';
 
 import '../../../../../common/common.dart';
 import '../widget/frame_container.dart';
 import '../widget/style_text.dart';
 
 class VitaminInfoBox extends StatelessWidget {
-  final String resultTitleText;
-  final String additionalText;
-  final String title;
+  final String status;
 
   const VitaminInfoBox({
     super.key,
-    required this.title,
-    required this.resultTitleText,
-    required this.additionalText,
+    required this.status,
   });
+
+  String get additionalText => '비타민C 과잉은 요당, 단백뇨, 알칼리뇨 등의 잘못된 측정이 유발되니 재검사를 권장합니다.';
 
   @override
   Widget build(BuildContext context) {
-    return FrameContainer(
-      backgroundColor: AppColors.white,
-      borderColor: AppColors.yellow,
+    return Container(
+      padding: AppDim.paddingLarge,
+      color:  AppColors.white,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          StyleText(
+            text: '✓ 비타민C 농도',
+            size: AppDim.fontSizeXLarge,
+            color: AppColors.primaryColor,
+            fontWeight: AppDim.weightBold,
+          ),
+          const Gap(AppDim.medium),
           Row(
-            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              StyleText(
-                text: title,
-                size: AppDim.fontSizeLarge,
-                fontWeight: AppDim.weightBold,
+              SizedBox(
+                width: 130,
+                child: ResultItemBox(
+                  index: 10,
+                  status: status,
+                ),
               ),
-
+              const Gap(AppDim.medium),
+              Expanded(
+                child: StyleText(
+                  text: additionalText,
+                  color: AppColors.blackTextColor,
+                  maxLinesCount: 5,
+                  softWrap: true,
+                  size: AppDim.fontSizeLarge,
+                ),
+              ),
             ],
-          ),
-          const Gap(AppDim.medium),
+          )
 
-          Container(
-            padding: AppDim.paddingSmall,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(AppConstants.lightRadius),
-              color: AppColors.yellow,
-            ),
-            child: Center(
-              child: StyleText(
-                text: resultTitleText,
-                color: Colors.white,
-                softWrap: true,
-                maxLinesCount: 7,
-                fontWeight: AppDim.weightBold,
-                size: AppDim.fontSizeLarge,
-              ),
-            ),
-          ),
-          const Gap(AppDim.medium),
 
-          SizedBox(
-            width: double.infinity,
-            child: StyleText(
-                text: '• $additionalText',
-                maxLinesCount: 4,
-                size: AppDim.fontSizeSmall,
-                softWrap: true),
-          ),
         ],
       ),
     );

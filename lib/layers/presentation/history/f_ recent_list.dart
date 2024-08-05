@@ -22,25 +22,22 @@ class RecentListFragment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: AppConstants.viewPadding,
-      child: FrameContainer(
-        backgroundColor: AppColors.greyBoxBg,
-        child: historyList.isEmpty
-            ? DataEmpty(message: emptyText)
-            : ListView.separated(
-                physics: const BouncingScrollPhysics(),
-                itemCount: historyList.length > recentListMaxCount
-                    ? recentListMaxCount
-                    : historyList.length,
-                itemBuilder: (BuildContext context, int index) =>
-                    HistoryListItem(history: historyList[index],
-                ),
-                separatorBuilder: (BuildContext context, int index) {
-                  return const DottedLine(mWidth: double.infinity);
-                },
+    return Container(
+      padding: AppDim.paddingLarge,
+      child: historyList.isEmpty
+          ? DataEmpty(message: emptyText)
+          : ListView.separated(
+              physics: const BouncingScrollPhysics(),
+              itemCount: historyList.length > recentListMaxCount
+                  ? recentListMaxCount
+                  : historyList.length,
+              itemBuilder: (BuildContext context, int index) =>
+                  HistoryListItem(history: historyList[index],
               ),
-      ),
+              separatorBuilder: (BuildContext context, int index) {
+                return const DottedLine(mWidth: double.infinity);
+              },
+            ),
     );
   }
 }

@@ -7,23 +7,20 @@ import 'package:urine/layers/presentation/widget/frame_container.dart';
 import 'package:urine/layers/presentation/widget/style_text.dart';
 
 class ResultContentBox extends StatelessWidget {
-
   final String title;
-  final String subTitle;
   final String content;
 
   const ResultContentBox({
     super.key,
     required this.title,
-    required this.subTitle,
     required this.content,
   });
 
   @override
   Widget build(BuildContext context) {
-    return FrameContainer(
-      backgroundColor: AppColors.greyBoxBg,
-      borderColor: AppColors.greyBoxBorder,
+    return Container(
+      padding: AppDim.paddingLarge,
+      color: AppColors.white,
       child: SizedBox(
         width: double.infinity,
         child: Column(
@@ -32,24 +29,19 @@ class ResultContentBox extends StatelessWidget {
 
             StyleText(
               text: title,
-              size: AppDim.fontSizeLarge,
+              color: AppColors.primaryColor,
+              size: AppDim.fontSizeXLarge,
               fontWeight: AppDim.weightBold,
             ),
-
             const Gap(AppDim.small),
-            StyleText(
-              text: subTitle,
-              fontWeight: AppDim.weight500,
-              maxLinesCount: 4,
-              softWrap: true,
-            ),
 
-            const Gap(AppDim.small),
             StyleText(
               text: content,
+              height: 1.5,
+              size: AppDim.fontSizeLarge,
               color: AppColors.blackTextColor,
               fontWeight: AppDim.weight500,
-              maxLinesCount: 5,
+              maxLinesCount: 50,
               softWrap: true,
             ),
           ],

@@ -23,16 +23,16 @@ class InspectionCheckBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return FrameContainer(
       backgroundColor: AppColors.greyBoxBg,
-      child: Column(
-        children: [
-          /// 체크 박스
-          InkWell(
-            onTap: () => {
-              if (type == ArrangementType.device){
-                  context.read<InspectionArrangementViewModel>().onChangedDevice()
-              }
-            },
-            child: Padding(
+      child: InkWell(
+        onTap: () => {
+          if (type == ArrangementType.device){
+            context.read<InspectionArrangementViewModel>().onChangedDevice(context)
+          }
+        },
+        child: Column(
+          children: [
+            /// 체크 박스
+            Padding(
               padding: const EdgeInsets.only(bottom: AppDim.large),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -46,7 +46,8 @@ class InspectionCheckBox extends StatelessWidget {
                     style: MSHCheckboxStyle.stroke,
                     onChanged: (selected) {
                       if(type == ArrangementType.device) {
-                        context.read<InspectionArrangementViewModel>().onChangedDevice();
+                        context.read<InspectionArrangementViewModel>()
+                            .onChangedDevice(context);
                       }
                     },
                   ),
@@ -60,25 +61,25 @@ class InspectionCheckBox extends StatelessWidget {
                 ],
               ),
             ),
-          ),
 
 
-          Image.asset(
-            type.image,
-            height: AppDim.imageSmallMedium,
-            width: AppDim.imageSmallMedium,
-          ),
-          const Gap(AppDim.large),
+            Image.asset(
+              type.image,
+              height: AppDim.imageSmallMedium,
+              width: AppDim.imageSmallMedium,
+            ),
+            const Gap(AppDim.large),
 
-          StyleText(
-            text: type.recommend,
-            fontWeight: AppDim.weightBold,
-            color: AppColors.greyTextColor,
-            size: AppDim.fontSizeSmall,
-            align: TextAlign.center,
-            maxLinesCount: 2,
-          )
-        ],
+            StyleText(
+              text: type.recommend,
+              fontWeight: AppDim.weightBold,
+              color: AppColors.greyTextColor,
+              size: AppDim.fontSizeSmall,
+              align: TextAlign.center,
+              maxLinesCount: 2,
+            )
+          ],
+        ),
       ),
     );
   }

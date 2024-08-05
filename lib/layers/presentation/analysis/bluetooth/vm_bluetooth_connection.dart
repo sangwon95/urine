@@ -12,6 +12,7 @@ import '../../../domain/usecase/urine/urine_save_usecase.dart';
 import '../../../model/enum/bluetooth_status.dart';
 import '../../../model/vo_urine.dart';
 import '../../../model/vo_urine_row.dart';
+import '../../widget/w_custom_dialog.dart';
 import '../result/v_urine_result.dart';
 
 
@@ -234,13 +235,20 @@ class BluetoothConnectionViewModel extends ChangeNotifier{
         logger.i('검사기로부터 수신된 데이터: ${sb.toString().replaceAll('\n', '')}');
         List<String> urineList = Etc.createUrineValuesList(Urine.fromValue(sb.toString()));
 
-        if(urineList.isNotEmpty){
+        if(urineList.isNotEmpty && urineList.length == 11){
           // 결과 데이터 서버에 저장
           saveResultData(urineList);
 
           allClean();
           Nav.doPop(context); // 현재 검사 진행 화면 pop
-          Nav.doPush(context, UrineResultView(urineList: urineList));
+          Nav.doPush(context, UrineResultView(urineList: urineList, testDate: DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now()).toString()));
+        } else {
+          Nav.doPop(context); // 현재 검사 진행 화면 pop
+          CustomDialog.showMyDialog(
+            title: '검사 오류',
+            content: '정상적으로 검사가 완료되지 않았습니다.\n다시 시도해 주세요.',
+            mainContext: context,
+          );
         }
       }
     });

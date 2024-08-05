@@ -13,7 +13,7 @@ class HorizontalUrineChart extends StatelessWidget {
     required this.addWidthChartLength,
   });
 
-  double get chartHeight => 300;
+  double get chartHeight => 250;
 
   @override
   Widget build(BuildContext context) {

@@ -31,7 +31,7 @@ class TextFormat {
 
     final mDateTime = DateTime(year, month, day, 0, 0, 0, 0 ,0);
 
-    return DateFormat('yy/MM/dd').format(mDateTime);
+    return DateFormat('yy\nMM\ndd').format(mDateTime);
   }
 
 

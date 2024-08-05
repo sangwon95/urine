@@ -30,7 +30,7 @@ class _InspectionArrangementViewState extends State<InspectionArrangementView>{
   String get startText => '검사 진행';
 
   List<String> get checkList => [
-        '✓ 모든 체크박스가 체크 되어 있어야 합니다.',
+        '✓ 모든 체크박스가 체크 되면 자동으로 검사가 진행됩니다.',
         '✓ 검사기 전원을 키고 체크박스를 클릭해주세요.',
         '✓ 블루투스를 켜면 자동으로 체크됩니다.',
       ];
@@ -90,18 +90,24 @@ class _InspectionArrangementViewState extends State<InspectionArrangementView>{
                         StyleText(
                           text: checkList[0],
                           color: AppColors.greyTextColor,
+                          softWrap: true,
+                          maxLinesCount: 2,
                         ),
 
                         const Gap(AppDim.xSmall),
                         StyleText(
                           text: checkList[1],
                           color: AppColors.greyTextColor,
+                          softWrap: true,
+                          maxLinesCount: 2,
                         ),
 
                         const Gap(AppDim.xSmall),
                         StyleText(
                           text: checkList[2],
                           color: AppColors.greyTextColor,
+                          softWrap: true,
+                          maxLinesCount: 2,
                         )
                       ],
                     ),

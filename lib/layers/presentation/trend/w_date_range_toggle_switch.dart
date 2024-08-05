@@ -24,18 +24,16 @@ class DateRangeToggleSwitch extends StatelessWidget {
         height: AppConstants.dropButtonHeight,
         child: Row(
           children: [
-            Expanded(
-              child: ToggleSwitch(
-                cornerRadius: AppConstants.radiusValue10,
-                initialLabelIndex: toggleIndex,
-                totalSwitches: 4,
-                minWidth: width / 4,
-                inactiveBgColor: Colors.grey.shade200,
-                activeBgColor: [AppColors.primaryColor],
-                labels: toggleLabel,
-                fontSize: AppDim.fontSizeSmall,
-                onToggle: onToggle,
-              ),
+            ToggleSwitch(
+              cornerRadius: AppConstants.radiusValue10,
+              initialLabelIndex: toggleIndex,
+              totalSwitches: 4,
+              minWidth: width / 4,
+              inactiveBgColor: Colors.grey.shade200,
+              activeBgColor: [AppColors.primaryColor],
+              labels: toggleLabel,
+              fontSize: AppDim.fontSizeSmall,
+              onToggle: onToggle,
             ),
           ],
         ),

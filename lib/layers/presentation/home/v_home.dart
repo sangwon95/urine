@@ -11,6 +11,7 @@ import 'package:urine/layers/presentation/home/w_urine_lower.dart';
 
 import '../../../../common/common.dart';
 import '../setting/v_setting.dart';
+import '../widget/w_custom_dialog.dart';
 
 
 /// 소변검사 메인 화면
@@ -28,7 +29,7 @@ class _UrineHomeViewState extends State<HomeView> {
       appBar: HomeAppBar(onPressed: ()=> Nav.doPush(context, const SettingView())),
       body: ChangeNotifierProvider(
         create: (BuildContext context) => UrineViewModel(),
-        child: const SafeArea(
+        child: SafeArea(
           child: Stack(
             children: [
               Align(
@@ -46,17 +47,16 @@ class _UrineHomeViewState extends State<HomeView> {
                       /// 버튼 4개(검사진행, 검사내역, 성분분석, 나의 추이)
                       Gap(AppDim.medium),
                       UrineHomeBody(),
-
                     ],
                   ),
                 ),
               ),
+
               /// 하단 이미지
               Align(
                   alignment: Alignment.bottomCenter,
                   child: UrineHomeLower(),
               ),
-
             ],
           ),
         ),

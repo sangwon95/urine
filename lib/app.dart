@@ -22,8 +22,10 @@ class _MyAppState extends State<MyApp> with AfterLayoutMixin{
 
   @override
   Widget build(BuildContext context) {
+
     // 앱 화면 세로 위쪽 방향으로 고정
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
     return MaterialApp(
       title: 'Yocheck',
       localizationsDelegates: context.localizationDelegates,

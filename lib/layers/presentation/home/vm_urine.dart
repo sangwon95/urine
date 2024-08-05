@@ -94,7 +94,7 @@ class UrineViewModel extends ChangeNotifier {
             String? result = await UrineAiAnalysisUseCase().execute(toMap);
             if (result != null &&(result != 'ERROR' || result != 'unknown') && context.mounted) {
               Nav.doPop(context); // 성분분석 진행 알림 다이얼로그 pop
-              Nav.doPush(context, IngredientResultView(resultText: result));
+              Nav.doPush(context, IngredientResultView(resultText: result, statusList: statusList));
             } else {
               if(context.mounted){
                 aiDialog(context, '정상적으로 처리 되지 않았습니다.\n다시 시도 해주세요.');

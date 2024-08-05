@@ -28,7 +28,7 @@ class AppConstants {
 
   static EdgeInsets viewPadding = const EdgeInsets.all(5.0);
 
-  static List<String> get urineNameList => [
+  static List<String> get urineLabelList => [
     '잠혈',
     '빌리루빈',
     '우로빌리노겐',

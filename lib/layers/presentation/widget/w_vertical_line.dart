@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:urine/common/common.dart';
 import 'package:urine/common/dart/extension/context_extension.dart';
 
 class Line extends StatelessWidget {
@@ -17,8 +18,8 @@ class Line extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: margin,
-      height: 1,
-      color: color ?? context.appColors.divider,
+      height: 0.5,
+      color: color ?? AppColors.grey,
       width: width,
     );
   }

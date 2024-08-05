@@ -41,7 +41,7 @@ class AppColors {
   static const Color red = Color(0xffff0000);
 
   // grey box colors
-  static Color greyBoxBg = Colors.grey.shade50;
+  static Color greyBoxBg = Colors.grey.shade100;
   static Color greyBoxBorder = Colors.grey.shade200;
   static Color greyDarkBoxBorder = const Color(0xffbdbdbd);
 
@@ -60,20 +60,46 @@ class AppColors {
 
 
   /// 소변 분석 단계별 컬러 값
-  static const resultColor1 = Color(0xffa0cb63); // 안심
-  static const resultColor2 = Color(0xff99b8e1); // 관심
-  static const resultColor3 = Color(0xffe6b073); // 주의
-  static const resultColor4 = Color(0xffbb85da); // 위험
-  static const resultColor5 = Color(0xffd88d8d); // 심각
-  static const resultColor6 = Color(0xffffc0cb); // 이외(PH, 비중, 비타민)
+  static final resultColor1 = Colors.green.shade600; // 관심
+  static final resultColor2 = Colors.blue.shade600; // 안심
+  static final resultColor3 = Color(0xffe5a45b); // 주의
+  static final resultColor4 = Colors.purple.shade500; // 위험
+  static final resultColor5 = Colors.red.shade500; // 심각
+  static final resultExceptColor = Colors.grey.shade600; // 이외(PH, 비중, 비타민)
+  static final resultVitaminColor = Colors.yellow.shade600; // 이외(PH, 비중, 비타민)
+
+  /// 소변 분석 단계별 Text BG 컬러 값
+  static final resultBGColor1 = Colors.green.shade100; // 관심
+  static final resultBGColor2 = Colors.blue.shade100; // 안심
+  static final resultBGColor3 = Color(0xffffdfb8); // 주의
+  static final resultBGColor4 = Colors.purple.shade100; // 위험
+  static final resultBGExceptColor = Colors.grey.shade200; // 이외(PH, 비중, 비타민)
+  static final resultBGVitaminColor = Colors.yellow.shade200; // 이외(PH, 비중, 비타민)
+
+
+  /// 소변 분석 단계별 Text BG 컬러 값
+  static final resultChartColor1 = Colors.green.shade400; // 관심
+  static final resultChartColor2 = Colors.blue.shade400; // 안심
+  static final resultChartColor3 = Color(0xffffb352); // 주의
+  static final resultChartColor4 = Color(0xffff4a51); // 위험
+  static final resultChartExceptColor = Colors.grey.shade200; // 이외(PH, 비중, 비타민)
 
   /// 소변 분석 단계별 컬러 값 not used
-  static const urineStageColor1 = Color(0xFF7FD697); // 안심
-  static const urineStageColor2 = Color(0xFF5B85FF); // 관심
+  static const urineStageColor1 = Color(0xFF7FD697); // 관심
+  static const urineStageColor2 = Color(0xFF5B85FF); // 안심
   static const urineStageColor3 = Color(0xFFFFD864); // 주의
   static const urineStageColor4 = Color(0xFF905BFF); // 위험
   static const urineStageColor5 = Color(0xFFFF5B65); // 심각
   static const urineExceptColor = Color(0xFFFF95A0); // 이외(PH, 비중, 비타민)
+
+  /// 소변 분석 단계별 컬러 값
+  //   static const resultColor1 = Color(0xffa0cb63); // 안심
+  //   static const resultColor2 = Color(0xff99b8e1); // 관심
+  //   static const resultColor3 = Color(0xffe6b073); // 주의
+  //   static const resultColor4 = Color(0xffbb85da); // 위험
+  //   static const resultColor5 = Color(0xffd88d8d); // 심각
+  //   static const resultColor6 = Color(0xffffc0cb); // 이외(PH, 비중, 비타민)
+
 
   /// 파이 차트 단계별 컬러
   static const urinePieColor1 = Color(0xFF7FD697); // 안심

@@ -22,59 +22,7 @@ class UrineResultViewModel extends ChangeNotifier {
 
   BuildContext context;
 
-  UrineResultViewModel(this.context){
-    fetchUrineChartDio();
-  }
-
-  final String _selectedUrineName = '포도당';
-
-  final String _rangeStartDate = DateTime.now().subtract(90.days).formattedClean;
-  final String _rangeEndDate = DateTime.now().formattedClean;
-
-  /// ChartData(x축, y축) List
-  List<ChartData> _chartData = [];
-
-  List<ChartData> get chartData => _chartData;
-  String get selectedUrineName => _selectedUrineName;
-
-
-  /// 차트 데이터 조회
-  Future<void> fetchUrineChartDio() async {
-    final toMap = {
-      'userID': Authorization().userID,
-      'searchStartDate': _rangeStartDate,
-      'searchEndDate': _rangeEndDate,
-    };
-
-    UrineChartDTO? urineChartDTO = await UrineChartCase().execute(toMap);
-    if(urineChartDTO?.status.code == '200'){
-      chartData.clear();
-
-      // 서버에서 불러온데이터를 사용자가 선택한 [_selectedUrineName]를 통해
-      // 같은 dataType으로만 골라 x,y축 데이터를 만들어 _chartData에 추가한다.
-      for(var value in urineChartDTO!.data)
-      {
-        if(value.dataType == Branch.urineNameToUrineDataType(_selectedUrineName))
-        {
-          if (!_chartData.any((element) => element.x
-              .toString()
-              .contains(TextFormat.setGroupDateTime(value.datetime)))) {
-
-            if(_chartData.length < 7){
-              _chartData.add(ChartData(
-                  x: TextFormat.setGroupDateTime(value.datetime),
-                  y: int.parse(value.status)));
-            }
-          }
-        }
-
-        if(_chartData.length == 7) break;
-      }
-    } else if(urineChartDTO?.status.code == 'ERR_MS_4003'){
-      print('해당 날짜에 검사한 이력이 없습니다.');
-    }
-    notifyListeners();
-  }
+  UrineResultViewModel(this.context);
 
 
   /// 성분 분석: 측정된 소변데이터로
@@ -98,7 +46,7 @@ class UrineResultViewModel extends ChangeNotifier {
           String? result = await UrineAiAnalysisUseCase().execute(toMap);
           if (result != null &&(result != 'ERROR' || result != 'unknown')) {
             Nav.doPop(context); // 성분분석 진행 알림 다이얼로그 pop
-            Nav.doPush(context, IngredientResultView(resultText: result));
+            Nav.doPush(context, IngredientResultView(resultText: result, statusList: statusList));
           } else {
             aiDialog(context, '정상적으로 처리 되지 않았습니다.\n다시 시도 해주세요.');
           }

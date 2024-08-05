@@ -8,6 +8,7 @@ import '../custom_app_bar.dart';
 class FrameScaffold extends StatelessWidget {
   final String? appBarTitle;
   final Widget body;
+  final EdgeInsets bodyPadding;
   final Widget? bottomNavigationBar;
   final Gradient? gradient;
   final Color? backgroundColor;
@@ -16,10 +17,11 @@ class FrameScaffold extends StatelessWidget {
 
   const FrameScaffold({
     super.key,
+    required this.body,
+    this.bodyPadding = const EdgeInsets.symmetric(horizontal: AppDim.medium),
     this.appBarTitle,
     this.backgroundColor = AppColors.white,
     this.isKeyboardHide = false,
-    required this.body,
     this.bottomNavigationBar,
     this.isActions = false,
     this.gradient,
@@ -44,7 +46,7 @@ class FrameScaffold extends StatelessWidget {
           centerTitle: true,
         ),
         body: Container(
-          padding: const EdgeInsets.symmetric(horizontal: AppDim.medium),
+          padding: bodyPadding,
           decoration: BoxDecoration(
             gradient: gradient,
           ),

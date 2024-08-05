@@ -23,6 +23,34 @@ class SnackBarUtils {
     ));
   }
 
+  /// 센터 스낵바
+  static showCenterSnackBar(
+      BuildContext context,
+      String message,
+      {int seconds = 3}) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      duration: Duration(seconds: seconds),
+      behavior: SnackBarBehavior.floating,
+      backgroundColor: AppColors.primaryColor,
+      margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 225.0),
+      content: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.arrow_circle_left_outlined, color: AppColors.whiteTextColor, size: AppDim.iconLarge),
+          const Gap(AppDim.small),
+          StyleText(
+            text: message,
+            size: AppDim.fontSizeXLarge,
+            color: AppColors.whiteTextColor,
+            fontWeight: AppDim.weightBold,
+          ),
+          const Gap(AppDim.small),
+          Icon(Icons.arrow_circle_right_outlined, color: AppColors.whiteTextColor, size: AppDim.iconLarge),
+        ],
+      ),
+    ));
+  }
+
   /// BG White 스낵바
   static showPrimarySnackBar(
       BuildContext context,

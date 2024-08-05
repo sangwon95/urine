@@ -3,6 +3,7 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 
 import 'package:intl/intl.dart';
 import 'package:urine/common/common.dart';
+import 'package:urine/common/util/branch.dart';
 
 import '../../model/vo_chart.dart';
 
@@ -20,6 +21,7 @@ class BarChart{
       plotAreaBorderWidth: 0,
       legend: Legend(isVisible: false),
       primaryXAxis: CategoryAxis(
+        axisLine: const AxisLine(width: 2),
         labelStyle: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
         majorGridLines: const MajorGridLines(width: 1),
         labelRotation: 0, //0
@@ -27,14 +29,14 @@ class BarChart{
 
       primaryYAxis: NumericAxis(
           minimum: 0,
-          maximum: 5,
-          axisLine: const AxisLine(width: 1),
+          maximum: 4,
+          axisLine: const AxisLine(width: 2),
           labelFormat: '{value}',
           labelStyle: TextStyle(fontSize: 12),
           majorTickLines: const MajorTickLines(size: 0)),
       series: _getColumnSeries(),
       trackballBehavior: TrackballBehavior(
-          enable: true,
+          enable: false,
           activationMode: ActivationMode.singleTap,
       ),
     );
@@ -49,17 +51,18 @@ class BarChart{
         xValueMapper: (ChartData sales, _) => sales.x.toString(),
         yValueMapper: (ChartData sales, _) => sales.y.toInt(),
         dataLabelMapper: (ChartData sales, _) => (sales.y.toString()),
-        color: AppColors.primaryColor,
+        color: AppColors.yellow,
+        pointColorMapper:(ChartData sales, _) => Branch.resultStatusToChartLabelColor(sales.y.toString(), 3),
         width: 2.0,
         dataLabelSettings:  DataLabelSettings(
             labelAlignment: ChartDataLabelAlignment.outer,
             isVisible: true,
-            textStyle: TextStyle(color: AppColors.primaryColor, fontWeight: FontWeight.w600, fontSize: 15)),
-         markerSettings: const MarkerSettings(
-             borderWidth: 3,
+            textStyle: TextStyle(color: AppColors.blackTextColor, fontWeight: FontWeight.w600, fontSize: 15)),
+         markerSettings: MarkerSettings(
+             borderWidth: 7,
              isVisible: true,
+             shape: DataMarkerType.circle,
              borderColor: Color(0xff6da8f6)
-
          )
       ),
 
@@ -71,7 +74,6 @@ class BarChart{
   SfCartesianChart buildColumnSeriesMiniChart({required List<ChartData> chartData}) {
 
     this.chartData = chartData;
-
     return SfCartesianChart(
       plotAreaBorderWidth: 0,
       legend: Legend(isVisible: false),
@@ -87,12 +89,12 @@ class BarChart{
       /// Y축 설정
       primaryYAxis: NumericAxis(
           minimum: 0,
-          maximum: 7,
+          maximum: 5,
           axisLine: const AxisLine(width: 0),
-          majorGridLines: const MajorGridLines(width: 1, color: Colors.white),
+          majorGridLines: MajorGridLines(width: 1, color: Colors.grey.shade300),
           majorTickLines: const MajorTickLines(size: 0)),
       series: _getColumnSeriesMini(),
-      trackballBehavior: TrackballBehavior(enable: true, activationMode: ActivationMode.singleTap),
+      trackballBehavior: TrackballBehavior(enable: false, activationMode: ActivationMode.singleTap),
     );
   }
 
@@ -106,14 +108,14 @@ class BarChart{
           yValueMapper: (ChartData sales, _) => sales.y.toInt(),
           dataLabelMapper: (ChartData sales, _) => (sales.y.toString()),
           color: AppColors.primaryColor,
-          width: 1.5,
+          width: 1.0,
           dataLabelSettings:  const DataLabelSettings(
               isVisible: false,
           ),
 
           markerSettings: MarkerSettings(
               shape: DataMarkerType.circle,
-              borderWidth: 3,
+              borderWidth: 2,
               isVisible: true,
               color: AppColors.white,
               borderColor: AppColors.primaryColor

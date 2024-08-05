@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 import 'package:urine/common/common.dart';
+import 'package:urine/common/util/snackbar_utils.dart';
 import 'package:urine/common/util/text_format.dart';
 import 'package:urine/layers/presentation/history/vm_urine_history.dart';
 
@@ -29,10 +30,10 @@ class HistoryListItem extends StatelessWidget {
       /// 아이템 클릭 시 이벤트 처리
       onTap: () => viewModel.getUrineResultDio(history.datetime)
           .then((urineStatus)=>{
-            if(urineStatus.isNotEmpty) {
-              Nav.doPush(context, UrineResultView(urineList: urineStatus))
+            if(urineStatus.isNotEmpty && urineStatus.length == 11){
+              Nav.doPush(context, UrineResultView(urineList: urineStatus, testDate: history.datetime)),
             } else {
-              context.showSnackbar('데이터 손상이 있습니다. 다시 시도해주세요.')
+              SnackBarUtils.showPrimarySnackBar(context, '데이터 손상이 있습니다. 다시 시도해주세요.')
             }
           }),
       child: SizedBox(

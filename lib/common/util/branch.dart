@@ -24,14 +24,36 @@ class Branch {
       return AiAnalysisResults.diabetes;
     } else if(result == '신장염'){
       return AiAnalysisResults.nephritis;
+    } else if(result == '다낭성신장염'){
+      return AiAnalysisResults.polycysticnephritis;
+    } else if(result == '급성간염'){
+      return AiAnalysisResults.acutehepatitis;
+    } else if(result == '갑상선기능항진증'){
+      return AiAnalysisResults.hyperthyroidism;
+    } else if(result == '간염(A형)'){
+      return AiAnalysisResults.hepatitis;
+    } else if(result == '신장질환' || result == '신우염' || result == '신부전'){
+      return AiAnalysisResults.kidneydisease;
     } else {
       return AiAnalysisResults.health;
     }
   }
 
-  static resultStatusToText(List<String> fastestResult, int index){
-    if(index == 10 || index == 8 || index == 7){
-      switch(fastestResult[index]){
+  static statusToVitaminText(String status){
+    switch(status){
+      case '0' : return '-';
+      case '1' : return '+';
+      case '2' : return '++';
+      case '3' : return '+++';
+      case '4' : return '++++';
+      case '5' : return '+++++';
+      default  : return '-';
+    }
+  }
+
+  static resultStatusToText(String status, int index){
+    if(index == 10 || index == 8){
+      switch(status){
         case '0' : return '-';
         case '1' : return '+';
         case '2' : return '++';
@@ -40,67 +62,146 @@ class Branch {
         case '5' : return '+++++';
         default  : return '-';
       }
+    } else if(index == 7){
+      switch(status){
+        case '0' : return '음성';
+        case '1' : return '산성';
+        case '2' : return '중성';
+        case '3' : return '알칼리성';
+        case '4' : return '강알칼리성';
+        case '5' : return '강알칼리성';
+        default  : return '-';
+      }
     }
     else {
-      switch(fastestResult[index]){
+      switch(status){
         case '0' : return '안심';
-        case '1' : return '관심';
-        case '2' : return '주위';
-        case '3' : return '위험';
-        case '4' : return '심각';
+        case '1' : return '안심';
+        case '2' : return '관심';
+        case '3' : return '주의';
+        case '4' : return '위험';
         case '5' : return '심각';
-        default  : return '안심';
+        default  : return '오류';
+      }
+    }
+  }
+
+  static resultStatusToIconData(String status, int index){
+    if(index == 10 || index == 8 || index == 7){
+      return Icons.sentiment_satisfied;
+    }
+    else {
+      switch(status){
+        case '0' : return  Icons.sentiment_satisfied_alt;
+        case '1' : return  Icons.sentiment_satisfied_alt;
+        case '2' : return  Icons.sentiment_neutral;
+        case '3' : return  Icons.sentiment_dissatisfied;
+        case '4' : return  Icons.sentiment_dissatisfied_rounded;
+        case '5' : return  Icons.sentiment_dissatisfied_rounded;
+        default  : return  Icons.sentiment_neutral;
       }
     }
   }
 
 
-  static resultStatusToImageStr(List<String> fastestResult, int index){
+  static resultStatusToImageStr(String status, int index){
     if(index == 10 || index == 8 || index == 7){
-      switch(fastestResult[index]){
+      switch(status){
         case '0' : return '${Texts.imagePath}/urine/result/plus_1.png';
-        case '1' : return '${Texts.imagePath}/urine/result/plus_2.png';
-        case '2' : return '${Texts.imagePath}/urine/result/plus_3.png';
-        case '3' : return '${Texts.imagePath}/urine/result/plus_4.png';
+        case '1' : return '${Texts.imagePath}/urine/result/plus_1.png';
+        case '2' : return '${Texts.imagePath}/urine/result/plus_2.png';
+        case '3' : return '${Texts.imagePath}/urine/result/plus_3.png';
         case '4' : return '${Texts.imagePath}/urine/result/plus_4.png';
         case '5' : return '${Texts.imagePath}/urine/result/plus_4.png';
         default  : return '${Texts.imagePath}/urine/result/plus_1.png';
       }
     }
     else {
-      switch(fastestResult[index]){
+      switch(status){
         case '0' : return '${Texts.imagePath}/urine/result/step_0.png';
-        case '1' : return '${Texts.imagePath}/urine/result/step_1.png';
-        case '2' : return '${Texts.imagePath}/urine/result/step_2.png';
-        case '3' : return '${Texts.imagePath}/urine/result/step_3.png';
-        case '4' : return '${Texts.imagePath}/urine/result/step_4.png';
+        case '1' : return '${Texts.imagePath}/urine/result/step_0.png';
+        case '2' : return '${Texts.imagePath}/urine/result/step_1.png';
+        case '3' : return '${Texts.imagePath}/urine/result/step_2.png';
+        case '4' : return '${Texts.imagePath}/urine/result/step_3.png';
         case '5' : return '${Texts.imagePath}/urine/result/step_4.png';
         default  : return '${Texts.imagePath}/urine/result/step_0.png';
       }
     }
   }
 
-
-  static resultStatusToColor(List<String> fastestResult, int index) {
+  static resultStatusToChartLabelColor(String status, int index) {
     if (index == 10 || index == 8 || index == 7) { // ph, 비중, 비타민 예외
-      return AppColors.urineExceptColor;
+      return AppColors.resultChartExceptColor;
     }
     else {
-      switch (fastestResult[index]) {
+      switch (status) {
+        case '0':
+          return AppColors.resultChartColor1;
+        case '1':
+          return AppColors.resultChartColor1;
+        case '2':
+          return AppColors.resultChartColor2;
+        case '3':
+          return AppColors.resultChartColor3;
+        case '4':
+          return AppColors.resultChartColor4;
+        case '5':
+          return AppColors.resultChartColor4;
+        default:
+          return AppColors.resultChartColor4;
+      }
+    }
+  }
+
+
+  static resultStatusToColor(String status, int index) {
+    if (index == 8 || index == 7) { // ph, 비중, 비타민 예외
+      return AppColors.resultExceptColor;
+    } else if(index == 10 ){
+      return AppColors.resultVitaminColor;
+    }
+    else {
+      switch (status) {
         case '0':
           return AppColors.resultColor1;
         case '1':
-          return AppColors.resultColor2;
-        case '2':
-          return AppColors.resultColor3;
-        case '3':
-          return AppColors.resultColor4;
-        case '4':
-          return AppColors.resultColor5;
-        case '5':
-          return AppColors.resultColor6;
-        default:
           return AppColors.resultColor1;
+        case '2':
+          return AppColors.resultColor2;
+        case '3':
+          return AppColors.resultColor3;
+        case '4':
+          return AppColors.resultColor4;
+        case '5':
+          return AppColors.resultColor5;
+        default:
+          return AppColors.resultColor5;
+      }
+    }
+  }
+
+  static resultStatusToBgColor(String status, int index) {
+    if (index == 8 || index == 7) { // ph, 비중, 비타민 예외
+      return AppColors.resultBGExceptColor;
+    } else if (index == 10) { // ph, 비중, 비타민 예외
+      return AppColors.resultBGVitaminColor;
+    }
+    else {
+      switch (status) {
+        case '0':
+          return AppColors.resultBGColor1;
+        case '1':
+          return AppColors.resultBGColor1;
+        case '2':
+          return AppColors.resultBGColor2;
+        case '3':
+          return AppColors.resultBGColor3;
+        case '4':
+          return AppColors.resultBGColor4;
+        case '5':
+          return AppColors.resultBGColor4;
+        default:
+          return AppColors.resultBGColor1;
       }
     }
   }
@@ -123,7 +224,7 @@ class Branch {
           return 0.1;
       }
   }
-  static urineNameToUrineDataType(String urineName) {
+  static urineLabelToUrineDataType(String urineName) {
     switch (urineName) {
       case '잠혈':
         return 'DT01';

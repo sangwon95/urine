@@ -30,17 +30,17 @@ class UrineNameDropButton extends StatelessWidget {
             fontWeight: AppDim.weight500,
           ),
         ),
-        items: AppConstants.urineNameList.map((String item) =>
+        items: AppConstants.urineLabelList.map((String item) =>
             DropdownMenuItem<String>(
             value: item,
             child: StyleText(
               text: item,
-              size: AppDim.fontSizeSmall,
               overflow: TextOverflow.ellipsis,
               color:  AppColors.blackTextColor,
               fontWeight: AppDim.weight500,
             )
         )).toList(),
+        isDense: true,
         value: selectedUrineName,
         onChanged: onChanged,
         alignment: AlignmentDirectional.center,
@@ -48,6 +48,7 @@ class UrineNameDropButton extends StatelessWidget {
         iconStyleData: iconStyle, // 우측 아이콘 스타일
         dropdownStyleData: dropdownStyle, // 클릭 후 아래에 표시될 dropdown button 스타일
         menuItemStyleData: menuItemStyle, // dropdown button 아이템 스타일
+
       ),
     );
   }
@@ -75,7 +76,7 @@ class UrineNameDropButton extends StatelessWidget {
 
   /// 클릭 후 아래에 표시될 dropdown button 스타일
   get dropdownStyle => DropdownStyleData(
-    maxHeight: 200,
+    maxHeight: 460,
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(10),
     ),

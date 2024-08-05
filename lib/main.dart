@@ -14,6 +14,13 @@ import 'layers/entity/login_dto.dart';
 import 'layers/model/authorization.dart';
 
 
+/// TODO
+/// 1) 포도당 수치 max 4
+/// 2) yocheck 한글화 / 요첵, 요책
+/// 3) CardView 색상
+/// 4) 비타민 색상
+/// 5) 추이 그래프 선 색상 변경
+///
 var logger = Logger(
     printer: PrettyPrinter(
         methodCount: 1,      // number of method calls to be displayed

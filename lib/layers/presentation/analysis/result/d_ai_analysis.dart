@@ -12,7 +12,6 @@ class AiAnalysisAlertDialog extends StatelessWidget {
 
   String get title => '성분 분석';
   String get contentText => '${Authorization().name}님 데이터 분석중입니다.';
-  String get checkUpText => '제공되는 데이터는 참고 용도로만사용되어야\n하며, 전문가와의 상담을 권장합니다.';
 
   @override
   Widget build(BuildContext context) {
@@ -49,16 +48,6 @@ class AiAnalysisAlertDialog extends StatelessWidget {
                     text: contentText,
                     color: AppColors.primaryColor,
                     fontWeight: AppDim.weightBold,
-                ),
-
-                const Gap(AppDim.xLarge),
-                StyleText(
-                  text: checkUpText,
-                  size: AppDim.fontSizeSmall,
-                  color: AppColors.blackTextColor,
-                  softWrap: true,
-                  maxLinesCount: 3,
-                  align: TextAlign.center,
                 ),
                 const Gap(AppDim.xLarge),
 
