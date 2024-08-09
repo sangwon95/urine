@@ -199,7 +199,7 @@ class Branch {
         case '4':
           return AppColors.resultBGColor4;
         case '5':
-          return AppColors.resultBGColor4;
+          return AppColors.resultBGColor5;
         default:
           return AppColors.resultBGColor1;
       }

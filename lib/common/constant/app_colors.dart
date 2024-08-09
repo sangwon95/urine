@@ -73,6 +73,7 @@ class AppColors {
   static final resultBGColor2 = Colors.blue.shade100; // 안심
   static final resultBGColor3 = Color(0xffffdfb8); // 주의
   static final resultBGColor4 = Colors.purple.shade100; // 위험
+  static final resultBGColor5 = Colors.red.shade100; // 위험
   static final resultBGExceptColor = Colors.grey.shade200; // 이외(PH, 비중, 비타민)
   static final resultBGVitaminColor = Colors.yellow.shade200; // 이외(PH, 비중, 비타민)
 

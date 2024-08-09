@@ -70,6 +70,22 @@ class _UrineDefineInfoBottomSheetViewState extends State<UrineDefineInfoBottomSh
                                 ],
                               ),
                               const Gap(AppDim.xXLarge),
+
+                              StyleText(
+                                text:
+                                'Q. 나의 ${provider.urineDesc?[widget.index]['label'] ?? ''} 추이는?',
+                                color: AppColors.blackTextColor,
+                                fontWeight: AppDim.weightBold,
+                                maxLinesCount: 1,
+                                size: AppDim.fontSizeXLarge,
+                                align: TextAlign.start,
+                                decoration: TextDecoration.underline,
+                                decorationColor: Colors.yellow.withOpacity(0.4),
+                                decorationThickness: 5,
+                              ),
+                              const Gap(AppDim.small),
+                              ResultSummaryChart(chartData: provider.chartData),
+                              const Gap(AppDim.xXLarge),
                               StyleText(
                                 text: provider.urineDesc?[widget.index]['subTitle'] ??
                                     'Q. -',
@@ -91,21 +107,6 @@ class _UrineDefineInfoBottomSheetViewState extends State<UrineDefineInfoBottomSh
                                   maxLinesCount: 10,
                                   softWrap: true,
                                   align: TextAlign.start),
-                              const Gap(AppDim.xXLarge),
-                              StyleText(
-                                text:
-                                'Q. 나의 ${provider.urineDesc?[widget.index]['label'] ?? ''} 추이는?',
-                                color: AppColors.blackTextColor,
-                                fontWeight: AppDim.weightBold,
-                                maxLinesCount: 1,
-                                size: AppDim.fontSizeXLarge,
-                                align: TextAlign.start,
-                                decoration: TextDecoration.underline,
-                                decorationColor: Colors.yellow.withOpacity(0.4),
-                                decorationThickness: 5,
-                              ),
-                              const Gap(AppDim.small),
-                              ResultSummaryChart(chartData: provider.chartData),
                             ],
                           ),
                         ),

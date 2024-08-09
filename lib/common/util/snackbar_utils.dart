@@ -32,11 +32,22 @@ class SnackBarUtils {
       duration: Duration(seconds: seconds),
       behavior: SnackBarBehavior.floating,
       backgroundColor: AppColors.primaryColor,
-      margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 225.0),
+      action: SnackBarAction(
+        label: 'X',
+        textColor: AppColors.whiteTextColor,
+        onPressed: () {
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        },
+      ),
+      margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 225.0),
       content: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Icon(Icons.arrow_circle_left_outlined, color: AppColors.whiteTextColor, size: AppDim.iconLarge),
+          Icon(
+              Icons.arrow_circle_left_outlined,
+              color: AppColors.whiteTextColor,
+              size: AppDim.iconMedium,
+          ),
           const Gap(AppDim.small),
           StyleText(
             text: message,
@@ -45,7 +56,10 @@ class SnackBarUtils {
             fontWeight: AppDim.weightBold,
           ),
           const Gap(AppDim.small),
-          Icon(Icons.arrow_circle_right_outlined, color: AppColors.whiteTextColor, size: AppDim.iconLarge),
+          Icon(
+            Icons.arrow_circle_right_outlined,
+            color: AppColors.whiteTextColor,
+            size: AppDim.iconMedium,),
         ],
       ),
     ));
