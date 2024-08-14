@@ -45,52 +45,102 @@ class Branch {
       case '1' : return '+';
       case '2' : return '++';
       case '3' : return '+++';
-      case '4' : return '++++';
-      case '5' : return '+++++';
       default  : return '-';
     }
   }
 
   static resultStatusToText(String status, int index){
-    if(index == 10 || index == 8){
+    if(index == 8){ // 비중
+      switch(status){
+        case '0' : return '-';
+        case '1' : return '±';
+        case '2' : return '+';
+        case '3' : return '++';
+        case '4' : return '+++';
+        case '5' : return '++++';
+        default  : return '-';
+      }
+    }
+
+    else if(index == 10){ // 비타민
       switch(status){
         case '0' : return '-';
         case '1' : return '+';
         case '2' : return '++';
         case '3' : return '+++';
-        case '4' : return '++++';
-        case '5' : return '+++++';
         default  : return '-';
       }
-    } else if(index == 7){
+    }
+
+    else if(index == 7){ // PH
       switch(status){
         case '0' : return '음성';
         case '1' : return '산성';
         case '2' : return '중성';
         case '3' : return '알칼리성';
         case '4' : return '강알칼리성';
-        case '5' : return '강알칼리성';
-        default  : return '-';
+        default  : return '음성';
       }
     }
-    else {
+
+    else if(index == 0 || index == 1 || index == 9){ // 잠혈, 빌리루빈, 백혈구
+      switch(status){
+        case '0' : return '안심';
+        case '1' : return '관심';
+        case '2' : return '주의';
+        case '3' : return '위험';
+        default  : return '안심';
+      }
+    }
+
+    else if(index == 2){ // 우로빌리노겐
       switch(status){
         case '0' : return '안심';
         case '1' : return '안심';
         case '2' : return '관심';
         case '3' : return '주의';
         case '4' : return '위험';
-        case '5' : return '심각';
-        default  : return '오류';
+        default  : return '안심';
       }
     }
+
+    else if(index == 3) { // 케톤체
+      switch(status){
+        case '0' : return '안심';
+        case '1' : return '안심';
+        case '2' : return '관심';
+        case '3' : return '주의';
+        case '4' : return '위험';
+        default  : return '안심';
+      }
+    }
+
+    else if(index == 4 || index == 6) { // 단백질, 포도당
+      switch(status){
+        case '0' : return '안심';
+        case '1' : return '안심';
+        case '2' : return '안심';
+        case '3' : return '관심';
+        case '4' : return '주의';
+        case '5' : return '위험';
+        default  : return '안심';
+      }
+    }
+
+    else if(index == 5) { // 아질산염
+      switch(status){
+        case '0' : return '안심';
+        case '1' : return '관심';
+        default  : return '안심';
+      }
+    }
+
   }
 
   static resultStatusToIconData(String status, int index){
     if(index == 10 || index == 8 || index == 7){
       return Icons.sentiment_satisfied;
-    }
-    else {
+    } else {
       switch(status){
         case '0' : return  Icons.sentiment_satisfied_alt;
         case '1' : return  Icons.sentiment_satisfied_alt;
@@ -105,28 +155,81 @@ class Branch {
 
 
   static resultStatusToImageStr(String status, int index){
-    if(index == 10 || index == 8 || index == 7){
+    if(index == 10){ // 비타민
       switch(status){
         case '0' : return '${Texts.imagePath}/urine/result/plus_1.png';
         case '1' : return '${Texts.imagePath}/urine/result/plus_1.png';
         case '2' : return '${Texts.imagePath}/urine/result/plus_2.png';
         case '3' : return '${Texts.imagePath}/urine/result/plus_3.png';
-        case '4' : return '${Texts.imagePath}/urine/result/plus_4.png';
+        default  : return '${Texts.imagePath}/urine/result/plus_1.png';
+      }
+    }
+
+    else if(index == 7) { // PH
+      switch(status){
+        case '0' : return '${Texts.imagePath}/urine/result/plus_1.png';
+        case '1' : return '${Texts.imagePath}/urine/result/plus_1.png';
+        case '2' : return '${Texts.imagePath}/urine/result/plus_1.png';
+        case '3' : return '${Texts.imagePath}/urine/result/plus_2.png';
+        case '4' : return '${Texts.imagePath}/urine/result/plus_3.png';
+        default  : return '${Texts.imagePath}/urine/result/plus_1.png';
+      }
+    }
+
+    else if(index == 8) { // 비중
+      switch(status){
+        case '0' : return '${Texts.imagePath}/urine/result/plus_1.png';
+        case '1' : return '${Texts.imagePath}/urine/result/plus_1.png';
+        case '2' : return '${Texts.imagePath}/urine/result/plus_1.png';
+        case '3' : return '${Texts.imagePath}/urine/result/plus_2.png';
+        case '4' : return '${Texts.imagePath}/urine/result/plus_3.png';
         case '5' : return '${Texts.imagePath}/urine/result/plus_4.png';
         default  : return '${Texts.imagePath}/urine/result/plus_1.png';
       }
     }
-    else {
+
+    else if(index == 0 || index == 1 || index == 9){
+      switch(status){
+        case '0' : return '${Texts.imagePath}/urine/result/step_0.png';
+        case '1' : return '${Texts.imagePath}/urine/result/step_1.png';
+        case '2' : return '${Texts.imagePath}/urine/result/step_2.png';
+        case '3' : return '${Texts.imagePath}/urine/result/step_3.png';
+        default  : return '${Texts.imagePath}/urine/result/step_0.png';
+      }
+    }
+
+    else if(index == 3){ // 케톤체
       switch(status){
         case '0' : return '${Texts.imagePath}/urine/result/step_0.png';
         case '1' : return '${Texts.imagePath}/urine/result/step_0.png';
         case '2' : return '${Texts.imagePath}/urine/result/step_1.png';
         case '3' : return '${Texts.imagePath}/urine/result/step_2.png';
         case '4' : return '${Texts.imagePath}/urine/result/step_3.png';
-        case '5' : return '${Texts.imagePath}/urine/result/step_4.png';
         default  : return '${Texts.imagePath}/urine/result/step_0.png';
       }
     }
+
+    else if(index == 4 || index == 6){ // 단백질, 포도당
+      switch(status){
+        case '0' : return '${Texts.imagePath}/urine/result/step_0.png';
+        case '1' : return '${Texts.imagePath}/urine/result/step_0.png';
+        case '2' : return '${Texts.imagePath}/urine/result/step_0.png';
+        case '3' : return '${Texts.imagePath}/urine/result/step_1.png';
+        case '4' : return '${Texts.imagePath}/urine/result/step_2.png';
+        case '5' : return '${Texts.imagePath}/urine/result/step_3.png';
+        default  : return '${Texts.imagePath}/urine/result/step_0.png';
+      }
+    }
+
+    else { // 아질산염
+      switch(status){
+        case '0' : return '${Texts.imagePath}/urine/result/step_0.png';
+        case '1' : return '${Texts.imagePath}/urine/result/step_1.png';
+        default  : return '${Texts.imagePath}/urine/result/step_0.png';
+      }
+    }
+
+
   }
 
   static resultStatusToChartLabelColor(String status, int index) {
@@ -155,53 +258,101 @@ class Branch {
 
 
   static resultStatusToColor(String status, int index) {
-    if (index == 8 || index == 7) { // ph, 비중, 비타민 예외
+    if ( index == 8 || index == 7) { // ph, 비중, 비타민 예외
       return AppColors.resultExceptColor;
-    } else if(index == 10 ){
+    }
+    else if(index == 10){
       return AppColors.resultVitaminColor;
     }
-    else {
-      switch (status) {
-        case '0':
-          return AppColors.resultColor1;
-        case '1':
-          return AppColors.resultColor1;
-        case '2':
-          return AppColors.resultColor2;
-        case '3':
-          return AppColors.resultColor3;
-        case '4':
-          return AppColors.resultColor4;
-        case '5':
-          return AppColors.resultColor5;
-        default:
-          return AppColors.resultColor5;
+
+    else if(index == 0 || index == 1 || index == 9){
+      switch(status){
+        case '0' : return AppColors.resultColor1;
+        case '1' : return AppColors.resultColor2;
+        case '2' : return AppColors.resultColor3;
+        case '3' : return AppColors.resultColor4;
+        default  : return AppColors.resultColor1;
+      }
+    }
+
+    else if(index == 3){ // 케톤체
+      switch(status){
+        case '0' : return AppColors.resultColor1;
+        case '1' : return AppColors.resultColor1;
+        case '2' : return AppColors.resultColor2;
+        case '3' : return AppColors.resultColor3;
+        case '4' : return AppColors.resultColor4;
+        default  : return AppColors.resultColor1;
+      }
+    }
+
+    else if(index == 4 || index == 6){ // 단백질, 포도당
+      switch(status){
+        case '0' : return AppColors.resultColor1;
+        case '1' : return AppColors.resultColor1;
+        case '2' : return AppColors.resultColor1;
+        case '3' : return AppColors.resultColor2;
+        case '4' : return AppColors.resultColor3;
+        case '5' : return AppColors.resultColor4;
+        default  : return AppColors.resultColor1;
+      }
+    }
+
+    else { // 아질산염
+      switch(status){
+        case '0' : return AppColors.resultColor1;
+        case '1' : return AppColors.resultColor2;
+        default  : return AppColors.resultColor1;
       }
     }
   }
 
   static resultStatusToBgColor(String status, int index) {
-    if (index == 8 || index == 7) { // ph, 비중, 비타민 예외
+    if ( index == 8 || index == 7) { // ph, 비중, 비타민 예외
       return AppColors.resultBGExceptColor;
-    } else if (index == 10) { // ph, 비중, 비타민 예외
+    }
+    else if(index == 10){
       return AppColors.resultBGVitaminColor;
     }
-    else {
-      switch (status) {
-        case '0':
-          return AppColors.resultBGColor1;
-        case '1':
-          return AppColors.resultBGColor1;
-        case '2':
-          return AppColors.resultBGColor2;
-        case '3':
-          return AppColors.resultBGColor3;
-        case '4':
-          return AppColors.resultBGColor4;
-        case '5':
-          return AppColors.resultBGColor5;
-        default:
-          return AppColors.resultBGColor1;
+
+    else if(index == 0 || index == 1 || index == 9){
+      switch(status){
+        case '0' : return AppColors.resultBGColor1;
+        case '1' : return AppColors.resultBGColor2;
+        case '2' : return AppColors.resultBGColor3;
+        case '3' : return AppColors.resultBGColor4;
+        default  : return AppColors.resultBGColor1;
+      }
+    }
+
+    else if(index == 3){ // 케톤체
+      switch(status){
+        case '0' : return AppColors.resultBGColor1;
+        case '1' : return AppColors.resultBGColor1;
+        case '2' : return AppColors.resultBGColor2;
+        case '3' : return AppColors.resultBGColor3;
+        case '4' : return AppColors.resultBGColor4;
+        default  : return AppColors.resultBGColor1;
+      }
+    }
+
+    else if(index == 4 || index == 6){ // 단백질, 포도당
+      switch(status){
+        case '0' : return AppColors.resultBGColor1;
+        case '1' : return AppColors.resultBGColor1;
+        case '2' : return AppColors.resultBGColor1;
+        case '3' : return AppColors.resultBGColor2;
+        case '4' : return AppColors.resultBGColor3;
+        case '5' : return AppColors.resultBGColor4;
+        default  : return AppColors.resultBGColor1;
+      }
+    }
+
+    else { // 아질산염
+      switch(status){
+        case '0' : return AppColors.resultBGColor1;
+        case '1' : return AppColors.resultBGColor2;
+        default  : return AppColors.resultBGColor1;
       }
     }
   }

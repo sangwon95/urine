@@ -24,7 +24,7 @@ class IngredientHeader extends StatelessWidget {
 
 
   String get emptyText => '측정 성분 분석 결과 ';
-  String get emptyText2 => '\"대부분 음성\"';
+  String get emptyText2 => '\"소변건강양호\"';
   String get emptyText3 => '으로 측정되었으며, 주기적인 검사를 권장합니다.';
 
 

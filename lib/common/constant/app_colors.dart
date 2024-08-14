@@ -60,8 +60,8 @@ class AppColors {
 
 
   /// 소변 분석 단계별 컬러 값
-  static final resultColor1 = Colors.green.shade600; // 관심
-  static final resultColor2 = Colors.blue.shade600; // 안심
+  static final resultColor1 = Colors.green.shade600; // 안심
+  static final resultColor2 = Colors.blue.shade600;  // 관심
   static final resultColor3 = Color(0xffe5a45b); // 주의
   static final resultColor4 = Colors.purple.shade500; // 위험
   static final resultColor5 = Colors.red.shade500; // 심각
@@ -69,13 +69,13 @@ class AppColors {
   static final resultVitaminColor = Colors.yellow.shade600; // 이외(PH, 비중, 비타민)
 
   /// 소변 분석 단계별 Text BG 컬러 값
-  static final resultBGColor1 = Colors.green.shade100; // 관심
-  static final resultBGColor2 = Colors.blue.shade100; // 안심
+  static final resultBGColor1 = Colors.green.shade100; // 안심
+  static final resultBGColor2 = Colors.blue.shade100; // 관심
   static final resultBGColor3 = Color(0xffffdfb8); // 주의
   static final resultBGColor4 = Colors.purple.shade100; // 위험
   static final resultBGColor5 = Colors.red.shade100; // 위험
   static final resultBGExceptColor = Colors.grey.shade200; // 이외(PH, 비중, 비타민)
-  static final resultBGVitaminColor = Colors.yellow.shade200; // 이외(PH, 비중, 비타민)
+  static final resultBGVitaminColor = Colors.yellow.shade100; // 이외(PH, 비중, 비타민)
 
 
   /// 소변 분석 단계별 Text BG 컬러 값
