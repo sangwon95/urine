@@ -77,21 +77,22 @@ class UrineViewModel extends ChangeNotifier {
         UrineResultDTO? urineResultDTO = await UrineResultCase().execute('');
 
         if (urineResultDTO?.status.code == '200') {
-            List<String> statusList = urineResultDTO!.data!
-                .map((value) => value.status).toList();
+            List<String> statusList =
+            urineResultDTO!.data!.map((value) => value.status).toList();
 
             Map<String, dynamic> toMap = {
-              "blood": statusList[0] == '0' ? '-' : '${statusList[0]}+',
-              "bilirubin": statusList[1] == '0' ? '-' : '${statusList[1]}+',
-              "urobilinogen": statusList[2] == '0' ? '-' : '${statusList[2]}+',
-              "ketones": statusList[3] == '0' ? '-' : '${statusList[3]}+',
-              "protein": statusList[4] == '0' ? '-' : '${statusList[4]}+',
-              "nitrite": statusList[5] == '0' ? '-' : '${statusList[5]}+',
-              "glucose": statusList[6] == '0' ? '-' : '${statusList[6]}+',
-              "leukocytes": statusList[9] == '0' ? '-' : '${statusList[9]}+',
+              "blood": statusList[0] == '0'|| statusList[0] == '5' ? '-' : '${statusList[0]}+',
+              "bilirubin": statusList[1] == '0' || statusList[1] == '5'? '-' : '${statusList[1]}+',
+              "urobilinogen": statusList[2] == '0' || statusList[2] == '5'? '-' : '${statusList[2]}+',
+              "ketones": statusList[3] == '0' || statusList[3] == '5'? '-' : '${statusList[3]}+',
+              "protein": statusList[4] == '0' || statusList[4] == '6'? '-' : '${statusList[4]}+',
+              "nitrite": statusList[5] == '1' ? '1+' : '-',
+              "glucose": statusList[6] == '0' || statusList[6] == '6'? '-' : '${statusList[6]}+',
+              "leukocytes": statusList[9] == '0' || statusList[9] == '5' ? '-' : '${statusList[9]}+',
             };
 
             String? result = await UrineAiAnalysisUseCase().execute(toMap);
+            logger.d(toMap);
             if (result != null &&(result != 'ERROR' || result != 'unknown') && context.mounted) {
               Nav.doPop(context); // 성분분석 진행 알림 다이얼로그 pop
               Nav.doPush(context, IngredientResultView(resultText: result, statusList: statusList));

@@ -89,6 +89,7 @@ class Branch {
         case '1' : return '관심';
         case '2' : return '주의';
         case '3' : return '위험';
+        case '4' : return '위험';
         default  : return '안심';
       }
     }
@@ -96,10 +97,10 @@ class Branch {
     else if(index == 2){ // 우로빌리노겐
       switch(status){
         case '0' : return '안심';
-        case '1' : return '안심';
-        case '2' : return '관심';
-        case '3' : return '주의';
-        case '4' : return '위험';
+        case '1' : return '관심';
+        case '2' : return '주의';
+        case '3' : return '위험';
+        case '4' : return '심각';
         default  : return '안심';
       }
     }
@@ -107,7 +108,7 @@ class Branch {
     else if(index == 3) { // 케톤체
       switch(status){
         case '0' : return '안심';
-        case '1' : return '안심';
+        case '1' : return '관심';
         case '2' : return '관심';
         case '3' : return '주의';
         case '4' : return '위험';
@@ -118,11 +119,11 @@ class Branch {
     else if(index == 4 || index == 6) { // 단백질, 포도당
       switch(status){
         case '0' : return '안심';
-        case '1' : return '안심';
-        case '2' : return '안심';
-        case '3' : return '관심';
+        case '1' : return '관심';
+        case '2' : return '관심';
+        case '3' : return '주의';
         case '4' : return '주의';
-        case '5' : return '위험';
+        case '5' : return '심각';
         default  : return '안심';
       }
     }
@@ -194,6 +195,7 @@ class Branch {
         case '1' : return '${Texts.imagePath}/urine/result/step_1.png';
         case '2' : return '${Texts.imagePath}/urine/result/step_2.png';
         case '3' : return '${Texts.imagePath}/urine/result/step_3.png';
+        case '4' : return '${Texts.imagePath}/urine/result/step_3.png';
         default  : return '${Texts.imagePath}/urine/result/step_0.png';
       }
     }
@@ -201,7 +203,7 @@ class Branch {
     else if(index == 3){ // 케톤체
       switch(status){
         case '0' : return '${Texts.imagePath}/urine/result/step_0.png';
-        case '1' : return '${Texts.imagePath}/urine/result/step_0.png';
+        case '1' : return '${Texts.imagePath}/urine/result/step_1.png';
         case '2' : return '${Texts.imagePath}/urine/result/step_1.png';
         case '3' : return '${Texts.imagePath}/urine/result/step_2.png';
         case '4' : return '${Texts.imagePath}/urine/result/step_3.png';
@@ -212,11 +214,22 @@ class Branch {
     else if(index == 4 || index == 6){ // 단백질, 포도당
       switch(status){
         case '0' : return '${Texts.imagePath}/urine/result/step_0.png';
-        case '1' : return '${Texts.imagePath}/urine/result/step_0.png';
-        case '2' : return '${Texts.imagePath}/urine/result/step_0.png';
-        case '3' : return '${Texts.imagePath}/urine/result/step_1.png';
-        case '4' : return '${Texts.imagePath}/urine/result/step_2.png';
-        case '5' : return '${Texts.imagePath}/urine/result/step_3.png';
+        case '1' : return '${Texts.imagePath}/urine/result/step_1.png';
+        case '2' : return '${Texts.imagePath}/urine/result/step_1.png';
+        case '3' : return '${Texts.imagePath}/urine/result/step_2.png';
+        case '4' : return '${Texts.imagePath}/urine/result/step_3.png';
+        case '5' : return '${Texts.imagePath}/urine/result/step_4.png';
+        default  : return '${Texts.imagePath}/urine/result/step_0.png';
+      }
+    }
+
+    else if(index == 2){ // 아질산염
+      switch(status){
+        case '0' : return '${Texts.imagePath}/urine/result/step_0.png';
+        case '1' : return '${Texts.imagePath}/urine/result/step_1.png';
+        case '2' : return '${Texts.imagePath}/urine/result/step_2.png';
+        case '3' : return '${Texts.imagePath}/urine/result/step_3.png';
+        case '4' : return '${Texts.imagePath}/urine/result/step_4.png';
         default  : return '${Texts.imagePath}/urine/result/step_0.png';
       }
     }
@@ -271,6 +284,7 @@ class Branch {
         case '1' : return AppColors.resultColor2;
         case '2' : return AppColors.resultColor3;
         case '3' : return AppColors.resultColor4;
+        case '4' : return AppColors.resultColor4;
         default  : return AppColors.resultColor1;
       }
     }
@@ -278,7 +292,7 @@ class Branch {
     else if(index == 3){ // 케톤체
       switch(status){
         case '0' : return AppColors.resultColor1;
-        case '1' : return AppColors.resultColor1;
+        case '1' : return AppColors.resultColor2;
         case '2' : return AppColors.resultColor2;
         case '3' : return AppColors.resultColor3;
         case '4' : return AppColors.resultColor4;
@@ -286,14 +300,31 @@ class Branch {
       }
     }
 
-    else if(index == 4 || index == 6){ // 단백질, 포도당
+    else if(index == 4 || index == 6) { // 단백질, 포도당
+      switch (status) {
+        case '0' :
+          return AppColors.resultColor1;
+        case '1' :
+          return AppColors.resultColor2;
+        case '2' :
+          return AppColors.resultColor2;
+        case '3' :
+          return AppColors.resultColor3;
+        case '4' :
+          return AppColors.resultColor4;
+        case '5' :
+          return AppColors.resultColor5;
+        default :
+          return AppColors.resultColor1;
+      }
+    }
+    else if(index == 2) {
       switch(status){
         case '0' : return AppColors.resultColor1;
-        case '1' : return AppColors.resultColor1;
-        case '2' : return AppColors.resultColor1;
-        case '3' : return AppColors.resultColor2;
-        case '4' : return AppColors.resultColor3;
-        case '5' : return AppColors.resultColor4;
+        case '1' : return AppColors.resultColor2;
+        case '2' : return AppColors.resultColor3;
+        case '3' : return AppColors.resultColor4;
+        case '4' : return AppColors.resultColor5;
         default  : return AppColors.resultColor1;
       }
     }
@@ -321,6 +352,7 @@ class Branch {
         case '1' : return AppColors.resultBGColor2;
         case '2' : return AppColors.resultBGColor3;
         case '3' : return AppColors.resultBGColor4;
+        case '4' : return AppColors.resultBGColor4;
         default  : return AppColors.resultBGColor1;
       }
     }
@@ -328,7 +360,7 @@ class Branch {
     else if(index == 3){ // 케톤체
       switch(status){
         case '0' : return AppColors.resultBGColor1;
-        case '1' : return AppColors.resultBGColor1;
+        case '1' : return AppColors.resultBGColor2;
         case '2' : return AppColors.resultBGColor2;
         case '3' : return AppColors.resultBGColor3;
         case '4' : return AppColors.resultBGColor4;
@@ -339,11 +371,22 @@ class Branch {
     else if(index == 4 || index == 6){ // 단백질, 포도당
       switch(status){
         case '0' : return AppColors.resultBGColor1;
-        case '1' : return AppColors.resultBGColor1;
-        case '2' : return AppColors.resultBGColor1;
-        case '3' : return AppColors.resultBGColor2;
-        case '4' : return AppColors.resultBGColor3;
-        case '5' : return AppColors.resultBGColor4;
+        case '1' : return AppColors.resultBGColor2;
+        case '2' : return AppColors.resultBGColor2;
+        case '3' : return AppColors.resultBGColor3;
+        case '4' : return AppColors.resultBGColor4;
+        case '5' : return AppColors.resultBGColor5;
+        default  : return AppColors.resultBGColor1;
+      }
+    }
+
+    else if(index == 2){ // 우로빌리노겐
+      switch(status){
+        case '0' : return AppColors.resultBGColor1;
+        case '1' : return AppColors.resultBGColor2;
+        case '2' : return AppColors.resultBGColor3;
+        case '3' : return AppColors.resultBGColor4;
+        case '4' : return AppColors.resultBGColor5;
         default  : return AppColors.resultBGColor1;
       }
     }

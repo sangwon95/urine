@@ -87,7 +87,7 @@ class AnalysisTrendViewModel extends ChangeNotifier {
       print('해당 날짜에 검사한 이력이 없습니다.');
     }
 
-    SnackBarUtils.showCenterSnackBar(context, '좌우로 이동 가능합니다');
+    //SnackBarUtils.showCenterSnackBar(context, '좌우로 이동 가능합니다');
     notifyListeners();
   }
 
