@@ -55,7 +55,7 @@ class _DiseaseInfoViewState extends State<DiseaseInfoView> {
                 width: double.infinity,
                 child: Column(
                   children: [
-                    rowContents('잠혈', '급성신장염, 만성신장염, 빈혈, 요로감염 등'),
+                    rowContents('잠혈', '잠혈, 급성신장염, 만성신장염, 빈혈, 요로감염 등'),
                     const DottedLine(mWidth: double.infinity),
 
                     rowContents('빌리루빈', '간염, 담석, 췌장염, 담도폐쇄 등'),

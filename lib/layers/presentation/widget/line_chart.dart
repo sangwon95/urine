@@ -29,7 +29,7 @@ class BarChart{
 
       primaryYAxis: NumericAxis(
           minimum: 0,
-          maximum: 4,
+          maximum: 5,
           axisLine: const AxisLine(width: 2),
           labelFormat: '{value}',
           labelStyle: TextStyle(fontSize: 12),

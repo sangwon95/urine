@@ -165,7 +165,7 @@ class IngredientHeader extends StatelessWidget {
     return TextStyle(
       fontSize: AppDim.fontSizeMedium,
       fontWeight: AppDim.weight500,
-      color: AppColors.darkOrange,
+      color: AppColors.lightGreen,
       fontFamily: 'pretendard',
     );
   }
