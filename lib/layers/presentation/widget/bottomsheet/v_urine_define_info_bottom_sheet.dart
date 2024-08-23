@@ -84,8 +84,10 @@ class _UrineDefineInfoBottomSheetViewState extends State<UrineDefineInfoBottomSh
                                 decorationThickness: 5,
                               ),
                               const Gap(AppDim.small),
+
                               ResultSummaryChart(chartData: provider.chartData),
                               const Gap(AppDim.xXLarge),
+
                               StyleText(
                                 text: provider.urineDesc?[widget.index]['subTitle'] ??
                                     'Q. -',

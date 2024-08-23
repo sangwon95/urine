@@ -122,7 +122,7 @@ class Branch {
         case '1' : return '관심';
         case '2' : return '관심';
         case '3' : return '주의';
-        case '4' : return '주의';
+        case '4' : return '위험';
         case '5' : return '심각';
         default  : return '안심';
       }
