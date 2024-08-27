@@ -53,11 +53,10 @@ class Branch {
     if(index == 8){ // 비중
       switch(status){
         case '0' : return '-';
-        case '1' : return '±';
-        case '2' : return '+';
-        case '3' : return '++';
-        case '4' : return '+++';
-        case '5' : return '++++';
+        case '1' : return '+';
+        case '2' : return '++';
+        case '3' : return '+++';
+        case '4' : return '++++';
         default  : return '-';
       }
     }
@@ -79,7 +78,7 @@ class Branch {
         case '2' : return '중성';
         case '3' : return '알칼리성';
         case '4' : return '강알칼리성';
-        default  : return '음성';
+        default  : return '-';
       }
     }
 
@@ -89,8 +88,7 @@ class Branch {
         case '1' : return '관심';
         case '2' : return '주의';
         case '3' : return '위험';
-        case '4' : return '위험';
-        default  : return '안심';
+        default  : return '-';
       }
     }
 
@@ -101,7 +99,7 @@ class Branch {
         case '2' : return '주의';
         case '3' : return '위험';
         case '4' : return '심각';
-        default  : return '안심';
+        default  : return '-';
       }
     }
 
@@ -109,9 +107,8 @@ class Branch {
       switch(status){
         case '0' : return '안심';
         case '1' : return '관심';
-        case '2' : return '관심';
-        case '3' : return '주의';
-        case '4' : return '위험';
+        case '2' : return '주의';
+        case '3' : return '위험';
         default  : return '안심';
       }
     }
@@ -120,10 +117,9 @@ class Branch {
       switch(status){
         case '0' : return '안심';
         case '1' : return '관심';
-        case '2' : return '관심';
-        case '3' : return '주의';
-        case '4' : return '위험';
-        case '5' : return '심각';
+        case '2' : return '주의';
+        case '3' : return '위험';
+        case '4' : return '심각';
         default  : return '안심';
       }
     }
@@ -181,21 +177,19 @@ class Branch {
       switch(status){
         case '0' : return '${Texts.imagePath}/urine/result/plus_1.png';
         case '1' : return '${Texts.imagePath}/urine/result/plus_1.png';
-        case '2' : return '${Texts.imagePath}/urine/result/plus_1.png';
-        case '3' : return '${Texts.imagePath}/urine/result/plus_2.png';
-        case '4' : return '${Texts.imagePath}/urine/result/plus_3.png';
-        case '5' : return '${Texts.imagePath}/urine/result/plus_4.png';
+        case '2' : return '${Texts.imagePath}/urine/result/plus_2.png';
+        case '3' : return '${Texts.imagePath}/urine/result/plus_3.png';
+        case '4' : return '${Texts.imagePath}/urine/result/plus_4.png';
         default  : return '${Texts.imagePath}/urine/result/plus_1.png';
       }
     }
 
-    else if(index == 0 || index == 1 || index == 9){
+    else if(index == 0 || index == 1 || index == 9){ // 잠혈 ,빌리루빈, 백혈구
       switch(status){
         case '0' : return '${Texts.imagePath}/urine/result/step_0.png';
         case '1' : return '${Texts.imagePath}/urine/result/step_1.png';
         case '2' : return '${Texts.imagePath}/urine/result/step_2.png';
         case '3' : return '${Texts.imagePath}/urine/result/step_3.png';
-        case '4' : return '${Texts.imagePath}/urine/result/step_3.png';
         default  : return '${Texts.imagePath}/urine/result/step_0.png';
       }
     }
@@ -204,9 +198,8 @@ class Branch {
       switch(status){
         case '0' : return '${Texts.imagePath}/urine/result/step_0.png';
         case '1' : return '${Texts.imagePath}/urine/result/step_1.png';
-        case '2' : return '${Texts.imagePath}/urine/result/step_1.png';
-        case '3' : return '${Texts.imagePath}/urine/result/step_2.png';
-        case '4' : return '${Texts.imagePath}/urine/result/step_3.png';
+        case '2' : return '${Texts.imagePath}/urine/result/step_2.png';
+        case '3' : return '${Texts.imagePath}/urine/result/step_3.png';
         default  : return '${Texts.imagePath}/urine/result/step_0.png';
       }
     }
@@ -215,15 +208,14 @@ class Branch {
       switch(status){
         case '0' : return '${Texts.imagePath}/urine/result/step_0.png';
         case '1' : return '${Texts.imagePath}/urine/result/step_1.png';
-        case '2' : return '${Texts.imagePath}/urine/result/step_1.png';
-        case '3' : return '${Texts.imagePath}/urine/result/step_2.png';
-        case '4' : return '${Texts.imagePath}/urine/result/step_3.png';
-        case '5' : return '${Texts.imagePath}/urine/result/step_4.png';
+        case '2' : return '${Texts.imagePath}/urine/result/step_2.png';
+        case '3' : return '${Texts.imagePath}/urine/result/step_3.png';
+        case '4' : return '${Texts.imagePath}/urine/result/step_4.png';
         default  : return '${Texts.imagePath}/urine/result/step_0.png';
       }
     }
 
-    else if(index == 2){ // 아질산염
+    else if(index == 2){ // 우로 빌리노겐
       switch(status){
         case '0' : return '${Texts.imagePath}/urine/result/step_0.png';
         case '1' : return '${Texts.imagePath}/urine/result/step_1.png';
@@ -274,11 +266,11 @@ class Branch {
     if ( index == 8 || index == 7) { // ph, 비중, 비타민 예외
       return AppColors.resultExceptColor;
     }
-    else if(index == 10){
+    else if(index == 10){ // 비타민
       return AppColors.resultVitaminColor;
     }
 
-    else if(index == 0 || index == 1 || index == 9){
+    else if(index == 0 || index == 1 || index == 9){ // 잠혈, 빌리루빈, 백혈구
       switch(status){
         case '0' : return AppColors.resultColor1;
         case '1' : return AppColors.resultColor2;
@@ -293,9 +285,8 @@ class Branch {
       switch(status){
         case '0' : return AppColors.resultColor1;
         case '1' : return AppColors.resultColor2;
-        case '2' : return AppColors.resultColor2;
-        case '3' : return AppColors.resultColor3;
-        case '4' : return AppColors.resultColor4;
+        case '2' : return AppColors.resultColor3;
+        case '3' : return AppColors.resultColor4;
         default  : return AppColors.resultColor1;
       }
     }
@@ -307,18 +298,16 @@ class Branch {
         case '1' :
           return AppColors.resultColor2;
         case '2' :
-          return AppColors.resultColor2;
-        case '3' :
           return AppColors.resultColor3;
-        case '4' :
+        case '3' :
           return AppColors.resultColor4;
-        case '5' :
+        case '4' :
           return AppColors.resultColor5;
         default :
           return AppColors.resultColor1;
       }
     }
-    else if(index == 2) {
+    else if(index == 2) { // 우로빌리노겐
       switch(status){
         case '0' : return AppColors.resultColor1;
         case '1' : return AppColors.resultColor2;
@@ -342,17 +331,16 @@ class Branch {
     if ( index == 8 || index == 7) { // ph, 비중, 비타민 예외
       return AppColors.resultBGExceptColor;
     }
-    else if(index == 10){
+    else if(index == 10){ // 비타민
       return AppColors.resultBGVitaminColor;
     }
 
-    else if(index == 0 || index == 1 || index == 9){
+    else if(index == 0 || index == 1 || index == 9){ // 잠혈, 빌리루빈, 백혈구
       switch(status){
         case '0' : return AppColors.resultBGColor1;
         case '1' : return AppColors.resultBGColor2;
         case '2' : return AppColors.resultBGColor3;
         case '3' : return AppColors.resultBGColor4;
-        case '4' : return AppColors.resultBGColor4;
         default  : return AppColors.resultBGColor1;
       }
     }
@@ -361,9 +349,8 @@ class Branch {
       switch(status){
         case '0' : return AppColors.resultBGColor1;
         case '1' : return AppColors.resultBGColor2;
-        case '2' : return AppColors.resultBGColor2;
-        case '3' : return AppColors.resultBGColor3;
-        case '4' : return AppColors.resultBGColor4;
+        case '2' : return AppColors.resultBGColor3;
+        case '3' : return AppColors.resultBGColor4;
         default  : return AppColors.resultBGColor1;
       }
     }
@@ -372,10 +359,9 @@ class Branch {
       switch(status){
         case '0' : return AppColors.resultBGColor1;
         case '1' : return AppColors.resultBGColor2;
-        case '2' : return AppColors.resultBGColor2;
-        case '3' : return AppColors.resultBGColor3;
-        case '4' : return AppColors.resultBGColor4;
-        case '5' : return AppColors.resultBGColor5;
+        case '2' : return AppColors.resultBGColor3;
+        case '3' : return AppColors.resultBGColor4;
+        case '4' : return AppColors.resultBGColor5;
         default  : return AppColors.resultBGColor1;
       }
     }
@@ -642,13 +628,96 @@ class Branch {
     return rate;
   }
 
+  /// 소변 검사 결과 등급 함수
+  static String urineGradeResult(String type, double x) {
+    switch (type) {
+      case 'DT01': // 잠혈
+        if (x >= 52 && x < 57) return "0"; //54
+        if (x >= 57 && x < 100) return "1"; //79
+        if (x >= 100 && x < 130) return "2"; //110
+        if (x >= 130.0) return "3"; //140
+        break;
 
-  /// 예약 현황에서 예약취소버튼 활성화/비활성화
-  static bool possibleToCancel(String status) {
-    if (status == '요청' || status == '확인') {
-      return true;
-    } else {
-      return false;
+      case 'DT02': // 빌리루빈
+        if (x >= 41) return "0"; //42
+        if (x >= 35 && x < 41) return "1"; //40
+        if (x >= 28 && x < 35) return "2"; //33
+        if (x < 28) return "3"; //25
+        break;
+
+      case 'DT03': // 우로빌리노겐
+        if (x >= 42) return "0"; //44
+        if (x >= 39 && x < 42) return "1"; //41
+        if (x >= 30 && x < 39) return "2"; //32
+        if (x >= 21 && x < 30) return "3"; //23
+        if (x < 21) return "4"; //19
+        break;
+
+      case 'DT04': //케톤체
+        if (x >= 40) return "0";//43
+        if (x >= 33 && x < 40) return "1"; //35
+        if (x >= 30.5 && x < 33.0) return "1"; //31
+        if (x < 22) return "2"; //16
+        if (x >=22 && x<30.5) return "3"; //23
+        break;
+
+      case 'DT05': //단백질
+        if (x < 60) return "0"; //53
+        if (x >= 60 && x < 73) return "1"; // 62
+        if (x >= 73 && x < 110) return "1"; //75
+        if (x >= 110 && x < 122) return "2"; //116
+        if (x >= 122 && x < 140) return "3"; //125
+        if (x >= 140.0) return "4"; //149
+        break;
+
+      case 'DT06': //아질산염
+        return x >= 42 ? "0" : "1"; //44,31
+
+      case 'DT07': //포도당
+        if (x >= 170) return "0"; //205
+        if (x >= 128 && x < 170) return "1"; //130
+        if (x >= 100 && x < 128) return "1"; //105
+        if (x >= 46 && x < 100) return "2"; //52
+        if (x >= 21 && x < 46) return "3"; //29
+        if (x < 21) return "4"; //10
+        break;
+
+      case 'DT08': //산성도
+        if (x >= 5 && x < 20) return "0"; // 음성, 10
+        if (x >= 20 && x < 50) return "1"; // 산성, 25
+        if (x >= 50 && x < 100) return "2"; // 중성, 56
+        if (x >= 100 && x < 200) return "3"; // 알칼리성, 118
+        if (x >= 200) return "4"; // 강알칼리성, 204
+        break;
+
+      case 'DT09': //비중
+        if (x >= 200) return "0"; //207
+        if (x >= 160 && x < 200) return "1"; //164
+        if (x >= 90 && x < 160) return "1"; //93
+        if (x >= 75 && x < 90) return "2"; //77
+        if (x >= 41 && x < 75) return "3"; //39
+        if (x < 41) return "4"; //37
+        break;
+
+      case 'DT10': //백혈구
+        if (x >= 42 ) return "0"; //44
+        if (x >= 40.2 && x < 42) return "1"; //41
+        if (x >= 35.5 && x < 40.2) return "2"; //38
+        if (x < 35.5) return "3"; //32
+        break;
+
+      case 'DT11': //비타민
+        if (x >= 110) return "0"; //146
+        if (x >= 30 && x < 110) return "1"; //101
+        if (x >= 13 && x < 30) return "2"; //18
+        if (x < 13) return "3"; //4
+        break;
+
+      default:
+        return "0";
     }
+
+    return "0";
   }
+
 }

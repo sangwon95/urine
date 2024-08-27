@@ -66,7 +66,7 @@ class AppColors {
   static final resultColor4 = Colors.purple.shade500; // 위험
   static final resultColor5 = Colors.red.shade500; // 심각
   static final resultExceptColor = Colors.grey.shade600; // 이외(PH, 비중, 비타민)
-  static final resultVitaminColor = Colors.yellow.shade600; // 이외(PH, 비중, 비타민)
+  static final resultVitaminColor = Colors.grey.shade600; // 이외(PH, 비중, 비타민)
 
   /// 소변 분석 단계별 Text BG 컬러 값
   static final resultBGColor1 = Colors.green.shade100; // 안심
@@ -79,7 +79,7 @@ class AppColors {
 
 
   /// 소변 분석 단계별 Text BG 컬러 값
-  static final resultChartColor1 = Colors.green.shade400; // 관심
+  static final resultChartColor1 = Colors.green.shade400; // 관심F
   static final resultChartColor2 = Colors.blue.shade400; // 안심
   static final resultChartColor3 = Color(0xffffb352); // 주의
   static final resultChartColor4 = Color(0xffff4a51); // 위험

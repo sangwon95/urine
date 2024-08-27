@@ -76,7 +76,7 @@ class _DiseaseInfoViewState extends State<DiseaseInfoView> {
                     rowContents('포도당', '당뇨, 췌장염, 갑상선항진증 등'),
                     const DottedLine(mWidth: double.infinity),
 
-                    rowContents('PH', '산성 : 콩팥결핵, 중증당뇨증, 신장염, 알콜중독 등 염기성 : 요로감염증, 결석증, 과호흡 등'),
+                    rowContents('PH', '산성 : 콩팥결핵, 중증당뇨증, 신장염, 알콜중독 등 \n염기성 : 요로감염증, 결석증, 과호흡 등'),
                     const DottedLine(mWidth: double.infinity),
 
                     rowContents('비중', '저비중 : 신부전, 신우신염\n고비중 : 당뇨병, 탈수증, 설사 등'),
@@ -86,7 +86,6 @@ class _DiseaseInfoViewState extends State<DiseaseInfoView> {
                     const DottedLine(mWidth: double.infinity),
 
                     rowContents('비타민', '비타민C 과잉의경우 요당, 단백질, 알칼리요등이 측정오류가 발생 할 수 있습니다.'),
-
                   ],
                 )
             ),

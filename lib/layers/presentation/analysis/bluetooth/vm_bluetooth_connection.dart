@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:urine/common/common.dart';
+import 'package:urine/common/util/branch.dart';
 import 'package:urine/layers/entity/urine_save_dto.dart';
 import 'package:urine/layers/model/authorization.dart';
 
@@ -105,7 +106,7 @@ class BluetoothConnectionViewModel extends ChangeNotifier{
               DateFormat('yyyyMMddHHmmss').format(DateTime.now()).toString(),
               inspectionItemTypeList[i],
               urineList[i] != '0' ? '양성' : '음성',
-              urineList[i]
+              urineList[i],//Branch.urineGradeResult(inspectionItemTypeList[i], double.parse(urineList[i]))
           ).toMap()
       );
     }
@@ -232,10 +233,15 @@ class BluetoothConnectionViewModel extends ChangeNotifier{
       }
 
       if(sb.toString().contains('#A11')){
-        logger.i('검사기로부터 수신된 데이터: ${sb.toString().replaceAll('\n', '')}');
-        List<String> urineList = Etc.createUrineValuesList(Urine.fromValue(sb.toString()));
+        logger.i('검사기로부터 수신된 데이터: ${sb.toString().replaceAll('#T', '\n#T')}');
+        List<String> urineRowDataList = Etc.createUrineValuesList(Urine.fromValue(sb.toString()));
 
-        if(urineList.isNotEmpty && urineList.length == 11){
+        if(urineRowDataList.isNotEmpty && urineRowDataList.length == 11){
+
+          var urineList = <String>[];
+          for(int i = 0 ; i < 11 ; i++){
+            urineList.add(Branch.urineGradeResult(inspectionItemTypeList[i], double.parse(urineRowDataList[i])));
+          }
           // 결과 데이터 서버에 저장
           saveResultData(urineList);
 

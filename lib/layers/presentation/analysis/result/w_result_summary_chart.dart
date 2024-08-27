@@ -55,6 +55,8 @@ class ResultSummaryChart extends StatelessWidget {
           size: AppDim.fontSizeSmall,
           color: AppColors.greyTextColor,
           fontWeight: AppDim.weight500,
+          maxLinesCount: 2,
+          softWrap: true,
         ),
       ],
     );

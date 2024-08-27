@@ -77,61 +77,77 @@ class Urine {
 
   factory Urine.fromValue(String sb){
     return Urine(
-        blood: parsingResultBuffer('#A01', sb),
-        billrubin: parsingResultBuffer('#A02', sb),
-        urobillnogen: parsingResultBuffer('#A03', sb),
-        ketones: parsingResultBuffer('#A04', sb),
-        protein: parsingResultBuffer('#A05', sb),
-        nitrite: parsingResultBuffer('#A06', sb),
-        glucose: parsingResultBuffer('#A07', sb),
-        pH: parsingResultBuffer('#A08', sb),
-        sG: parsingResultBuffer('#A09', sb),
-        leucoytes: parsingResultBuffer('#A10', sb),
-        vitamin: parsingResultBuffer('#A11', sb),
+        blood: parsingResultBuffer('#R01:','#T01', sb),
+        billrubin: parsingResultBuffer('#R02:','#T02', sb),
+        urobillnogen: parsingResultBuffer('#R03:','#T03', sb),
+        ketones: parsingResultBuffer('#R04:','#T04', sb),
+        protein: parsingResultBuffer('#R05:','#T05', sb),
+        nitrite: parsingResultBuffer('#R06:','#T06', sb),
+        glucose: parsingResultBuffer('#R07:','#T07', sb),
+        pH: parsingResultBuffer('#R08:','#T08', sb),
+        sG: parsingResultBuffer('#R09:','#T09', sb),
+        leucoytes: parsingResultBuffer('#R10:','#T10', sb),
+        vitamin: parsingResultBuffer('#R11:','#T11', sb),
         date: DateFormat('yyyyMMddHHmmss').format(DateTime.now()).toString(),
         urineList: [],
     );
   }
 
-  static String parsingResultBuffer(String baseStr, String sb) {
-    int idx = sb.replaceAll('\n', '').indexOf(baseStr);
-    String result = sb.substring(idx + 5, (idx + 6));
-    return result;
+  // static String parsingResultBuffer(String baseStr, String sb) {
+  //   int idx = sb.replaceAll('\n', '').indexOf(baseStr);
+  //   String result = sb.substring(idx + 5, (idx + 6));
+  //   return result;
+  // }
+
+  //   String startTag = "T01:";
+  //     String endTag = "#A01";
+  static String parsingResultBuffer(String startTag, String endTag,String sb) {
+
+    int startIndex = sb.indexOf(startTag);
+    int endIndex = sb.indexOf(endTag);
+
+    if (startIndex != -1 && endIndex != -1 && startIndex < endIndex) {
+      // startIndex는 "T01:"의 끝을 가리키게 설정합니다.
+      startIndex += startTag.length;
+      return sb.substring(startIndex, endIndex);
+    }
+
+    return "0.0";
   }
 
 
   initialization(String sb) {
-    blood = parsingResultBuffer('#A01', sb);
+    blood = parsingResultBuffer('#R01:','#T01', sb);
     urineList.add(blood);
 
-    billrubin  = parsingResultBuffer('#A02', sb);
+    billrubin  = parsingResultBuffer('#R02:','#T02', sb);
     urineList.add(billrubin);
 
-    urobillnogen = parsingResultBuffer('#A03', sb);
+    urobillnogen = parsingResultBuffer('#R03:','#T03', sb);
     urineList.add(urobillnogen);
 
-    ketones  = parsingResultBuffer('#A04', sb);
+    ketones  = parsingResultBuffer('#R04:','#T04', sb);
     urineList.add(ketones);
 
-    protein = parsingResultBuffer('#A05', sb);
+    protein = parsingResultBuffer('#R05:','#T05', sb);
     urineList.add(protein);
 
-    nitrite = parsingResultBuffer('#A06', sb);
+    nitrite = parsingResultBuffer('#R06:','#T06', sb);
     urineList.add(nitrite);
 
-    glucose = parsingResultBuffer('#A07', sb);
+    glucose = parsingResultBuffer('#R07:','#T07', sb);
     urineList.add(glucose);
 
-    pH = parsingResultBuffer('#A08', sb);
+    pH = parsingResultBuffer('#R08:','#T08', sb);
     urineList.add(pH);
 
-    sG  = parsingResultBuffer('#A09', sb);
+    sG  = parsingResultBuffer('#R09:','#T09', sb);
     urineList.add(sG);
 
-    leucoytes  = parsingResultBuffer('#A10', sb);
+    leucoytes  = parsingResultBuffer('#R10:','#T10', sb);
     urineList.add(leucoytes);
 
-    vitamin = parsingResultBuffer('#A11', sb);
+    vitamin = parsingResultBuffer('#R11:','#T11', sb);
     urineList.add(vitamin);
 
     date = DateFormat('yyyyMMddHHmmss').format(DateTime.now()).toString();

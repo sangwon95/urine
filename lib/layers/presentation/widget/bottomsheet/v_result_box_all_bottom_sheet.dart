@@ -26,8 +26,10 @@ class _ResultBoxAllBottomSheetState extends State<ResultBoxAllBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
     return Container(
-        height: 680,
+        height: size.height * 0.85,
         padding: const EdgeInsets.symmetric(
           horizontal: AppDim.medium,
           vertical: AppDim.small,
