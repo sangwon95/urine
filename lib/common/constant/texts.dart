@@ -2,9 +2,9 @@
 
 class Texts {
   static const  appName = 'Yocheck';
-  static const appVersion = '1.1.6';
-  static const androidBuildVersion = '10';
-  static const iosBuildVersion = '10';
+  static const appVersion = '1.1.7';
+  static const androidBuildVersion = '11';
+  static const iosBuildVersion = '11';
   static const currentYear = '2024';
 
   static const imagePath = 'assets/images';
